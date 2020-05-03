@@ -2,11 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./styles";
+import 'semantic-ui-css/semantic.min.css';
 
-class HelloWorld extends React.Component {
-    render () {
-        return <span>Hello, world!</span>
-    }
-}
+import {App} from './App';
 
-ReactDOM.render(<HelloWorld />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));
