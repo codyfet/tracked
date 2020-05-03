@@ -5,7 +5,8 @@
     ],
     "rules": {
         "no-unused-vars": "warn",
-        "object-curly-spacing": [2, "never"]
+        "object-curly-spacing": [2, "never"],
+        "react/prop-types": 0
     },
     "env": {
         "es6": true,
