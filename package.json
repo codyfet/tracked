@@ -38,6 +38,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-autosuggest": "^10.0.2",
     "react-dom": "^16.13.1",

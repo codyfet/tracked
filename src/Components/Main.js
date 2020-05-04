@@ -11,7 +11,13 @@ export const Main = () => {
 
     return (
         <Container className="main">
-            {records.map((record) => <Record key={record.id} {...record} />)}
+            {records.map((record) => (
+                <Record
+                    id={record.id}
+                    key={record.id}
+                    {...record}
+                />
+            ))}
         </Container>
     );
 };
