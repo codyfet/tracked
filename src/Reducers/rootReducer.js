@@ -1,5 +1,6 @@
 import {filter} from 'lodash';
-import {REMOVE_RECORD} from "../Actions/ActionTypes";
+import {REMOVE_RECORD, ADD_RECORD} from "../Actions/ActionTypes";
+import {createEmptyRecord} from '../Utils/Utils';
 
 const initialState = {
     records: [
@@ -38,6 +39,11 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 records: filter(state.records, (record) => record.id !== action.payload.id)
+            }
+        case ADD_RECORD:
+            return {
+                ...state,
+                records: [createEmptyRecord(), ...state.records]
             }
     }
 
