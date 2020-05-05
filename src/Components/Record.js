@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from 'react';
 import {useDispatch} from 'react-redux'
 import {REMOVE_RECORD} from '../Actions/ActionTypes';
-
-import {Grid, Segment, Flag, Image, Icon, Input} from 'semantic-ui-react';
+import {MoviesSelect} from './MoviesSelect';
+import {Grid, Segment, Flag, Image, Icon} from 'semantic-ui-react';
 import {SimpleDialog} from './SimpleDialog';
 
 /**
@@ -20,16 +20,18 @@ export const Record = ({
     flag,
     rating
 }) => {
+    const dispatch = useDispatch();
 
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
     const [currentSelectedRecordId, setCurrentSelectedRecordId] = useState(null);
 
+    // Обработчик закрытия модального окна подтверждения удаления записи.
     const toggleRemoveDialogHandler = (e) => {
         toggleRemoveDialog(!isRemoveDialogVisible);
         setCurrentSelectedRecordId(e.target.parentElement.id)
     }
 
-    const dispatch = useDispatch();
+    // Обработчик удаления записи.
     const removeRecordHandler = () => dispatch({type: REMOVE_RECORD, payload: {id: currentSelectedRecordId}});
 
     const isEmptyRecord = id === '0';
@@ -48,7 +50,7 @@ export const Record = ({
      */
     const renderTitle = () => {
         if (isEmptyRecord) {
-            return <Input fluid size="mini" icon='search' placeholder='Найти фильм...' />;
+            return <MoviesSelect />;
         }
 
         return `${title} (${releaseYear})`;

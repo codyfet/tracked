@@ -1,5 +1,5 @@
 import {filter} from 'lodash';
-import {REMOVE_RECORD, ADD_RECORD} from "../Actions/ActionTypes";
+import {REMOVE_RECORD, ADD_RECORD, POPULATE_AUTOSUGGEST_START, POPULATE_AUTOSUGGEST_SUCCESS, POPULATE_AUTOSUGGEST_FAILURE} from "../Actions/ActionTypes";
 import {createEmptyRecord} from '../Utils/Utils';
 
 const initialState = {
@@ -26,7 +26,10 @@ const initialState = {
             flag: 'us',
             rating: '6',
         }
-    ]
+    ],
+    editableRecord: {
+        records: []
+    }
 };
 
 /**
@@ -44,6 +47,21 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 records: [createEmptyRecord(), ...state.records]
+            }
+        case POPULATE_AUTOSUGGEST_START:
+            return {
+                ...state,
+            }
+        case POPULATE_AUTOSUGGEST_SUCCESS:
+            return {
+                ...state,
+                editableRecord: {
+                    records: action.payload.data.results
+                }
+            }
+        case POPULATE_AUTOSUGGEST_FAILURE:
+            return {
+                ...state,
             }
     }
 
