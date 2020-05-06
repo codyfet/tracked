@@ -35,22 +35,21 @@ export const MoviesSelect = () => {
      * Обрботчик изменения в инпут-поле.
      */
     const handleChangeInput = (event, options) => {
-        let inputValue = null;
         // Если обработчик вызван из-за ввода значения руками.
         if (options.method === 'type') {
-            inputValue = event.target.value;
+            const inputValue = event.target.value;
+            setEmptyRecordInputValue(inputValue);
             // Ищем фильмы в БД для наполнения ими выпадающего списка.
             if (inputValue.length > 2) {
                 dispatch(searchMovies(inputValue));
             }
-        // Если обработчик вызван из-за выбора в выпадающем списке.
-        } else {
-            inputValue = event.target.innerText;
-            // Добавляем запись с выбранным фильмом.
-            dispatch({type: ADD_RECORD, payload: event.target.id})
         }
+    }
 
-        setEmptyRecordInputValue(inputValue);
+    const handleSuggestionSelected = (event, {suggestion}) => {
+        setEmptyRecordInputValue(suggestion.title);
+        // Добавляем запись с выбранным фильмом.
+        dispatch({type: ADD_RECORD, payload: suggestion.id})
     }
 
     /**
@@ -66,6 +65,7 @@ export const MoviesSelect = () => {
         <Autosuggest
             onSuggestionsFetchRequested={noop}
             onSuggestionsClearRequested={noop}
+            onSuggestionSelected={handleSuggestionSelected}
             suggestions={records}
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}

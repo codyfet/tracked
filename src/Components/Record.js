@@ -41,7 +41,7 @@ export const Record = ({
      * Рисует постер.
      */
     const renderPoster = () => {
-        const path = isEmptyRecord ? 'src/Assets/default.png' : `http://image.tmdb.org/t/p/w92/${posterpath}`;
+        const path = isEmptyRecord ? 'src/Assets/hiclipart.com.png' : `http://image.tmdb.org/t/p/w92/${posterpath}`;
 
         return <Image src={path} size='tiny' />;
     }

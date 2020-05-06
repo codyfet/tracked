@@ -1,5 +1,5 @@
 import {filter, find} from 'lodash';
-import {REMOVE_RECORD, ADD_EMPTY_RECORD, ADD_RECORD, POPULATE_AUTOSUGGEST_START, POPULATE_AUTOSUGGEST_SUCCESS, POPULATE_AUTOSUGGEST_FAILURE} from "../Actions/ActionTypes";
+import {REMOVE_RECORD, ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, ADD_RECORD, POPULATE_AUTOSUGGEST_START, POPULATE_AUTOSUGGEST_SUCCESS, POPULATE_AUTOSUGGEST_FAILURE} from "../Actions/ActionTypes";
 import {createEmptyRecord} from '../Utils/Utils';
 import {getFormattedDate} from '../Utils/DateUtils';
 
@@ -31,6 +31,7 @@ const initialState = {
         // }
     ],
     emptyRecord: {
+        isExists: false,
         records: []
     }
 };
@@ -46,14 +47,27 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 records: filter(state.records, (record) => record.id !== action.payload.id)
             }
-        case ADD_EMPTY_RECORD:
+        case ADD_EMPTY_MOVIE_RECORD:
             return {
                 ...state,
-                records: [createEmptyRecord(action.payload), ...state.records]
+                records: [{...createEmptyRecord(), type: "movie"}, ...state.records],
+                emptyRecord: {
+                    ...state.emptyRecord,
+                    isExists: true
+                }
+            }
+        case ADD_EMPTY_TVSERIES_RECORD:
+            return {
+                ...state,
+                records: [{...createEmptyRecord(), type: "tvseries"}, ...state.records],
+                emptyRecord: {
+                    ...state.emptyRecord,
+                    isExists: true
+                }
             }
         case ADD_RECORD:
             const id = action.payload;
-            const tmdbRecord = find(state.emptyRecord.records, (record) => record.id.toString() === id);
+            const tmdbRecord = find(state.emptyRecord.records, (record) => record.id === id);
             const newRecord = {
                 id: tmdbRecord.id,
                 viewdate: getFormattedDate(new Date()),
@@ -76,7 +90,11 @@ export const rootReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                records: newRecords
+                records: newRecords,
+                emptyRecord: {
+                    records: [],
+                    isExists: false
+                }
             }
         case POPULATE_AUTOSUGGEST_START:
             return {
@@ -86,6 +104,7 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 emptyRecord: {
+                    ...state.emptyRecord,
                     records: action.payload.data.results
                 }
             }

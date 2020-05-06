@@ -4,9 +4,14 @@
 export const REMOVE_RECORD = 'REMOVE_RECORD';
 
 /**
- * Добавляет пустую запись.
+ * Добавляет пустую запись с фильмом.
  */
-export const ADD_EMPTY_RECORD = 'ADD_EMPTY_RECORD';
+export const ADD_EMPTY_MOVIE_RECORD = 'ADD_EMPTY_MOVIE_RECORD';
+
+/**
+ * Добавляет пустую запись с сериалом.
+ */
+export const ADD_EMPTY_TVSERIES_RECORD = 'ADD_EMPTY_TVSERIES_RECORD';
 
 /**
  * Добавляет запись с данными.
