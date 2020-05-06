@@ -4,7 +4,12 @@
 export const REMOVE_RECORD = 'REMOVE_RECORD';
 
 /**
- * Добавляет запись.
+ * Добавляет пустую запись.
+ */
+export const ADD_EMPTY_RECORD = 'ADD_EMPTY_RECORD';
+
+/**
+ * Добавляет запись с данными.
  */
 export const ADD_RECORD = 'ADD_RECORD';
 

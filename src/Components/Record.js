@@ -11,14 +11,15 @@ import {SimpleDialog} from './SimpleDialog';
 export const Record = ({
     id,
     viewdate,
-    // posterpath,
+    posterpath,
     title,
     releaseYear,
     originalTitle,
     director,
     genre,
     flag,
-    rating
+    rating,
+    type
 }) => {
     const dispatch = useDispatch();
 
@@ -40,7 +41,7 @@ export const Record = ({
      * Рисует постер.
      */
     const renderPoster = () => {
-        const path = isEmptyRecord ? 'src/Assets/default.png' : 'src/Assets/sniper.jpg';
+        const path = isEmptyRecord ? 'src/Assets/default.png' : `http://image.tmdb.org/t/p/w92/${posterpath}`;
 
         return <Image src={path} size='tiny' />;
     }
@@ -69,7 +70,7 @@ export const Record = ({
 
     return (
         <Fragment>
-            <Segment className={`record ${isEmptyRecord ? '' : 'blue-bg'}`} id={id}>
+            <Segment className={`record ${type === 'movie' ? 'blue-bg' : 'violet-bg'}`} id={id}>
                 <Grid verticalAlign="middle">
                     <Grid.Column width={2} textAlign="center">
                         <span>{viewdate}</span>
@@ -77,7 +78,7 @@ export const Record = ({
                     <Grid.Column width={2} textAlign="center">
                         {renderPoster()}
                     </Grid.Column>
-                    <Grid.Column width={9}>
+                    <Grid.Column width={9} className="column-title">
                         <div className="title">{renderTitle()}</div>
                         <div className="additional-info">{renderAdditionalInfo()}</div>
                         <div className="genre">{genre}</div>

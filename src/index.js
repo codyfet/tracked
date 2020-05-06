@@ -5,7 +5,8 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk'
 import {rootReducer} from "./Reducers/rootReducer";
 
-import "./Styles/styles";
+import "./Styles/Styles";
+import "./Styles/Autosuggest";
 import 'semantic-ui-css/semantic.min.css';
 
 import {App} from './Components/App';

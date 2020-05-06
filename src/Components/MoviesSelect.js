@@ -3,14 +3,15 @@ import {useDispatch, useSelector} from 'react-redux'
 import Autosuggest from 'react-autosuggest';
 import {noop} from 'lodash';
 import {searchMovies} from '../Actions/Actions';
+import {ADD_RECORD} from '../Actions/ActionTypes';
 
 /**
  * Компонент выпадающий список для поиска фильмов.
  */
 export const MoviesSelect = () => {
     const dispatch = useDispatch();
-    const records = useSelector(state => state.editableRecord.records);
-    const [editableRecordInputValue, setEditableRecordInputValue] = useState('');
+    const records = useSelector(state => state.emptyRecord.records);
+    const [emptyRecordInputValue, setEmptyRecordInputValue] = useState('');
 
     /**
      * Вычисляет значение для опции.
@@ -25,7 +26,7 @@ export const MoviesSelect = () => {
      * @param {Object} suggestion Предложение.
      */
     const renderSuggestion = (suggestion) => (
-        <div>
+        <div className="suggestion-item" id={suggestion.id}>
             {suggestion.title}
         </div>
     );
@@ -33,14 +34,23 @@ export const MoviesSelect = () => {
     /**
      * Обрботчик изменения в инпут-поле.
      */
-    const handleChangeInput = (event) => {
-        const inputValue = event.target.value;
-
-        setEditableRecordInputValue(inputValue);
-
-        if (inputValue.length > 2) {
-            dispatch(searchMovies(inputValue));
+    const handleChangeInput = (event, options) => {
+        let inputValue = null;
+        // Если обработчик вызван из-за ввода значения руками.
+        if (options.method === 'type') {
+            inputValue = event.target.value;
+            // Ищем фильмы в БД для наполнения ими выпадающего списка.
+            if (inputValue.length > 2) {
+                dispatch(searchMovies(inputValue));
+            }
+        // Если обработчик вызван из-за выбора в выпадающем списке.
+        } else {
+            inputValue = event.target.innerText;
+            // Добавляем запись с выбранным фильмом.
+            dispatch({type: ADD_RECORD, payload: event.target.id})
         }
+
+        setEmptyRecordInputValue(inputValue);
     }
 
     /**
@@ -48,7 +58,7 @@ export const MoviesSelect = () => {
      */
     const inputProps = {
         placeholder: 'Найти фильм...',
-        value: editableRecordInputValue,
+        value: emptyRecordInputValue,
         onChange: handleChangeInput
     };
 

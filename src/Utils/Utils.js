@@ -1,7 +1,7 @@
 /**
  * Возвращает пустую запись.
  */
-export function createEmptyRecord () {
+export function createEmptyRecord (type) {
     return {
         id: "0",
         viewdate: null,
@@ -11,6 +11,7 @@ export function createEmptyRecord () {
         originalTitle: null,
         director: null,
         flag: null,
-        rating: null
+        rating: null,
+        type
     };
 }

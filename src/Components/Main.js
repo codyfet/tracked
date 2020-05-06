@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector, useDispatch} from 'react-redux'
 import {Container, Grid, Button} from 'semantic-ui-react';
 import {Record} from './Record';
-import {ADD_RECORD} from '../Actions/ActionTypes';
+import {ADD_EMPTY_RECORD} from '../Actions/ActionTypes';
 
 /**
  * Компонент главная область приложения.
@@ -19,7 +19,9 @@ export const Main = () => {
                     <span>Сериалы (3)</span>
                 </Grid.Column>
                 <Grid.Column textAlign="right">
-                    <Button onClick={() => dispatch({type: ADD_RECORD})}>Добавить</Button>
+                    <span>Добавить</span>&nbsp;&nbsp;&nbsp;
+                    <Button onClick={() => dispatch({type: ADD_EMPTY_RECORD, payload: 'movie'})}>Фильм</Button>
+                    <Button onClick={() => dispatch({type: ADD_EMPTY_RECORD, payload: 'tvseries'})}>Сериал</Button>
                 </Grid.Column>
             </Grid>
 
