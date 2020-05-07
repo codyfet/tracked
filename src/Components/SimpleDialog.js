@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Button} from 'semantic-ui-react';
+import {Button, Modal} from 'semantic-ui-react';
 
 /**
  * Компонент простой диалог с кнопками Да/Нет.

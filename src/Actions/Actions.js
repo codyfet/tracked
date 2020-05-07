@@ -1,7 +1,7 @@
 import {
+    POPULATE_AUTOSUGGEST_FAILURE,
     POPULATE_AUTOSUGGEST_START,
-    POPULATE_AUTOSUGGEST_SUCCESS,
-    POPULATE_AUTOSUGGEST_FAILURE
+    POPULATE_AUTOSUGGEST_SUCCESS
 } from './ActionTypes';
 import {searchMoviesByTitle} from '../Services/TMDBServices';
 

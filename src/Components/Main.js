@@ -1,6 +1,6 @@
 import React from 'react';
-import {useSelector, useDispatch} from 'react-redux'
-import {Container, Grid, Button} from 'semantic-ui-react';
+import {useDispatch, useSelector} from 'react-redux'
+import {Button, Container, Grid} from 'semantic-ui-react';
 import {Record} from './Record';
 import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD} from '../Actions/ActionTypes';
 import {filter} from 'lodash';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Image, Menu, Dropdown} from 'semantic-ui-react';
+import {Container, Dropdown, Image, Menu} from 'semantic-ui-react';
 
 const years = [
     {key: '2019', value: '2019', text: '2019'},

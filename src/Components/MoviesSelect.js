@@ -4,6 +4,12 @@ import Autosuggest from 'react-autosuggest';
 import {noop} from 'lodash';
 import {searchMovies} from '../Actions/Actions';
 import {ADD_RECORD} from '../Actions/ActionTypes';
+import debounceAction from 'debounce-action';
+
+/**
+ * Асинхронный Thunk, обернутый в debounce, чтобы не слать лишние запросы после нескольких нажатий клавиш подряд.
+ */
+const debouncedSearchMovies = debounceAction(searchMovies, 300, {leading: true});
 
 /**
  * Компонент выпадающий список для поиска фильмов.
@@ -41,7 +47,7 @@ export const MoviesSelect = () => {
             setEmptyRecordInputValue(inputValue);
             // Ищем фильмы в БД для наполнения ими выпадающего списка.
             if (inputValue.length > 2) {
-                dispatch(searchMovies(inputValue));
+                dispatch(debouncedSearchMovies(inputValue));
             }
         }
     }
