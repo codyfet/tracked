@@ -7,7 +7,13 @@
         "no-unused-vars": "warn",
         "object-curly-spacing": [2, "never"],
         "react/prop-types": 0,
-        "no-case-declarations": 0
+        "no-case-declarations": 0,
+        "sort-imports": ["error", {
+            "ignoreCase": false,
+            "ignoreDeclarationSort": true,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+        }]
     },
     "env": {
         "es6": true,

@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from 'react';
 import {useDispatch} from 'react-redux'
-import {REMOVE_RECORD} from '../Actions/ActionTypes';
+import {REMOVE_RECORD, UPDATE_RECORD} from '../Actions/ActionTypes';
 import {MoviesSelect} from './MoviesSelect';
-import {Grid, Segment, Flag, Image, Icon} from 'semantic-ui-react';
+import {Flag, Grid, Icon, Image, Input, Segment} from 'semantic-ui-react';
 import {SimpleDialog} from './SimpleDialog';
 
 /**
@@ -21,29 +21,35 @@ export const Record = ({
     rating,
     type
 }) => {
+    const isEmptyRecord = (id === '0');
     const dispatch = useDispatch();
 
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
     const [currentSelectedRecordId, setCurrentSelectedRecordId] = useState(null);
+    const [isEditModeEnabled, setEditModeEnabled] = useState(false);
 
-    // Обработчик закрытия модального окна подтверждения удаления записи.
-    const toggleRemoveDialogHandler = (e) => {
+    /**
+     * Обработчик закрытия модального окна подтверждения удаления записи.
+     */
+    const toggleRemoveDialogFunc = (e) => {
         toggleRemoveDialog(!isRemoveDialogVisible);
         setCurrentSelectedRecordId(e.target.parentElement.id)
     }
 
-    // Обработчик удаления записи.
-    const removeRecordHandler = () => dispatch({type: REMOVE_RECORD, payload: {id: currentSelectedRecordId}});
-
-    const isEmptyRecord = id === '0';
+    /**
+     * Переключает режим редактирования для поля Рейтинг.
+     */
+    const toggleRatingEditMode = () => setEditModeEnabled(!isEditModeEnabled);
 
     /**
      * Рисует постер.
      */
     const renderPoster = () => {
-        const path = isEmptyRecord ? 'src/Assets/hiclipart.com.png' : `http://image.tmdb.org/t/p/w92/${posterpath}`;
+        if (isEmptyRecord) {
+            return null;
+        }
 
-        return <Image src={path} size='tiny' />;
+        return <Image src={`http://image.tmdb.org/t/p/w92/${posterpath}`} size='tiny' />;
     }
 
     /**
@@ -68,6 +74,26 @@ export const Record = ({
         return <span>{originalTitle} <span className="director">реж. {director}</span></span>;
     }
 
+    /**
+     * Рисует пооле Рейтинг.
+     */
+    const renderRating = () => {
+        if (isEditModeEnabled) {
+            return (
+                <Input
+                    className="edit-mode-rating"
+                    value={rating}
+                    autoFocus
+                    onChange={(e) => dispatch({type: UPDATE_RECORD, payload: {id, rating: e.target.value}})}
+                    onFocus={e => e.currentTarget.select()}
+                    onBlur={toggleRatingEditMode}
+                />
+            );
+        }
+
+        return <span className="rating" onClick={toggleRatingEditMode}>{rating}</span>;
+    }
+
     return (
         <Fragment>
             <Segment className={`record ${type === 'movie' ? 'blue-bg' : 'violet-bg'}`} id={id}>
@@ -78,7 +104,7 @@ export const Record = ({
                     <Grid.Column width={2} textAlign="center">
                         {renderPoster()}
                     </Grid.Column>
-                    <Grid.Column width={9} className="column-title">
+                    <Grid.Column width={8} className="column-title">
                         <div className="title">{renderTitle()}</div>
                         <div className="additional-info">{renderAdditionalInfo()}</div>
                         <div className="genre">{genre}</div>
@@ -86,20 +112,20 @@ export const Record = ({
                     <Grid.Column width={2} textAlign="center">
                         <Flag name={flag} />
                     </Grid.Column>
-                    <Grid.Column width={1} textAlign="center">
-                        <span className="rating">{rating}</span>
+                    <Grid.Column width={2} textAlign="center">
+                        {renderRating()}
                     </Grid.Column>
                 </Grid>
-                <Icon className="remove-record" name='remove' onClick={toggleRemoveDialogHandler} />
+                <Icon className="remove-record" name='remove' onClick={toggleRemoveDialogFunc} />
             </Segment>
 
             {isRemoveDialogVisible && (
                 <SimpleDialog
                     header="Удаление записи"
                     text="Вы уверены, что хотите удалить запись?"
-                    onClose={toggleRemoveDialogHandler}
-                    onNegative={toggleRemoveDialogHandler}
-                    onPositive={removeRecordHandler}
+                    onClose={toggleRemoveDialogFunc}
+                    onNegative={toggleRemoveDialogFunc}
+                    onPositive={() => dispatch({type: REMOVE_RECORD, payload: {id: currentSelectedRecordId}})}
                 />
             )}
         </Fragment>

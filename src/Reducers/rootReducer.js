@@ -1,5 +1,13 @@
-import {filter, find} from 'lodash';
-import {REMOVE_RECORD, ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, ADD_RECORD, POPULATE_AUTOSUGGEST_START, POPULATE_AUTOSUGGEST_SUCCESS, POPULATE_AUTOSUGGEST_FAILURE} from "../Actions/ActionTypes";
+import {filter, find, findIndex} from 'lodash';
+import {
+    ADD_EMPTY_MOVIE_RECORD,
+    ADD_EMPTY_TVSERIES_RECORD,
+    ADD_RECORD,
+    POPULATE_AUTOSUGGEST_FAILURE,
+    POPULATE_AUTOSUGGEST_START,
+    POPULATE_AUTOSUGGEST_SUCCESS,
+    REMOVE_RECORD, UPDATE_RECORD
+} from "../Actions/ActionTypes";
 import {createEmptyRecord} from '../Utils/Utils';
 import {getFormattedDate} from '../Utils/DateUtils';
 
@@ -95,6 +103,20 @@ export const rootReducer = (state = initialState, action) => {
                     records: [],
                     isExists: false
                 }
+            }
+        case UPDATE_RECORD:
+            const recordIndex = findIndex(state.records, {id: action.payload.id});
+            const updatedRecord = {
+                ...state.records[recordIndex],
+                ...action.payload
+            }
+
+            const updatedRecords = [...state.records];
+            updatedRecords[recordIndex] = updatedRecord;
+
+            return {
+                ...state,
+                records: updatedRecords
             }
         case POPULATE_AUTOSUGGEST_START:
             return {

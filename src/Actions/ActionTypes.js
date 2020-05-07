@@ -19,6 +19,11 @@ export const ADD_EMPTY_TVSERIES_RECORD = 'ADD_EMPTY_TVSERIES_RECORD';
 export const ADD_RECORD = 'ADD_RECORD';
 
 /**
+ * Изменяет запись с данными.
+ */
+export const UPDATE_RECORD = 'UPDATE_RECORD';
+
+/**
  * Старт запроса на наполнение выпадающего списка компонента поиска фильмов.
  */
 export const POPULATE_AUTOSUGGEST_START = 'POPULATE_AUTOSUGGEST_START';
