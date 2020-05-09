@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import {noop} from 'lodash';
 import {searchMovies} from '../Actions/Actions';
@@ -31,11 +31,15 @@ export const MoviesSelect = () => {
      *
      * @param {Object} suggestion Предложение.
      */
-    const renderSuggestion = (suggestion) => (
-        <div className="suggestion-item" id={suggestion.id}>
-            {suggestion.title} ({suggestion.release_date?.substring(0, 4)})
-        </div>
-    );
+    const renderSuggestion = (suggestion) => {
+        const year = suggestion.release_date ? `(${suggestion.release_date?.substring(0, 4)})` : '';
+
+        return (
+            <div className="suggestion-item" id={suggestion.id}>
+                {suggestion.title + ' ' + year}
+            </div>
+        );
+    };
 
     /**
      * Обрботчик изменения в инпут-поле.
@@ -50,13 +54,13 @@ export const MoviesSelect = () => {
                 dispatch(debouncedSearchMovies(inputValue));
             }
         }
-    }
+    };
 
     const handleSuggestionSelected = (event, {suggestion}) => {
         setEmptyRecordInputValue(suggestion.title);
         // Добавляем запись с выбранным фильмом.
-        dispatch({type: ADD_RECORD, payload: suggestion.id})
-    }
+        dispatch({type: ADD_RECORD, payload: suggestion.id});
+    };
 
     /**
      * Настройки для инпута.

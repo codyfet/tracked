@@ -1,7 +1,10 @@
 import {
+    GET_GENRES_FAILURE,
+    GET_GENRES_START,
+    GET_GENRES_SUCCESS,
     POPULATE_AUTOSUGGEST_FAILURE,
     POPULATE_AUTOSUGGEST_START,
-    POPULATE_AUTOSUGGEST_SUCCESS
+    POPULATE_AUTOSUGGEST_SUCCESS,
 } from './ActionTypes';
 import {searchMoviesByTitle} from '../Services/TMDBServices';
 
@@ -18,6 +21,21 @@ export function searchMovies(searchInput) {
         return searchMoviesByTitle(searchInput).then(
             (result) => dispatch({type: POPULATE_AUTOSUGGEST_SUCCESS, payload: result}),
             (error) => dispatch({type: POPULATE_AUTOSUGGEST_FAILURE, payload: error}),
+        );
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения справочника жанров.
+ */
+export function getGenres() {
+    return function (dispatch) {
+
+        dispatch({type: GET_GENRES_START});
+
+        return getGenres().then(
+            (result) => dispatch({type: GET_GENRES_SUCCESS, payload: result}),
+            (error) => dispatch({type: GET_GENRES_FAILURE, payload: error}),
         );
     };
 }

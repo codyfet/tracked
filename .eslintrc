@@ -13,7 +13,8 @@
             "ignoreDeclarationSort": true,
             "ignoreMemberSort": false,
             "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-        }]
+        }],
+        "semi": [2, "always"]
     },
     "env": {
         "es6": true,

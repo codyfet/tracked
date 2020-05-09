@@ -37,3 +37,18 @@ export const POPULATE_AUTOSUGGEST_SUCCESS = 'POPULATE_AUTOSUGGEST_SUCCESS';
  * Неуспешное выполнение запроса на наполнение выпадающего списка компонента поиска фильмов.
  */
 export const POPULATE_AUTOSUGGEST_FAILURE = 'POPULATE_AUTOSUGGEST_FAILURE';
+
+/**
+ * Старт запроса на получение справочника жанров.
+ */
+export const GET_GENRES_START = 'GET_GENRES_START';
+
+/**
+ * Успешное выполнение запроса на получение справочника жанров.
+ */
+export const GET_GENRES_SUCCESS = 'GET_GENRES_SUCCESS';
+
+/**
+ * Неуспешное выполнение запроса на получение справочника жанров.
+ */
+export const GET_GENRES_FAILURE = 'GET_GENRES_FAILURE';
