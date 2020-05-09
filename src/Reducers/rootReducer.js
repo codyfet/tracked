@@ -9,7 +9,6 @@ import {
     REMOVE_RECORD, UPDATE_RECORD
 } from "../Actions/ActionTypes";
 import {createEmptyRecord} from '../Utils/Utils';
-import {getFormattedDate} from '../Utils/DateUtils';
 
 const initialState = {
     records: [
@@ -78,7 +77,7 @@ export const rootReducer = (state = initialState, action) => {
             const tmdbRecord = find(state.emptyRecord.records, (record) => record.id === id);
             const newRecord = {
                 id: tmdbRecord.id,
-                viewdate: getFormattedDate(new Date()),
+                viewdate: new Date(),
                 posterpath: tmdbRecord.poster_path,
                 title: tmdbRecord.title,
                 releaseYear: tmdbRecord.release_date.substring(0, 4),

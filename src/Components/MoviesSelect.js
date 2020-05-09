@@ -33,7 +33,7 @@ export const MoviesSelect = () => {
      */
     const renderSuggestion = (suggestion) => (
         <div className="suggestion-item" id={suggestion.id}>
-            {suggestion.title}
+            {suggestion.title} ({suggestion.release_date?.substring(0, 4)})
         </div>
     );
 

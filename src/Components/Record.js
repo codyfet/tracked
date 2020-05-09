@@ -4,6 +4,11 @@ import {REMOVE_RECORD, UPDATE_RECORD} from '../Actions/ActionTypes';
 import {MoviesSelect} from './MoviesSelect';
 import {Flag, Grid, Icon, Image, Input, Segment} from 'semantic-ui-react';
 import {SimpleDialog} from './SimpleDialog';
+import DatePicker from "react-datepicker";
+import ru from "date-fns/locale/ru";
+import {getFormattedDate} from '../Utils/DateUtils';
+
+import "react-datepicker/dist/react-datepicker.css";
 
 /**
  * Компонент карточка фильма.
@@ -25,21 +30,58 @@ export const Record = ({
     const dispatch = useDispatch();
 
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
-    const [currentSelectedRecordId, setCurrentSelectedRecordId] = useState(null);
-    const [isEditModeEnabled, setEditModeEnabled] = useState(false);
+
+    const [isEditModeViewdateEnabled, setEditModeViewdateEnabled] = useState(false);
+    const [isEditModeRatingEnabled, setEditModeRatingEnabled] = useState(false);
 
     /**
      * Обработчик закрытия модального окна подтверждения удаления записи.
      */
-    const toggleRemoveDialogFunc = (e) => {
+    const toggleRemoveDialogFunc = () => {
         toggleRemoveDialog(!isRemoveDialogVisible);
-        setCurrentSelectedRecordId(e.target.parentElement.id)
     }
 
     /**
      * Переключает режим редактирования для поля Рейтинг.
      */
-    const toggleRatingEditMode = () => setEditModeEnabled(!isEditModeEnabled);
+    const toggleRatingEditMode = () => setEditModeRatingEnabled(!isEditModeRatingEnabled);
+
+    /**
+     * Переключает режим редактирования для поля Дата просмотра.
+     */
+    const toggleViewdateEditMode = () => setEditModeViewdateEnabled(!isEditModeViewdateEnabled);
+
+    /**
+     * Рисует дату просмотра.
+     */
+    const renderViewdate = () => {
+        if (isEmptyRecord) {
+            return null;
+        }
+
+        if (isEditModeViewdateEnabled) {
+            const CustomInput = ({value, onClick, onChange, onBlur}) => (
+                <Input className="datepicker-input" value={value} onClick={onClick} onChange={onChange} onBlur={onBlur} />
+            );
+
+            return (
+                <DatePicker
+                    dateFormat="d MMMM"
+                    locale={ru}
+                    selected={viewdate}
+                    onChange={(viewdate) => {
+                        dispatch({type: UPDATE_RECORD, payload: {id, viewdate}});
+                        toggleViewdateEditMode();
+                    }}
+                    customInput={<CustomInput  />}
+                    onBlur={toggleViewdateEditMode}
+                />
+            );
+        }
+
+        return <span onClick={toggleViewdateEditMode}>{getFormattedDate(viewdate)}</span>
+    }
+
 
     /**
      * Рисует постер.
@@ -78,7 +120,7 @@ export const Record = ({
      * Рисует пооле Рейтинг.
      */
     const renderRating = () => {
-        if (isEditModeEnabled) {
+        if (isEditModeRatingEnabled) {
             return (
                 <Input
                     className="edit-mode-rating"
@@ -98,8 +140,8 @@ export const Record = ({
         <Fragment>
             <Segment className={`record ${type === 'movie' ? 'blue-bg' : 'violet-bg'}`} id={id}>
                 <Grid verticalAlign="middle">
-                    <Grid.Column width={2} textAlign="center">
-                        <span>{viewdate}</span>
+                    <Grid.Column width={2} textAlign="center" className="column-viewdate">
+                        {renderViewdate()}
                     </Grid.Column>
                     <Grid.Column width={2} textAlign="center">
                         {renderPoster()}
@@ -116,7 +158,7 @@ export const Record = ({
                         {renderRating()}
                     </Grid.Column>
                 </Grid>
-                <Icon className="remove-record" name='remove' onClick={toggleRemoveDialogFunc} />
+                {!isEmptyRecord && <Icon className="remove-record" name='remove' onClick={toggleRemoveDialogFunc} />}
             </Segment>
 
             {isRemoveDialogVisible && (
@@ -125,7 +167,7 @@ export const Record = ({
                     text="Вы уверены, что хотите удалить запись?"
                     onClose={toggleRemoveDialogFunc}
                     onNegative={toggleRemoveDialogFunc}
-                    onPositive={() => dispatch({type: REMOVE_RECORD, payload: {id: currentSelectedRecordId}})}
+                    onPositive={() => dispatch({type: REMOVE_RECORD, payload: {id}})}
                 />
             )}
         </Fragment>
