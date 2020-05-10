@@ -6,7 +6,7 @@ import {
     POPULATE_AUTOSUGGEST_START,
     POPULATE_AUTOSUGGEST_SUCCESS,
 } from './ActionTypes';
-import {searchMoviesByTitle} from '../Services/TMDBServices';
+import {getGenresFromTMDb, searchMoviesByTitle} from '../Services/TMDBServices';
 
 /**
  * Thunk функция для выполнения ajax запроса для поиска фильмов.
@@ -33,7 +33,7 @@ export function getGenres() {
 
         dispatch({type: GET_GENRES_START});
 
-        return getGenres().then(
+        return getGenresFromTMDb().then(
             (result) => dispatch({type: GET_GENRES_SUCCESS, payload: result}),
             (error) => dispatch({type: GET_GENRES_FAILURE, payload: error}),
         );

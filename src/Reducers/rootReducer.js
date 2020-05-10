@@ -88,9 +88,9 @@ export const rootReducer = (state = initialState, action) => {
                 releaseYear: tmdbRecord.release_date.substring(0, 4),
                 originalTitle: tmdbRecord.original_title,
                 director: 'Клинт Иствуд',
-                genre: "боевик",
+                genreIds: tmdbRecord.genre_ids,
                 flag: 'us',
-                rating: '6',
+                rating: 'n',
                 type: 'movie'
             };
 
@@ -145,7 +145,7 @@ export const rootReducer = (state = initialState, action) => {
         case GET_GENRES_SUCCESS:
             const genresDictionary = {};
 
-            forEach(action.payload, (genreItem) => {
+            forEach(action.payload.data.genres, (genreItem) => {
                 genresDictionary[genreItem.id] = genreItem.name;
             });
 

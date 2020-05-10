@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from 'react';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux';
 import {REMOVE_RECORD, UPDATE_RECORD} from '../Actions/ActionTypes';
 import {MoviesSelect} from './MoviesSelect';
 import {Flag, Grid, Icon, Image, Input, Segment} from 'semantic-ui-react';
@@ -21,7 +21,7 @@ export const Record = ({
     releaseYear,
     originalTitle,
     director,
-    genre,
+    genreIds,
     flag,
     rating,
     type
@@ -30,16 +30,16 @@ export const Record = ({
     const dispatch = useDispatch();
 
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
-
     const [isEditModeViewdateEnabled, setEditModeViewdateEnabled] = useState(false);
     const [isEditModeRatingEnabled, setEditModeRatingEnabled] = useState(false);
+    const {genresDictionary} = useSelector(state => state);
 
     /**
      * Обработчик закрытия модального окна подтверждения удаления записи.
      */
     const toggleRemoveDialogFunc = () => {
         toggleRemoveDialog(!isRemoveDialogVisible);
-    }
+    };
 
     /**
      * Переключает режим редактирования для поля Рейтинг.
@@ -79,9 +79,8 @@ export const Record = ({
             );
         }
 
-        return <span onClick={toggleViewdateEditMode}>{getFormattedDate(viewdate)}</span>
-    }
-
+        return <span onClick={toggleViewdateEditMode}>{getFormattedDate(viewdate)}</span>;
+    };
 
     /**
      * Рисует постер.
@@ -92,29 +91,30 @@ export const Record = ({
         }
 
         return <Image src={`http://image.tmdb.org/t/p/w92/${posterpath}`} size='tiny' />;
-    }
+    };
 
     /**
-     * Рисует наименование.
+     * Рисует основную информацию.
      */
-    const renderTitle = () => {
+    const renderMainInfo = () => {
         if (isEmptyRecord) {
             return <MoviesSelect />;
         }
 
-        return `${title} (${releaseYear})`;
-    }
-
-    /**
-     * Рисует доп. информацию.
-     */
-    const renderAdditionalInfo = () => {
-        if (isEmptyRecord) {
-            return null;
-        }
-
-        return <span>{originalTitle} <span className="director">реж. {director}</span></span>;
-    }
+        return (
+            <Fragment>
+                <div className="title">
+                    {`${title} (${releaseYear})`}
+                </div>
+                <div className="additional-info">
+                    {<span>{originalTitle} <span className="director">реж. {director}</span></span>}
+                </div>
+                <div className="genre">
+                    {genreIds.map((id) => genresDictionary[id]).join(', ')}
+                </div>
+            </Fragment>
+        );
+    };
 
     /**
      * Рисует пооле Рейтинг.
@@ -134,7 +134,7 @@ export const Record = ({
         }
 
         return <span className="rating" onClick={toggleRatingEditMode}>{rating}</span>;
-    }
+    };
 
     return (
         <Fragment>
@@ -147,9 +147,7 @@ export const Record = ({
                         {renderPoster()}
                     </Grid.Column>
                     <Grid.Column width={8} className="column-title">
-                        <div className="title">{renderTitle()}</div>
-                        <div className="additional-info">{renderAdditionalInfo()}</div>
-                        <div className="genre">{genre}</div>
+                        {renderMainInfo()}
                     </Grid.Column>
                     <Grid.Column width={2} textAlign="center">
                         <Flag name={flag} />

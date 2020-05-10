@@ -16,6 +16,6 @@ export function searchMoviesByTitle(searchInput) {
 /**
  * Возвращает справочник жанров.
  */
-export function getGenres() {
+export function getGenresFromTMDb() {
     return axios.get(`${REST_URL}/genre/movie/list?api_key=${API_KEY}&language=ru-RU`);
 }
