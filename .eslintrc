@@ -14,7 +14,8 @@
             "ignoreMemberSort": false,
             "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
         }],
-        "semi": [2, "always"]
+        "semi": [2, "always"],
+        "quotes": ["error", "double"]
     },
     "env": {
         "es6": true,

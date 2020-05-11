@@ -1,4 +1,4 @@
-import {filter, find, findIndex} from 'lodash';
+import {filter, find, findIndex} from "lodash";
 import {
     ADD_DETAILED_RECORD_SUCCESS,
     ADD_EMPTY_MOVIE_RECORD,
@@ -10,7 +10,7 @@ import {
     REMOVE_RECORD,
     UPDATE_RECORD
 } from "../Actions/ActionTypes";
-import {createEmptyRecord} from '../Utils/Utils';
+import {createEmptyRecord} from "../Utils/Utils";
 
 const initialState = {
     records: [],
@@ -29,7 +29,11 @@ export const rootReducer = (state = initialState, action) => {
         case REMOVE_RECORD:
             return {
                 ...state,
-                records: filter(state.records, (record) => record.id !== action.payload.id)
+                records: filter(state.records, (record) => record.id !== action.payload.id),
+                emptyRecord: {
+                    records: [],
+                    isExists: false
+                }
             };
         case ADD_EMPTY_MOVIE_RECORD:
             return {
@@ -60,15 +64,17 @@ export const rootReducer = (state = initialState, action) => {
                 title: tmdbRecord.title,
                 releaseYear: tmdbRecord.release_date.substring(0, 4),
                 originalTitle: tmdbRecord.original_title,
-                rating: 'n',
-                type: 'movie',
+                rating: "0",
+                type: "movie",
                 backdrop_path: details.backdrop_path,
                 genres: details.genres,
                 overview: details.overview,
                 production_countries: details.production_countries,
                 cast: credits.cast,
                 crew: credits.crew,
-                director: find(credits.crew, (crewItem) => crewItem.job === "Director")?.name
+                director: find(credits.crew, (crewItem) => crewItem.job === "Director")?.name,
+                reViewed: false,
+                notFinished: false
             };
 
             const newRecords = [newRecord];

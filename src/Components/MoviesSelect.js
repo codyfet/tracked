@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import Autosuggest from 'react-autosuggest';
-import {noop} from 'lodash';
-import {addDetailedRecord, searchMovies} from '../Actions/Actions';
-import debounceAction from 'debounce-action';
+import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import Autosuggest from "react-autosuggest";
+import {noop} from "lodash";
+import {addDetailedRecord, searchMovies} from "../Actions/Actions";
+import debounceAction from "debounce-action";
 
 /**
  * Асинхронный Thunk, обернутый в debounce, чтобы не слать лишние запросы после нескольких нажатий клавиш подряд.
@@ -16,7 +16,7 @@ const debouncedSearchMovies = debounceAction(searchMovies, 300, {leading: true})
 export const MoviesSelect = () => {
     const dispatch = useDispatch();
     const records = useSelector(state => state.emptyRecord.records);
-    const [emptyRecordInputValue, setEmptyRecordInputValue] = useState('');
+    const [emptyRecordInputValue, setEmptyRecordInputValue] = useState("");
 
     /**
      * Вычисляет значение для опции.
@@ -31,11 +31,11 @@ export const MoviesSelect = () => {
      * @param {Object} suggestion Предложение.
      */
     const renderSuggestion = (suggestion) => {
-        const year = suggestion.release_date ? `(${suggestion.release_date?.substring(0, 4)})` : '';
+        const year = suggestion.release_date ? `(${suggestion.release_date?.substring(0, 4)})` : "";
 
         return (
             <div className="suggestion-item" id={suggestion.id}>
-                {suggestion.title + ' ' + year}
+                {suggestion.title + " " + year}
             </div>
         );
     };
@@ -45,7 +45,7 @@ export const MoviesSelect = () => {
      */
     const handleChangeInput = (event, options) => {
         // Если обработчик вызван из-за ввода значения руками.
-        if (options.method === 'type') {
+        if (options.method === "type") {
             const inputValue = event.target.value;
             setEmptyRecordInputValue(inputValue);
             // Ищем фильмы в БД для наполнения ими выпадающего списка.
@@ -65,7 +65,7 @@ export const MoviesSelect = () => {
      * Настройки для инпута.
      */
     const inputProps = {
-        placeholder: 'Найти фильм...',
+        placeholder: "Найти фильм...",
         value: emptyRecordInputValue,
         onChange: handleChangeInput
     };

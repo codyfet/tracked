@@ -1,13 +1,13 @@
-import React, {Fragment, useState} from 'react';
-import {useDispatch} from 'react-redux';
-import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from '../Actions/ActionTypes';
-import {MoviesSelect} from './MoviesSelect';
-import {Flag, Grid, Icon, Image, Input, Segment} from 'semantic-ui-react';
-import {SimpleDialog} from './SimpleDialog';
+import React, {Fragment, useState} from "react";
+import {useDispatch} from "react-redux";
+import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from "../Actions/ActionTypes";
+import {MoviesSelect} from "./MoviesSelect";
+import {Flag, Grid, Icon, Image, Input, Segment} from "semantic-ui-react";
+import {SimpleDialog} from "./SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
-import {getFormattedDate} from '../Utils/DateUtils';
-import {IMAGE_URL} from '../Consts';
+import {getFormattedDate} from "../Utils/DateUtils";
+import {IMAGE_URL} from "../Consts";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -26,8 +26,10 @@ export const Record = ({
     rating,
     type,
     production_countries,
+    reViewed,
+    notFinished,
 }) => {
-    const isEmptyRecord = (id === '0');
+    const isEmptyRecord = (id === "0");
     const dispatch = useDispatch();
 
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
@@ -50,6 +52,11 @@ export const Record = ({
      * Переключает режим редактирования для поля Дата просмотра.
      */
     const toggleViewdateEditMode = () => setEditModeViewdateEnabled(!isEditModeViewdateEnabled);
+
+    /**
+     * Удаляет запись.
+     */
+    const removeRecord = () => dispatch({type: REMOVE_RECORD, payload: {id}});
 
     /**
      * Рисует дату просмотра.
@@ -111,7 +118,7 @@ export const Record = ({
                     {<span>{originalTitle} <span className="director">реж. {director}</span></span>}
                 </div>
                 <div className="genre">
-                    {genres.map((genre) => genre.name).join(', ')}
+                    {genres.map((genre) => genre.name).join(", ")}
                 </div>
             </Fragment>
         );
@@ -150,9 +157,46 @@ export const Record = ({
         return <span className="rating" onClick={toggleRatingEditMode}>{rating}</span>;
     };
 
+    /**
+     * Рисует панель с иконками-действиями.
+     */
+    const renderIconsPanel = () => {
+        const icons = [];
+
+        if (!isEmptyRecord) {
+            icons.push(
+                <Icon
+                    key="reViewed"
+                    name='adjust'
+                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, reViewed: !reViewed}})}
+                    title="не досмотрен"
+                    color={reViewed ? "black" : "grey"}
+                />,
+                <Icon
+                    key="notFinished"
+                    name='sync alternate'
+                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, notFinished: !notFinished}})}
+                    title="повторный просмотр"
+                    color={notFinished ? "black" : "grey"}
+                />
+            );
+        }
+
+        icons.push(
+            <Icon
+                key="remove"
+                name='remove'
+                onClick={isEmptyRecord ? removeRecord : toggleRemoveDialogFunc}
+                title="удалить запись"
+            />
+        );
+
+        return <span className="icons-panel">{icons}</span>;
+    };
+
     return (
         <Fragment>
-            <Segment className={`record ${type === 'movie' ? 'blue-bg' : 'violet-bg'}`} id={id}>
+            <Segment className={`record ${type === "movie" ? "blue-bg" : "violet-bg"}`} id={id}>
                 <Grid verticalAlign="middle">
                     <Grid.Column width={2} textAlign="center" className="column-viewdate">
                         {renderViewdate()}
@@ -170,7 +214,7 @@ export const Record = ({
                         {renderRating()}
                     </Grid.Column>
                 </Grid>
-                {!isEmptyRecord && <Icon className="remove-record" name='remove' onClick={toggleRemoveDialogFunc} />}
+                {renderIconsPanel()}
             </Segment>
 
             {isRemoveDialogVisible && (
@@ -179,7 +223,7 @@ export const Record = ({
                     text="Вы уверены, что хотите удалить запись?"
                     onClose={toggleRemoveDialogFunc}
                     onNegative={toggleRemoveDialogFunc}
-                    onPositive={() => dispatch({type: REMOVE_RECORD, payload: {id}})}
+                    onPositive={removeRecord}
                 />
             )}
         </Fragment>

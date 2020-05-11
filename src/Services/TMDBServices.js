@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API_KEY = "37662c76ffc19e5cd1b95f37d77155fc";
 
-const REST_URL = 'https://api.themoviedb.org/3';
+const REST_URL = "https://api.themoviedb.org/3";
 
 /**
  * Осуществляет обращение к TMDb для поиска фильмов по подстроке.

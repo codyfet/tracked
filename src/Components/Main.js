@@ -1,14 +1,14 @@
-import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {Button, Container, Dropdown, Grid} from 'semantic-ui-react';
-import {Record} from './Record';
-import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD} from '../Actions/ActionTypes';
-import {filter} from 'lodash';
+import React from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
+import {Record} from "./Record";
+import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD} from "../Actions/ActionTypes";
+import {filter} from "lodash";
 
 const years = [
-    {key: '2019', value: '2019', text: '2019'},
-    {key: '2018', value: '2018', text: '2018'},
-    {key: '2017', value: '2017', text: '2017'}
+    {key: "2019", value: "2019", text: "2019"},
+    {key: "2018", value: "2018", text: "2018"},
+    {key: "2017", value: "2017", text: "2017"}
 ];
 
 /**

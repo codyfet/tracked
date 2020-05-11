@@ -5,8 +5,8 @@ import {
     POPULATE_AUTOSUGGEST_FAILURE,
     POPULATE_AUTOSUGGEST_START,
     POPULATE_AUTOSUGGEST_SUCCESS,
-} from './ActionTypes';
-import {getMovieCreditsById, getMovieDetailsById, searchMoviesByTitle} from '../Services/TMDBServices';
+} from "./ActionTypes";
+import {getMovieCreditsById, getMovieDetailsById, searchMoviesByTitle} from "../Services/TMDBServices";
 
 /**
  * Thunk функция для выполнения ajax запроса для поиска фильмов.
