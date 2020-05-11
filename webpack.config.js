@@ -16,17 +16,17 @@ const getOptimization = () => {
         splitChunks: {
             chunks: 'all'
         }
-    }
+    };
 
     if (isProd) {
         config.minimizer = [
             new OptimizeCssAssestsWebpackPlugin(),
             new TerserWebpackPlugin(),
-        ]
+        ];
     }
 
     return config;
-}
+};
 
 /**
  * Возвращает конфиг для обработки js|jsx файлов в зависимости от режима сборки.
@@ -37,11 +37,11 @@ const getJsLoaders = () => {
     }];
 
     if (isDev) {
-        loaders.push('eslint-loader')
+        loaders.push('eslint-loader');
     }
 
     return loaders;
-}
+};
 
 /**
  * Возвращает конфиг для обработки css файлов.
@@ -59,14 +59,14 @@ const getCssLoaders = (extraLoaders) => {
         },
       },
       'css-loader'
-    ]
+    ];
 
     if (extraLoaders) {
-      loaders.push(extraLoaders)
+      loaders.push(extraLoaders);
     }
 
-    return loaders
-  }
+    return loaders;
+  };
 
 /**
  * Возвращает имя файла с хэшем, либо без - в зависимости от режима сборки.
@@ -75,11 +75,11 @@ const getCssLoaders = (extraLoaders) => {
  */
 const getDistFilename = (extension) => {
     return isDev ? `[name].${extension}` : `[name].[hash].${extension}`;
-}
+};
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
-    entry: './index.js',
+    entry: ['@babel/polyfill', './index.js'],
     output: {
         filename: getDistFilename('js'),
         path: path.resolve(__dirname, 'dist')
@@ -130,4 +130,4 @@ module.exports = {
             filename: getDistFilename('css'),
         })
     ]
-}
+};

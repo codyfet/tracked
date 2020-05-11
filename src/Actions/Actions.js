@@ -1,12 +1,12 @@
 import {
-    GET_GENRES_FAILURE,
-    GET_GENRES_START,
-    GET_GENRES_SUCCESS,
+    ADD_DETAILED_RECORD_FAILURE,
+    ADD_DETAILED_RECORD_START,
+    ADD_DETAILED_RECORD_SUCCESS,
     POPULATE_AUTOSUGGEST_FAILURE,
     POPULATE_AUTOSUGGEST_START,
     POPULATE_AUTOSUGGEST_SUCCESS,
 } from './ActionTypes';
-import {getGenresFromTMDb, searchMoviesByTitle} from '../Services/TMDBServices';
+import {getMovieCreditsById, getMovieDetailsById, searchMoviesByTitle} from '../Services/TMDBServices';
 
 /**
  * Thunk функция для выполнения ajax запроса для поиска фильмов.
@@ -26,16 +26,21 @@ export function searchMovies(searchInput) {
 }
 
 /**
- * Thunk функция для выполнения ajax запроса для получения справочника жанров.
+ * Thunk функция для выполнения ajax запроса для получения полной информации о фильме.
  */
-export function getGenres() {
-    return function (dispatch) {
+export function addDetailedRecord(id) {
+    return async function (dispatch) {
 
-        dispatch({type: GET_GENRES_START});
+        dispatch({type: ADD_DETAILED_RECORD_START});
 
-        return getGenresFromTMDb().then(
-            (result) => dispatch({type: GET_GENRES_SUCCESS, payload: result}),
-            (error) => dispatch({type: GET_GENRES_FAILURE, payload: error}),
-        );
+        try {
+            const results = await Promise.all([getMovieDetailsById(id), getMovieCreditsById(id)]);
+            dispatch({type: ADD_DETAILED_RECORD_SUCCESS, payload: results});
+            return results;
+        } catch (error) {
+            dispatch({type: ADD_DETAILED_RECORD_FAILURE, payload: error});
+            throw error;
+        }
+
     };
 }

@@ -1,12 +1,13 @@
 import React, {Fragment, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {REMOVE_RECORD, UPDATE_RECORD} from '../Actions/ActionTypes';
+import {useDispatch} from 'react-redux';
+import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from '../Actions/ActionTypes';
 import {MoviesSelect} from './MoviesSelect';
 import {Flag, Grid, Icon, Image, Input, Segment} from 'semantic-ui-react';
 import {SimpleDialog} from './SimpleDialog';
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
 import {getFormattedDate} from '../Utils/DateUtils';
+import {IMAGE_URL} from '../Consts';
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,10 +22,10 @@ export const Record = ({
     releaseYear,
     originalTitle,
     director,
-    genreIds,
-    flag,
+    genres,
     rating,
-    type
+    type,
+    production_countries,
 }) => {
     const isEmptyRecord = (id === '0');
     const dispatch = useDispatch();
@@ -32,7 +33,6 @@ export const Record = ({
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
     const [isEditModeViewdateEnabled, setEditModeViewdateEnabled] = useState(false);
     const [isEditModeRatingEnabled, setEditModeRatingEnabled] = useState(false);
-    const {genresDictionary} = useSelector(state => state);
 
     /**
      * Обработчик закрытия модального окна подтверждения удаления записи.
@@ -71,6 +71,7 @@ export const Record = ({
                     selected={viewdate}
                     onChange={(viewdate) => {
                         dispatch({type: UPDATE_RECORD, payload: {id, viewdate}});
+                        dispatch({type: ORDER_RECORDS_BY, payload: "viewdate"});
                         toggleViewdateEditMode();
                     }}
                     customInput={<CustomInput  />}
@@ -90,7 +91,7 @@ export const Record = ({
             return null;
         }
 
-        return <Image src={`http://image.tmdb.org/t/p/w92/${posterpath}`} size='tiny' />;
+        return <Image src={`${IMAGE_URL}/${posterpath}`} size='tiny' />;
     };
 
     /**
@@ -110,9 +111,22 @@ export const Record = ({
                     {<span>{originalTitle} <span className="director">реж. {director}</span></span>}
                 </div>
                 <div className="genre">
-                    {genreIds.map((id) => genresDictionary[id]).join(', ')}
+                    {genres.map((genre) => genre.name).join(', ')}
                 </div>
             </Fragment>
+        );
+    };
+
+    /**
+     * Рисует флаги стран производителей.
+     */
+    const renderFlags = () => {
+        if (isEmptyRecord) {
+            return null;
+        }
+
+        return production_countries.map(
+            (country) => <Flag key={country.iso_3166_1} name={country.iso_3166_1.toLowerCase()} />
         );
     };
 
@@ -150,7 +164,7 @@ export const Record = ({
                         {renderMainInfo()}
                     </Grid.Column>
                     <Grid.Column width={2} textAlign="center">
-                        <Flag name={flag} />
+                        {renderFlags()}
                     </Grid.Column>
                     <Grid.Column width={2} textAlign="center">
                         {renderRating()}

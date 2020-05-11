@@ -39,16 +39,21 @@ export const POPULATE_AUTOSUGGEST_SUCCESS = 'POPULATE_AUTOSUGGEST_SUCCESS';
 export const POPULATE_AUTOSUGGEST_FAILURE = 'POPULATE_AUTOSUGGEST_FAILURE';
 
 /**
- * Старт запроса на получение справочника жанров.
+ * Старт процесса добавления фильма.
  */
-export const GET_GENRES_START = 'GET_GENRES_START';
+export const ADD_DETAILED_RECORD_START = 'ADD_DETAILED_RECORD_START';
 
 /**
- * Успешное выполнение запроса на получение справочника жанров.
+ * Успешное выполнение процесса добавления фильма.
  */
-export const GET_GENRES_SUCCESS = 'GET_GENRES_SUCCESS';
+export const ADD_DETAILED_RECORD_SUCCESS = 'ADD_DETAILED_RECORD_SUCCESS';
 
 /**
- * Неуспешное выполнение запроса на получение справочника жанров.
+ * Неуспешное выполнение процесса добавления фильма.
  */
-export const GET_GENRES_FAILURE = 'GET_GENRES_FAILURE';
+export const ADD_DETAILED_RECORD_FAILURE = 'ADD_DETAILED_RECORD_FAILURE';
+
+/**
+ * Сортировка записей.
+ */
+export const ORDER_RECORDS_BY = 'ORDER_RECORDS_BY';

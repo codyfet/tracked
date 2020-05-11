@@ -38,6 +38,7 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.8.7",
     "axios": "^0.19.2",
     "date-fns": "^2.13.0",
     "debounce-action": "^0.1.0",

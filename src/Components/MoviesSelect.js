@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Autosuggest from 'react-autosuggest';
 import {noop} from 'lodash';
-import {searchMovies} from '../Actions/Actions';
-import {ADD_RECORD} from '../Actions/ActionTypes';
+import {addDetailedRecord, searchMovies} from '../Actions/Actions';
 import debounceAction from 'debounce-action';
 
 /**
@@ -59,7 +58,7 @@ export const MoviesSelect = () => {
     const handleSuggestionSelected = (event, {suggestion}) => {
         setEmptyRecordInputValue(suggestion.title);
         // Добавляем запись с выбранным фильмом.
-        dispatch({type: ADD_RECORD, payload: suggestion.id});
+        dispatch(addDetailedRecord(suggestion.id));
     };
 
     /**

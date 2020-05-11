@@ -14,6 +14,24 @@ export function searchMoviesByTitle(searchInput) {
 }
 
 /**
+ * Осуществляет обращение к TMDb для получения детальной информации о фильме.
+ *
+ * @param {string} id Идентификатор запрашиваемого фильма.
+ */
+export function getMovieDetailsById(id) {
+    return axios.get(`${REST_URL}/movie/${id}?api_key=${API_KEY}&language=ru-RU`);
+}
+
+/**
+ * Осуществляет обращение к TMDb для получения информации о персонах, участвующих в создании (cast).
+ *
+ * @param {string} id Идентификатор запрашиваемого фильма.
+ */
+export function getMovieCreditsById(id) {
+    return axios.get(`${REST_URL}/movie/${id}/credits?api_key=${API_KEY}`);
+}
+
+/**
  * Возвращает справочник жанров.
  */
 export function getGenresFromTMDb() {
