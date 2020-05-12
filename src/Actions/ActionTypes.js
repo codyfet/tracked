@@ -26,32 +26,62 @@ export const UPDATE_RECORD = "UPDATE_RECORD";
 /**
  * Старт запроса на наполнение выпадающего списка компонента поиска фильмов.
  */
-export const POPULATE_AUTOSUGGEST_START = "POPULATE_AUTOSUGGEST_START";
+export const POPULATE_MOVIES_AUTOSUGGEST_START = "POPULATE_MOVIES_AUTOSUGGEST_START";
 
 /**
  * Успешное выполнение запроса на наполнение выпадающего списка компонента поиска фильмов.
  */
-export const POPULATE_AUTOSUGGEST_SUCCESS = "POPULATE_AUTOSUGGEST_SUCCESS";
+export const POPULATE_MOVIES_AUTOSUGGEST_SUCCESS = "POPULATE_MOVIES_AUTOSUGGEST_SUCCESS";
 
 /**
  * Неуспешное выполнение запроса на наполнение выпадающего списка компонента поиска фильмов.
  */
-export const POPULATE_AUTOSUGGEST_FAILURE = "POPULATE_AUTOSUGGEST_FAILURE";
+export const POPULATE_MOVIES_AUTOSUGGEST_FAILURE = "POPULATE_MOVIES_AUTOSUGGEST_FAILURE";
+
+/**
+ * Старт запроса на наполнение выпадающего списка компонента поиска сериалов.
+ */
+export const POPULATE_TV_AUTOSUGGEST_START = "POPULATE_TV_AUTOSUGGEST_START";
+
+/**
+ * Успешное выполнение запроса на наполнение выпадающего списка компонента поиска сериалов.
+ */
+export const POPULATE_TV_AUTOSUGGEST_SUCCESS = "POPULATE_TV_AUTOSUGGEST_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на наполнение выпадающего списка компонента поиска сериалов.
+ */
+export const POPULATE_TV_AUTOSUGGEST_FAILURE = "POPULATE_TV_AUTOSUGGEST_FAILURE";
 
 /**
  * Старт процесса добавления фильма.
  */
-export const ADD_DETAILED_RECORD_START = "ADD_DETAILED_RECORD_START";
+export const ADD_MOVIE_DETAILED_RECORD_START = "ADD_MOVIE_DETAILED_RECORD_START";
 
 /**
  * Успешное выполнение процесса добавления фильма.
  */
-export const ADD_DETAILED_RECORD_SUCCESS = "ADD_DETAILED_RECORD_SUCCESS";
+export const ADD_MOVIE_DETAILED_RECORD_SUCCESS = "ADD_MOVIE_DETAILED_RECORD_SUCCESS";
 
 /**
  * Неуспешное выполнение процесса добавления фильма.
  */
-export const ADD_DETAILED_RECORD_FAILURE = "ADD_DETAILED_RECORD_FAILURE";
+export const ADD_MOVIE_DETAILED_RECORD_FAILURE = "ADD_MOVIE_DETAILED_RECORD_FAILURE";
+
+/**
+ * Старт процесса добавления сериала.
+ */
+export const ADD_TVSERIES_DETAILED_RECORD_START = "ADD_TVSERIES_DETAILED_RECORD_START";
+
+/**
+ * Успешное выполнение процесса добавления сериала.
+ */
+export const ADD_TVSERIES_DETAILED_RECORD_SUCCESS = "ADD_TVSERIES_DETAILED_RECORD_SUCCESS";
+
+/**
+ * Неуспешное выполнение процесса добавления сериала.
+ */
+export const ADD_TVSERIES_DETAILED_RECORD_FAILURE = "ADD_TVSERIES_DETAILED_RECORD_FAILURE";
 
 /**
  * Сортировка записей.

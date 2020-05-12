@@ -16,19 +16,37 @@ export function searchMoviesByTitle(searchInput) {
 /**
  * Осуществляет обращение к TMDb для получения детальной информации о фильме.
  *
- * @param {string} id Идентификатор запрашиваемого фильма.
+ * @param {string} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieDetailsById(id) {
-    return axios.get(`${REST_URL}/movie/${id}?api_key=${API_KEY}&language=ru-RU`);
+export function getMovieDetailsById(movie_id) {
+    return axios.get(`${REST_URL}/movie/${movie_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
 /**
  * Осуществляет обращение к TMDb для получения информации о персонах, участвующих в создании (cast).
  *
- * @param {string} id Идентификатор запрашиваемого фильма.
+ * @param {string} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieCreditsById(id) {
-    return axios.get(`${REST_URL}/movie/${id}/credits?api_key=${API_KEY}`);
+export function getMovieCreditsById(movie_id) {
+    return axios.get(`${REST_URL}/movie/${movie_id}/credits?api_key=${API_KEY}`);
+}
+
+/**
+ * Осуществляет обращение к TMDb для поиска сериалов по подстроке.
+ *
+ * @param {string} searchInput Значение для поиска.
+ */
+export function searchTvSeriesByTitle(searchInput) {
+    return axios.get(`${REST_URL}/search/tv?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`);
+}
+
+/**
+ * Осуществляет обращение к TMDb для получения детальной информации о сериале.
+ *
+ * @param {string} tv_id Идентификатор запрашиваемого сериала.
+ */
+export function getTvSeriesDetailsById(tv_id) {
+    return axios.get(`${REST_URL}/tv/${tv_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
 /**

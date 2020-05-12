@@ -2,18 +2,12 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Autosuggest from "react-autosuggest";
 import {noop} from "lodash";
-import {addDetailedRecord, searchMovies} from "../Actions/Actions";
-import debounceAction from "debounce-action";
 
 /**
- * Асинхронный Thunk, обернутый в debounce, чтобы не слать лишние запросы после нескольких нажатий клавиш подряд.
+ * Компонент выпадающий список для поиска фильмов/сериалов в TMDb.
+ * Единовременно может существовать только один на странице.
  */
-const debouncedSearchMovies = debounceAction(searchMovies, 300, {leading: true});
-
-/**
- * Компонент выпадающий список для поиска фильмов.
- */
-export const MoviesSelect = () => {
+export const TMDbSelect = ({searchAction, addDetailedRecordAction, titlePropName, releasePropName, placeholder}) => {
     const dispatch = useDispatch();
     const records = useSelector(state => state.emptyRecord.records);
     const [emptyRecordInputValue, setEmptyRecordInputValue] = useState("");
@@ -23,7 +17,7 @@ export const MoviesSelect = () => {
      *
      * @param {Object} suggestion Предложение.
      */
-    const getSuggestionValue = (suggestion) => suggestion.title;
+    const getSuggestionValue = (suggestion) => suggestion[titlePropName];
 
     /**
      * Рисует опцию с предложением.
@@ -31,17 +25,17 @@ export const MoviesSelect = () => {
      * @param {Object} suggestion Предложение.
      */
     const renderSuggestion = (suggestion) => {
-        const year = suggestion.release_date ? `(${suggestion.release_date?.substring(0, 4)})` : "";
+        const year = suggestion[releasePropName] ? `(${suggestion[releasePropName]?.substring(0, 4)})` : "";
 
         return (
             <div className="suggestion-item" id={suggestion.id}>
-                {suggestion.title + " " + year}
+                {suggestion[titlePropName] + " " + year}
             </div>
         );
     };
 
     /**
-     * Обрботчик изменения в инпут-поле.
+     * Обработчик изменения в инпут-поле.
      */
     const handleChangeInput = (event, options) => {
         // Если обработчик вызван из-за ввода значения руками.
@@ -50,24 +44,30 @@ export const MoviesSelect = () => {
             setEmptyRecordInputValue(inputValue);
             // Ищем фильмы в БД для наполнения ими выпадающего списка.
             if (inputValue.length > 2) {
-                dispatch(debouncedSearchMovies(inputValue));
+                dispatch(searchAction(inputValue));
             }
         }
     };
 
-    const handleSuggestionSelected = (event, {suggestion}) => {
-        setEmptyRecordInputValue(suggestion.title);
-        // Добавляем запись с выбранным фильмом.
-        dispatch(addDetailedRecord(suggestion.id));
+    /**
+     * Обработчик выбора значения в выпадающем списке.
+     * @param {Event} _event Событие.
+     * @param {{suggestion}} param Выбранное значение.
+     */
+    const handleSuggestionSelected = (_event, {suggestion}) => {
+        setEmptyRecordInputValue(suggestion[titlePropName]);
+        // Добавляем запись с выбранной записью.
+        dispatch(addDetailedRecordAction(suggestion.id));
     };
 
     /**
      * Настройки для инпута.
      */
     const inputProps = {
-        placeholder: "Найти фильм...",
+        placeholder,
         value: emptyRecordInputValue,
-        onChange: handleChangeInput
+        onChange: handleChangeInput,
+        autoFocus: true
     };
 
     return (

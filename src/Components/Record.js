@@ -1,13 +1,15 @@
 import React, {Fragment, useState} from "react";
+import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
 import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from "../Actions/ActionTypes";
-import {MoviesSelect} from "./MoviesSelect";
+import {TMDbSelect} from "./TMDbSelect";
 import {Flag, Grid, Icon, Image, Input, Segment} from "semantic-ui-react";
 import {SimpleDialog} from "./SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
 import {getFormattedDate} from "../Utils/DateUtils";
 import {IMAGE_URL} from "../Consts";
+import {addDetailedMovieRecord, addDetailedTvSeriesRecord, searchMovies, searchTvSeries} from "../Actions/Actions";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -28,8 +30,11 @@ export const Record = ({
     production_countries,
     reViewed,
     notFinished,
+    season,
 }) => {
     const isEmptyRecord = (id === "0");
+    const isMovie = type === "movie";
+    const isTvSeries = !isMovie;
     const dispatch = useDispatch();
 
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
@@ -106,16 +111,30 @@ export const Record = ({
      */
     const renderMainInfo = () => {
         if (isEmptyRecord) {
-            return <MoviesSelect />;
+            const configProps = isMovie ? {
+                searchAction: debounceAction(searchMovies, 300, {leading: true}),
+                addDetailedRecordAction: addDetailedMovieRecord,
+                titlePropName: "title",
+                releasePropName: "release_date",
+                placeholder: "Найти фильм..."
+            } : {
+                searchAction: debounceAction(searchTvSeries, 300, {leading: true}),
+                addDetailedRecordAction: addDetailedTvSeriesRecord,
+                titlePropName: "name",
+                releasePropName: "first_air_date",
+                placeholder: "Найти сериал..."
+            };
+
+            return <TMDbSelect {...configProps} />;
         }
 
         return (
             <Fragment>
                 <div className="title">
-                    {`${title} (${releaseYear})`}
+                    {`${title} (${isTvSeries ? (season + " сезон, ") : ""} ${releaseYear})`}
                 </div>
                 <div className="additional-info">
-                    {<span>{originalTitle} <span className="director">реж. {director}</span></span>}
+                    {<span>{originalTitle} <span className="director">{`${isMovie ? "реж." : "создатели"}`} {director.join(", ")}</span></span>}
                 </div>
                 <div className="genre">
                     {genres.map((genre) => genre.name).join(", ")}
@@ -133,7 +152,7 @@ export const Record = ({
         }
 
         return production_countries.map(
-            (country) => <Flag key={country.iso_3166_1} name={country.iso_3166_1.toLowerCase()} />
+            (country) => <Flag key={country} name={country.toLowerCase()} />
         );
     };
 
@@ -196,7 +215,7 @@ export const Record = ({
 
     return (
         <Fragment>
-            <Segment className={`record ${type === "movie" ? "blue-bg" : "violet-bg"}`} id={id}>
+            <Segment className={`record ${isMovie ? "blue-bg" : "violet-bg"}`} id={id}>
                 <Grid verticalAlign="middle">
                     <Grid.Column width={2} textAlign="center" className="column-viewdate">
                         {renderViewdate()}
