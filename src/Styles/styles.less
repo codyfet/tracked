@@ -16,6 +16,14 @@ body {
     }
 
     .main {
+        .record-filter {
+            cursor: pointer;
+
+            &.not-selected {
+                color: grey;
+            }
+        }
+
         .record {
             height: 150px;
 
@@ -50,6 +58,12 @@ body {
             .edit-mode-rating {
                 width: 50px;
                 margin: 0 auto;
+            }
+
+            .edit-mode-season-info {
+                width: 60px;
+                height: 26px;
+                margin-left: 10px;
             }
 
             .icons-panel {

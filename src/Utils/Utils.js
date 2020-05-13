@@ -12,6 +12,7 @@ export function createEmptyRecord (type) {
         director: null,
         flag: null,
         rating: null,
-        type
+        type,
+        isEmptyRecord: true
     };
 }

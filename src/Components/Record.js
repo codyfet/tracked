@@ -40,13 +40,12 @@ export const Record = ({
     const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
     const [isEditModeViewdateEnabled, setEditModeViewdateEnabled] = useState(false);
     const [isEditModeRatingEnabled, setEditModeRatingEnabled] = useState(false);
+    const [isEditModeSeasonInfoEnabled, setEditModeSeasonInfoEnabled] = useState(false);
 
     /**
      * Обработчик закрытия модального окна подтверждения удаления записи.
      */
-    const toggleRemoveDialogFunc = () => {
-        toggleRemoveDialog(!isRemoveDialogVisible);
-    };
+    const toggleRemoveDialogFunc = () => toggleRemoveDialog(!isRemoveDialogVisible);
 
     /**
      * Переключает режим редактирования для поля Рейтинг.
@@ -57,6 +56,11 @@ export const Record = ({
      * Переключает режим редактирования для поля Дата просмотра.
      */
     const toggleViewdateEditMode = () => setEditModeViewdateEnabled(!isEditModeViewdateEnabled);
+
+    /**
+     * Переключает режим редактирования для поля Сезон.
+     */
+    const toggleSeasonInfoEditMode = () => setEditModeSeasonInfoEnabled(!isEditModeSeasonInfoEnabled);
 
     /**
      * Удаляет запись.
@@ -107,6 +111,25 @@ export const Record = ({
     };
 
     /**
+     * Рисует информацию о сезоне (для сериалов).
+     */
+    const renderSeasonInfo = () => {
+        return isEditModeSeasonInfoEnabled ? (
+            <Input
+                className="edit-mode-season-info"
+                value={season}
+                autoFocus
+                onChange={(e) => dispatch({type: UPDATE_RECORD, payload: {id, season: e.target.value}})}
+                onFocus={(e) => e.currentTarget.select()}
+                onBlur={toggleSeasonInfoEditMode}
+                size="mini"
+            />
+        ) : (
+            <span onClick={toggleSeasonInfoEditMode}>{", " + season + " сезон"}</span>
+        );
+    };
+
+    /**
      * Рисует основную информацию.
      */
     const renderMainInfo = () => {
@@ -131,7 +154,7 @@ export const Record = ({
         return (
             <Fragment>
                 <div className="title">
-                    {`${title} (${isTvSeries ? (season + " сезон, ") : ""} ${releaseYear})`}
+                    {`${title} (${releaseYear})`}{isTvSeries ? renderSeasonInfo() : null}
                 </div>
                 <div className="additional-info">
                     {<span>{originalTitle} <span className="director">{`${isMovie ? "реж." : "создатели"}`} {director.join(", ")}</span></span>}
@@ -157,7 +180,7 @@ export const Record = ({
     };
 
     /**
-     * Рисует пооле Рейтинг.
+     * Рисует поле Рейтинг.
      */
     const renderRating = () => {
         if (isEditModeRatingEnabled) {
@@ -167,7 +190,7 @@ export const Record = ({
                     value={rating}
                     autoFocus
                     onChange={(e) => dispatch({type: UPDATE_RECORD, payload: {id, rating: e.target.value}})}
-                    onFocus={e => e.currentTarget.select()}
+                    onFocus={(e) => e.currentTarget.select()}
                     onBlur={toggleRatingEditMode}
                 />
             );
@@ -180,24 +203,24 @@ export const Record = ({
      * Рисует панель с иконками-действиями.
      */
     const renderIconsPanel = () => {
-        const icons = [];
+        let icons = [];
 
         if (!isEmptyRecord) {
             icons.push(
                 <Icon
-                    key="reViewed"
+                    key="notFinished"
                     name='adjust'
-                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, reViewed: !reViewed}})}
+                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, notFinished: !notFinished}})}
                     title="не досмотрен"
-                    color={reViewed ? "black" : "grey"}
+                    color={notFinished ? "black" : "grey"}
                 />,
                 <Icon
-                    key="notFinished"
+                    key="reViewed"
                     name='sync alternate'
-                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, notFinished: !notFinished}})}
+                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, reViewed: !reViewed}})}
                     title="повторный просмотр"
-                    color={notFinished ? "black" : "grey"}
-                />
+                    color={reViewed ? "black" : "grey"}
+                />,
             );
         }
 

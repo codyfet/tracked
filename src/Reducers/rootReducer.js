@@ -19,7 +19,6 @@ import {createEmptyRecord} from "../Utils/Utils";
 const initialState = {
     records: [],
     emptyRecord: {
-        isExists: false,
         records: []
     }
 };
@@ -36,7 +35,6 @@ export const rootReducer = (state = initialState, action) => {
                 records: filter(state.records, (record) => record.id !== action.payload.id),
                 emptyRecord: {
                     records: [],
-                    isExists: false
                 }
             };
         case ADD_EMPTY_MOVIE_RECORD:
@@ -45,7 +43,6 @@ export const rootReducer = (state = initialState, action) => {
                 records: [{...createEmptyRecord(), type: "movie"}, ...state.records],
                 emptyRecord: {
                     ...state.emptyRecord,
-                    isExists: true
                 }
             };
         case ADD_EMPTY_TVSERIES_RECORD:
@@ -54,7 +51,6 @@ export const rootReducer = (state = initialState, action) => {
                 records: [{...createEmptyRecord(), type: "tvseries"}, ...state.records],
                 emptyRecord: {
                     ...state.emptyRecord,
-                    isExists: true
                 }
             };
         case ADD_MOVIE_DETAILED_RECORD_SUCCESS: {
@@ -93,7 +89,6 @@ export const rootReducer = (state = initialState, action) => {
                 records: newRecords,
                 emptyRecord: {
                     records: [],
-                    isExists: false
                 }
             };
         }
@@ -133,7 +128,6 @@ export const rootReducer = (state = initialState, action) => {
                 records: newRecords,
                 emptyRecord: {
                     records: [],
-                    isExists: false
                 }
             };
         }
