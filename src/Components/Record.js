@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment} from "react";
 import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
 import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from "../Actions/ActionTypes";
@@ -10,6 +10,7 @@ import ru from "date-fns/locale/ru";
 import {getFormattedDate} from "../Utils/DateUtils";
 import {IMAGE_URL} from "../Consts";
 import {addDetailedMovieRecord, addDetailedTvSeriesRecord, searchMovies, searchTvSeries} from "../Actions/Actions";
+import {useToggle} from "../Hooks/Toggle.hook";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -37,30 +38,10 @@ export const Record = ({
     const isTvSeries = !isMovie;
     const dispatch = useDispatch();
 
-    const [isRemoveDialogVisible, toggleRemoveDialog] = useState(false);
-    const [isEditModeViewdateEnabled, setEditModeViewdateEnabled] = useState(false);
-    const [isEditModeRatingEnabled, setEditModeRatingEnabled] = useState(false);
-    const [isEditModeSeasonInfoEnabled, setEditModeSeasonInfoEnabled] = useState(false);
-
-    /**
-     * Обработчик закрытия модального окна подтверждения удаления записи.
-     */
-    const toggleRemoveDialogFunc = () => toggleRemoveDialog(!isRemoveDialogVisible);
-
-    /**
-     * Переключает режим редактирования для поля Рейтинг.
-     */
-    const toggleRatingEditMode = () => setEditModeRatingEnabled(!isEditModeRatingEnabled);
-
-    /**
-     * Переключает режим редактирования для поля Дата просмотра.
-     */
-    const toggleViewdateEditMode = () => setEditModeViewdateEnabled(!isEditModeViewdateEnabled);
-
-    /**
-     * Переключает режим редактирования для поля Сезон.
-     */
-    const toggleSeasonInfoEditMode = () => setEditModeSeasonInfoEnabled(!isEditModeSeasonInfoEnabled);
+    const [isRemoveDialogVisible, toggleRemoveDialog] = useToggle(false);
+    const [isEditModeViewdateEnabled, toggleViewdateEditMode] = useToggle(false);
+    const [isEditModeRatingEnabled, toggleRatingEditMode] = useToggle(false);
+    const [isEditModeSeasonInfoEnabled, toggleSeasonInfoEditMode] = useToggle(false);
 
     /**
      * Удаляет запись.
@@ -228,7 +209,7 @@ export const Record = ({
             <Icon
                 key="remove"
                 name='remove'
-                onClick={isEmptyRecord ? removeRecord : toggleRemoveDialogFunc}
+                onClick={isEmptyRecord ? removeRecord : toggleRemoveDialog}
                 title="удалить запись"
             />
         );
@@ -263,8 +244,8 @@ export const Record = ({
                 <SimpleDialog
                     header="Удаление записи"
                     text="Вы уверены, что хотите удалить запись?"
-                    onClose={toggleRemoveDialogFunc}
-                    onNegative={toggleRemoveDialogFunc}
+                    onClose={toggleRemoveDialog}
+                    onNegative={toggleRemoveDialog}
                     onPositive={removeRecord}
                 />
             )}

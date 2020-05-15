@@ -1,7 +1,8 @@
 {
     "parser": "babel-eslint",
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
         "no-unused-vars": "warn",
@@ -24,6 +25,7 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ]
 }
