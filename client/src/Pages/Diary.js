@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
-import {Record} from "./Record";
+import {Record} from "../Components/Record";
 import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD} from "../Actions/ActionTypes";
 import {filter, some} from "lodash";
 
@@ -12,9 +12,9 @@ const years = [
 ];
 
 /**
- * Компонент главная область приложения.
+ * Компонент журнал просмотров.
  */
-export const Main = () => {
+export const Diary = () => {
     const dispatch = useDispatch();
     const {records} = useSelector(state => state);
 
