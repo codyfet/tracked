@@ -46,9 +46,9 @@ router.post(
 
 // /api/auth/login
 router.post(
-    "/register",
+    "/login",
     [
-        check("email", "Введите корерктный email").normalizeEmail().isEmail(),
+        check("email", "Введите корректный email").normalizeEmail().isEmail(),
         check("password", "Введите пароль").exists()
     ],
     async (req, res) => {

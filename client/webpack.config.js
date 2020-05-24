@@ -82,11 +82,18 @@ module.exports = {
     entry: ['@babel/polyfill', './index.js'],
     output: {
         filename: getDistFilename('js'),
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
     },
     devServer: {
         port: 4210,
-        hot: isDev
+        hot: isDev,
+        historyApiFallback: true,
+        proxy: {
+            "/api/**": {
+                target: 'http://localhost:5000',
+                secure: false
+            }
+        }
     },
     devtool: isDev ? 'source-map' : '',
     module: {

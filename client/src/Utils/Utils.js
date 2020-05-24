@@ -16,3 +16,12 @@ export function createEmptyRecord (type) {
         isEmptyRecord: true
     };
 }
+
+/**
+ * Возвращает пустой контейнер для работы с асинхронными запросами.
+ */
+export const getInitialAsyncContainer = () => ({
+    data: null,
+    isLoading: false,
+    error: null
+});

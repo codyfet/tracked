@@ -1,18 +1,21 @@
 import React from "react";
-import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
+import {Routes} from "../Routes/Routes";
+import {useCheckAuth} from "../Hooks/Auth.hook";
+
 
 import {Header} from "./Header";
-import {Main} from "../Pages/Main";
-import {Diary} from "../Pages/Diary";
 
 export const App = () => {
+    /**
+     * Проверяем есть ли данные о залогиненном пользователе в localstorage.
+     */
+    useCheckAuth();
+
     return (
         <Router>
             <Header />
-            <Switch>
-                <Route path="/" exact component={Main} />
-                <Route path="/diary" component={Diary} />
-            </Switch>
+            <Routes />
         </Router>
     );
 };

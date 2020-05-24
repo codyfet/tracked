@@ -1,9 +1,10 @@
-import React, {useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
-import {Record} from "../Components/Record";
 import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD} from "../Actions/ActionTypes";
+import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
+import React, {useState} from "react";
 import {filter, some} from "lodash";
+import {useDispatch, useSelector} from "react-redux";
+
+import {Record} from "../Components/Record";
 
 const years = [
     {key: "2019", value: "2019", text: "2019"},
@@ -12,7 +13,7 @@ const years = [
 ];
 
 /**
- * Компонент журнал просмотров.
+ * Страница журнал просмотров.
  */
 export const Diary = () => {
     const dispatch = useDispatch();
