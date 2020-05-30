@@ -74,9 +74,9 @@ export const ADD_RECORD_FAILURE = "ADD_RECORD_FAILURE";
 export const ORDER_RECORDS_BY = "ORDER_RECORDS_BY";
 
 /**
- * Выход из аккаунта.
+ * Очистка данных о пользователе (в том числе выход из аккаунта).
  */
-export const LOGOUT = "LOGOUT";
+export const AUTHENTICATION_CLEAR = "AUTHENTICATION_CLEAR";
 
 /**
  * Старт запроса на аутентификацию (логин/регистрация) пользователя.

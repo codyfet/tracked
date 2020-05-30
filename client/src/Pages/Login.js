@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {login, register} from "../Actions/Actions";
 import {useToggle} from "../Hooks/Toggle.hook";
 import {Button, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
+import {AUTHENTICATION_CLEAR} from "../Actions/ActionTypes";
 
 /**
  * Страница логин/регистрация.
@@ -39,6 +40,7 @@ export const Login = () => {
     const handleModeLink = (e) => {
         e.preventDefault();
         toggleMode();
+        dispatch({type: AUTHENTICATION_CLEAR});
     };
 
     /**
@@ -59,9 +61,6 @@ export const Login = () => {
         }
 
         return (
-            /**
-             * TODO: Исправить баг: добавить очистку user при смене режима Login/Register.
-             */
             <Message
                 error
                 list={user.error.data?.errors?.map((e) => <p>{e.msg}</p>)}

@@ -3,10 +3,10 @@ import {
     ADD_EMPTY_MOVIE_RECORD,
     ADD_EMPTY_TVSERIES_RECORD,
     ADD_RECORD_SUCCESS,
+    AUTHENTICATION_CLEAR,
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
-    LOGOUT,
     ORDER_RECORDS_BY,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
     POPULATE_MOVIES_AUTOSUGGEST_START,
@@ -128,7 +128,7 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
             };
-        case LOGOUT:
+        case AUTHENTICATION_CLEAR:
             return {
                 ...state,
                 user: getInitialAsyncContainer()
