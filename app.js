@@ -17,7 +17,8 @@ async function start() {
             useUnifiedTopology: true,
             useCreateIndex: true
         });
-        app.listen(5000, () => console.log(`App started on ${PORT}...`));
+        console.log("Connection to db succeeded.");
+        app.listen(5000, () => console.log(`App started on ${PORT}.`));
     } catch (error) {
         console.log("Server error", error.message);
         process.exit(1);

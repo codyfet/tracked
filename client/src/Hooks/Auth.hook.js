@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {LOGIN_SUCCESS} from "../Actions/ActionTypes";
+import {AUTHENTICATION_SUCCESS} from "../Actions/ActionTypes";
 import {TRACKED_USER_DATA} from "../Consts";
 
 /**
@@ -13,7 +13,7 @@ export const useCheckAuth = () => {
         const data = JSON.parse(localStorage.getItem(TRACKED_USER_DATA));
 
         if (data && data.token) {
-            dispatch({type: LOGIN_SUCCESS, payload: data});
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: data});
         }
     });
 };

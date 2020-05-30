@@ -89,36 +89,21 @@ export const ADD_TVSERIES_DETAILED_RECORD_FAILURE = "ADD_TVSERIES_DETAILED_RECOR
 export const ORDER_RECORDS_BY = "ORDER_RECORDS_BY";
 
 /**
- * Старт запроса на логин пользователя.
- */
-export const LOGIN_START = "LOGIN_START";
-
-/**
- * Успешное выполнение запроса на логин пользователя.
- */
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-
-/**
- * Неуспешное выполнение запроса на логин пользователя.
- */
-export const LOGIN_FAILURE = "LOGIN_FAILURE";
-
-/**
  * Выход из аккаунта.
  */
 export const LOGOUT = "LOGOUT";
 
 /**
- * Старт запроса на регистрацию пользователя.
+ * Старт запроса на аутентификацию (логин/регистрация) пользователя.
  */
-export const REGISTER_START = "REGISTER_START";
+export const AUTHENTICATION_START = "AUTHENTICATION_START";
 
 /**
- * Успешное выполнение запроса на регистрацию пользователя.
+ * Успешное выполнение запроса на аутентификацию (логин/регистрация) пользователя.
  */
-export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const AUTHENTICATION_SUCCESS = "AUTHENTICATION_SUCCESS";
 
 /**
- * Неуспешное выполнение запроса на регистрацию пользователя.
+ * Неуспешное выполнение запроса на аутентификацию (логин/регистрация) пользователя.
  */
-export const REGISTER_FAILURE = "REGISTER_FAILURE";
+export const AUTHENTICATION_FAILURE = "AUTHENTICATION_FAILURE";

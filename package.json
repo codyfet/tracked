@@ -1,7 +1,7 @@
 {
   "name": "tracked",
   "version": "1.0.0",
-  "description": "application for tracking movies",
+  "description": "Application for tracking movies",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

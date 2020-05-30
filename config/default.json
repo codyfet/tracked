@@ -1,5 +1,5 @@
 {
     "port": 5000,
-    "mongoUri": "mongodb+srv://codyfet:.gb.gb30@cluster0-do8dd.azure.mongodb.net/trackeddb?retryWrites=true&w=majority",
+    "mongoUri": "mongodb://localhost:27017/trackeddb",
     "jwtSecret": "codyfet tracked brilliant"
 }

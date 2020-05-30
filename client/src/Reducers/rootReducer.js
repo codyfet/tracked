@@ -4,9 +4,9 @@ import {
     ADD_EMPTY_TVSERIES_RECORD,
     ADD_MOVIE_DETAILED_RECORD_SUCCESS,
     ADD_TVSERIES_DETAILED_RECORD_SUCCESS,
-    LOGIN_FAILURE,
-    LOGIN_START,
-    LOGIN_SUCCESS,
+    AUTHENTICATION_FAILURE,
+    AUTHENTICATION_START,
+    AUTHENTICATION_SUCCESS,
     LOGOUT,
     ORDER_RECORDS_BY,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
@@ -15,9 +15,6 @@ import {
     POPULATE_TV_AUTOSUGGEST_FAILURE,
     POPULATE_TV_AUTOSUGGEST_START,
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
-    REGISTER_FAILURE,
-    REGISTER_START,
-    REGISTER_SUCCESS,
     REMOVE_RECORD,
     UPDATE_RECORD,
 } from "../Actions/ActionTypes";
@@ -196,39 +193,12 @@ export const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
             };
-        case LOGIN_START:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    isLoading: true,
-                    error: null
-                }
-            };
-        case LOGIN_SUCCESS:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    isLoading: false,
-                    data: action.payload
-                }
-            };
-        case LOGIN_FAILURE:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    isLoading: false,
-                    error: action.payload.response
-                }
-            };
         case LOGOUT:
             return {
                 ...state,
                 user: getInitialAsyncContainer()
             };
-        case REGISTER_START:
+        case AUTHENTICATION_START:
             return {
                 ...state,
                 user: {
@@ -237,7 +207,7 @@ export const rootReducer = (state = initialState, action) => {
                     error: null
                 }
             };
-        case REGISTER_SUCCESS:
+        case AUTHENTICATION_SUCCESS:
             return {
                 ...state,
                 user: {
@@ -246,7 +216,7 @@ export const rootReducer = (state = initialState, action) => {
                     data: action.payload
                 }
             };
-        case REGISTER_FAILURE:
+        case AUTHENTICATION_FAILURE:
             return {
                 ...state,
                 user: {

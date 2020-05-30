@@ -5,9 +5,9 @@ import {
     ADD_TVSERIES_DETAILED_RECORD_FAILURE,
     ADD_TVSERIES_DETAILED_RECORD_START,
     ADD_TVSERIES_DETAILED_RECORD_SUCCESS,
-    LOGIN_FAILURE,
-    LOGIN_START,
-    LOGIN_SUCCESS,
+    AUTHENTICATION_FAILURE,
+    AUTHENTICATION_START,
+    AUTHENTICATION_SUCCESS,
     LOGOUT,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
     POPULATE_MOVIES_AUTOSUGGEST_START,
@@ -15,9 +15,6 @@ import {
     POPULATE_TV_AUTOSUGGEST_FAILURE,
     POPULATE_TV_AUTOSUGGEST_START,
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
-    REGISTER_FAILURE,
-    REGISTER_START,
-    REGISTER_SUCCESS,
 } from "./ActionTypes";
 import {
     getMovieCreditsById,
@@ -102,11 +99,11 @@ export function addDetailedTvSeriesRecord(id) {
  */
 export function login({email, password}) {
     return async function (dispatch) {
-        dispatch({type: LOGIN_START});
+        dispatch({type: AUTHENTICATION_START});
 
         try {
             const response = await tryLogin({email, password});
-            dispatch({type: LOGIN_SUCCESS, payload: response});
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: response});
             /**
              * Складываем данные пользователя в локал сторедж.
              */
@@ -114,7 +111,7 @@ export function login({email, password}) {
 
             return response;
         } catch (error) {
-            dispatch({type: LOGIN_FAILURE, payload: error});
+            dispatch({type: AUTHENTICATION_FAILURE, payload: error});
             throw error;
         }
     };
@@ -135,18 +132,18 @@ export function logout() {
 }
 
 /**
- * Thunk функция для выполнения ajax запроса для логина пользователя.
+ * Thunk функция для выполнения ajax запроса для регистрации пользователя.
  */
 export function register({email, password}) {
     return async function (dispatch) {
-        dispatch({type: REGISTER_START});
+        dispatch({type: AUTHENTICATION_START});
 
         try {
             const response = await tryRegister({email, password});
-            dispatch({type: REGISTER_SUCCESS, payload: response});
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: response});
             return response;
         } catch (error) {
-            dispatch({type: REGISTER_FAILURE, payload: error});
+            dispatch({type: AUTHENTICATION_FAILURE, payload: error});
             throw error;
         }
     };
