@@ -10,6 +10,8 @@ import {noop} from "lodash";
 export const TMDbSelect = ({searchAction, addDetailedRecordAction, titlePropName, releasePropName, placeholder}) => {
     const dispatch = useDispatch();
     const records = useSelector(state => state.emptyRecord.records);
+    const user = useSelector(state => state.user);
+    const userId = user.data?.userId;
     const [emptyRecordInputValue, setEmptyRecordInputValue] = useState("");
 
     /**
@@ -57,7 +59,7 @@ export const TMDbSelect = ({searchAction, addDetailedRecordAction, titlePropName
     const handleSuggestionSelected = (_event, {suggestion}) => {
         setEmptyRecordInputValue(suggestion[titlePropName]);
         // Добавляем запись с выбранной записью.
-        dispatch(addDetailedRecordAction(suggestion.id));
+        dispatch(addDetailedRecordAction(suggestion.id, userId));
     };
 
     /**

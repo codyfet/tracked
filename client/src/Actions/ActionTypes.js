@@ -54,34 +54,19 @@ export const POPULATE_TV_AUTOSUGGEST_SUCCESS = "POPULATE_TV_AUTOSUGGEST_SUCCESS"
 export const POPULATE_TV_AUTOSUGGEST_FAILURE = "POPULATE_TV_AUTOSUGGEST_FAILURE";
 
 /**
- * Старт процесса добавления фильма.
+ * Старт процесса добавления записи.
  */
-export const ADD_MOVIE_DETAILED_RECORD_START = "ADD_MOVIE_DETAILED_RECORD_START";
+export const ADD_RECORD_START = "ADD_RECORD_START";
 
 /**
- * Успешное выполнение процесса добавления фильма.
+ * Успешное выполнение процесса добавления записи.
  */
-export const ADD_MOVIE_DETAILED_RECORD_SUCCESS = "ADD_MOVIE_DETAILED_RECORD_SUCCESS";
+export const ADD_RECORD_SUCCESS = "ADD_RECORD_SUCCESS";
 
 /**
- * Неуспешное выполнение процесса добавления фильма.
+ * Неуспешное выполнение процесса добавления записи.
  */
-export const ADD_MOVIE_DETAILED_RECORD_FAILURE = "ADD_MOVIE_DETAILED_RECORD_FAILURE";
-
-/**
- * Старт процесса добавления сериала.
- */
-export const ADD_TVSERIES_DETAILED_RECORD_START = "ADD_TVSERIES_DETAILED_RECORD_START";
-
-/**
- * Успешное выполнение процесса добавления сериала.
- */
-export const ADD_TVSERIES_DETAILED_RECORD_SUCCESS = "ADD_TVSERIES_DETAILED_RECORD_SUCCESS";
-
-/**
- * Неуспешное выполнение процесса добавления сериала.
- */
-export const ADD_TVSERIES_DETAILED_RECORD_FAILURE = "ADD_TVSERIES_DETAILED_RECORD_FAILURE";
+export const ADD_RECORD_FAILURE = "ADD_RECORD_FAILURE";
 
 /**
  * Сортировка записей.

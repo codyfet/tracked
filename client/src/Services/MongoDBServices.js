@@ -18,3 +18,12 @@ export function register(data) {
     return axios.post("/api/auth/register", data);
 }
 
+/**
+ * Создаёт новую запись.
+ *
+ * @param {object} record Данные новой записи.
+ */
+export function createRecord(record) {
+    return axios.post("/api/record/create", record);
+}
+

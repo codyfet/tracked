@@ -1,10 +1,7 @@
 import {
-    ADD_MOVIE_DETAILED_RECORD_FAILURE,
-    ADD_MOVIE_DETAILED_RECORD_START,
-    ADD_MOVIE_DETAILED_RECORD_SUCCESS,
-    ADD_TVSERIES_DETAILED_RECORD_FAILURE,
-    ADD_TVSERIES_DETAILED_RECORD_START,
-    ADD_TVSERIES_DETAILED_RECORD_SUCCESS,
+    ADD_RECORD_FAILURE,
+    ADD_RECORD_START,
+    ADD_RECORD_SUCCESS,
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
@@ -23,8 +20,9 @@ import {
     searchMoviesByTitle,
     searchTvSeriesByTitle
 } from "../Services/TMDBServices";
-import {login as tryLogin, register as tryRegister} from "../Services/MongoDBServices";
+import {createRecord as tryCreateRecord, login as tryLogin, register as tryRegister} from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
+import {Record} from "../Models/Record";
 
 /**
  * Thunk функция для выполнения ajax запроса для поиска фильмов.
@@ -60,17 +58,22 @@ export function searchTvSeries(searchInput) {
 
 /**
  * Thunk функция для выполнения ajax запроса для получения полной информации о фильме.
+ *
+ * @param {number} id TMDb идентификатор фильма.
+ * @param {ObjectId} userId Идентификатор пользователя.
  */
-export function addDetailedMovieRecord(id) {
+export function addDetailedMovieRecord(id, userId) {
     return async function (dispatch) {
-        dispatch({type: ADD_MOVIE_DETAILED_RECORD_START});
+        dispatch({type: ADD_RECORD_START});
 
         try {
             const results = await Promise.all([getMovieDetailsById(id), getMovieCreditsById(id)]);
-            dispatch({type: ADD_MOVIE_DETAILED_RECORD_SUCCESS, payload: results});
+            const newRecord = new Record({userId, type: "movie", data: {details: results[0].data, credits: results[1].data}});
+            await tryCreateRecord(newRecord);
+            dispatch({type: ADD_RECORD_SUCCESS, payload: newRecord});
             return results;
         } catch (error) {
-            dispatch({type: ADD_MOVIE_DETAILED_RECORD_FAILURE, payload: error});
+            dispatch({type: ADD_RECORD_FAILURE, payload: error});
             throw error;
         }
     };
@@ -78,17 +81,22 @@ export function addDetailedMovieRecord(id) {
 
 /**
  * Thunk функция для выполнения ajax запроса для получения полной информации о сериале.
+ *
+ * @param {number} id TMDb идентификатор сериала.
+ * @param {ObjectId} userId Идентификатор пользователя.
  */
-export function addDetailedTvSeriesRecord(id) {
+export function addDetailedTvSeriesRecord(id, userId) {
     return async function (dispatch) {
-        dispatch({type: ADD_TVSERIES_DETAILED_RECORD_START});
+        dispatch({type: ADD_RECORD_START});
 
         try {
             const results = await getTvSeriesDetailsById(id);
-            dispatch({type: ADD_TVSERIES_DETAILED_RECORD_SUCCESS, payload: results});
+            const newRecord = new Record({userId, type: "tvseries", data: {details: results.data}});
+            await tryCreateRecord(newRecord);
+            dispatch({type: ADD_RECORD_SUCCESS, payload: newRecord});
             return results;
         } catch (error) {
-            dispatch({type: ADD_TVSERIES_DETAILED_RECORD_FAILURE, payload: error});
+            dispatch({type: ADD_RECORD_FAILURE, payload: error});
             throw error;
         }
     };
