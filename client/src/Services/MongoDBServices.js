@@ -27,3 +27,11 @@ export function createRecord(record) {
     return axios.post("/api/record/create", record);
 }
 
+/**
+ * Возвращает массив записей пользователя.
+ *
+ * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
+ */
+export function getRecords(userId) {
+    return axios.get("/api/record", {params: {userId}});
+}

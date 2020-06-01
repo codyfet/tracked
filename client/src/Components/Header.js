@@ -17,6 +17,9 @@ export const Header = () => {
     const getMenuItems = () => {
         if (isAutheticated) {
             return [
+                <Menu.Item as={Link} to='/' key="main">
+                    главная
+                </Menu.Item>,
                 <Menu.Item as={Link} to='/diary' key="diary">
                     дневник
                 </Menu.Item>,

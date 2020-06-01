@@ -1,6 +1,7 @@
-import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD} from "../Actions/ActionTypes";
+import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, CLEAR_RECORDS} from "../Actions/ActionTypes";
+import {getRecords} from "../Actions/Actions";
 import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {filter, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -17,7 +18,7 @@ const years = [
  */
 export const Diary = () => {
     const dispatch = useDispatch();
-    const {records} = useSelector(state => state);
+    const {records, user: {data: {userId}}} = useSelector(state => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
@@ -28,6 +29,13 @@ export const Diary = () => {
     const moviesCount = filter(records, ({type, isEmptyRecord}) => !isEmptyRecord && type === "movie").length;
     const tvseriesCount = filter(records, ({type, isEmptyRecord}) => !isEmptyRecord && type === "tvseries").length;
     const notFinishedCount = filter(records, ({notFinished}) => notFinished).length;
+
+    useEffect(() => {
+        dispatch(getRecords(userId));
+        return () => {
+            dispatch({type: CLEAR_RECORDS});
+        };
+    }, [dispatch, userId]);
 
     /**
      * Фильтруем записи.

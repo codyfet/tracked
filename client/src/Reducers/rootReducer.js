@@ -1,4 +1,4 @@
-import {filter, findIndex} from "lodash";
+import {filter, findIndex, map} from "lodash";
 import {
     ADD_EMPTY_MOVIE_RECORD,
     ADD_EMPTY_TVSERIES_RECORD,
@@ -7,6 +7,10 @@ import {
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
+    CLEAR_RECORDS,
+    GET_RECORDS_FAILURE,
+    GET_RECORDS_START,
+    GET_RECORDS_SUCCESS,
     ORDER_RECORDS_BY,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
     POPULATE_MOVIES_AUTOSUGGEST_START,
@@ -24,7 +28,8 @@ const initialState = {
     records: [],
     emptyRecord: {
         records: []
-    }
+    },
+    isLoading: false
 };
 
 /**
@@ -96,6 +101,30 @@ export const rootReducer = (state = initialState, action) => {
                 ...state,
                 records: sortedRecords
             };
+        case GET_RECORDS_START:
+            return {
+                ...state,
+                isLoading: true
+            };
+        case GET_RECORDS_SUCCESS: {
+            const records = map(action.payload.data, (item) => ({...item, viewdate: new Date(item.viewdate)}));
+
+            return {
+                ...state,
+                records,
+                isLoading: false
+            };
+        }
+        case GET_RECORDS_FAILURE:
+            return {
+                ...state,
+                isLoading: false
+            };
+        case CLEAR_RECORDS:
+            return {
+                ...state,
+                records: []
+            };
         case POPULATE_MOVIES_AUTOSUGGEST_START:
             return {
                 ...state,
@@ -148,7 +177,7 @@ export const rootReducer = (state = initialState, action) => {
                 user: {
                     ...state.user,
                     isLoading: false,
-                    data: action.payload
+                    data: action.payload.data
                 }
             };
         case AUTHENTICATION_FAILURE:

@@ -19,7 +19,7 @@ async function start() {
             useCreateIndex: true
         });
         console.log("Connection to db succeeded.");
-        app.listen(5000, () => console.log(`App started on ${PORT}.`));
+        app.listen(PORT, () => console.log(`App started on ${PORT}.`));
     } catch (error) {
         console.log("Server error", error.message);
         process.exit(1);

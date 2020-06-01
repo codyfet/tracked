@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from "../Actions/ActionTypes";
 import {TMDbSelect} from "./TMDbSelect";
 import {Flag, Grid, Icon, Image, Input, Segment} from "semantic-ui-react";
-import {SimpleDialog} from "./SimpleDialog";
+import {SimpleDialog} from "./Common/SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
 import {getFormattedDate} from "../Utils/DateUtils";

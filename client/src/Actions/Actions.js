@@ -6,6 +6,9 @@ import {
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
+    GET_RECORDS_FAILURE,
+    GET_RECORDS_START,
+    GET_RECORDS_SUCCESS,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
     POPULATE_MOVIES_AUTOSUGGEST_START,
     POPULATE_MOVIES_AUTOSUGGEST_SUCCESS,
@@ -20,7 +23,7 @@ import {
     searchMoviesByTitle,
     searchTvSeriesByTitle
 } from "../Services/TMDBServices";
-import {createRecord as tryCreateRecord, login as tryLogin, register as tryRegister} from "../Services/MongoDBServices";
+import {createRecord as tryCreateRecord, getRecords as tryGetRecords, login as tryLogin, register as tryRegister} from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
 import {Record} from "../Models/Record";
 
@@ -97,6 +100,26 @@ export function addDetailedTvSeriesRecord(id, userId) {
             return results;
         } catch (error) {
             dispatch({type: ADD_RECORD_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения полной информации о сериале.
+ *
+ * @param {ObjectId} userId Идентификатор пользователя.
+ */
+export function getRecords(userId) {
+    return async function (dispatch) {
+        dispatch({type: GET_RECORDS_START});
+
+        try {
+            const records = await tryGetRecords(userId);
+            dispatch({type: GET_RECORDS_SUCCESS, payload: records});
+            return records;
+        } catch (error) {
+            dispatch({type: GET_RECORDS_FAILURE, payload: error});
             throw error;
         }
     };

@@ -4,6 +4,26 @@
 export const REMOVE_RECORD = "REMOVE_RECORD";
 
 /**
+ * Старт запроса на получение записей пользователя.
+ */
+export const GET_RECORDS_START = "GET_RECORDS_START";
+
+/**
+ * Успешное выполнение запроса на получение записей пользователя.
+ */
+export const GET_RECORDS_SUCCESS = "GET_RECORDS_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на получение записей пользователя.
+ */
+export const GET_RECORDS_FAILURE = "GET_RECORDS_FAILURE";
+
+/**
+ * Очистка данных о записях пользователя.
+ */
+export const CLEAR_RECORDS = "CLEAR_RECORDS";
+
+/**
  * Добавляет пустую запись с фильмом.
  */
 export const ADD_EMPTY_MOVIE_RECORD = "ADD_EMPTY_MOVIE_RECORD";

@@ -15,5 +15,5 @@ export const useCheckAuth = () => {
         if (data && data.token) {
             dispatch({type: AUTHENTICATION_SUCCESS, payload: data});
         }
-    });
+    }, [dispatch]);
 };

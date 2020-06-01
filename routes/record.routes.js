@@ -12,11 +12,27 @@ router.post(
 
             await record.save();
 
-            res.status(201).json({message: "Запись успешно добавлена"});
+            res.status(201).json({ message: "Запись успешно добавлена" });
         } catch (error) {
             console.log('Error:', error.message);
 
-            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
+            res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" })
+        }
+    }
+);
+
+// /api/record
+router.get(
+    "/",
+    async (req, res) => {
+        try {
+            const records = await Record.find({userId: req.query.userId}).exec();
+
+            res.status(201).json(records);
+        } catch (error) {
+            console.log('Error:', error.message);
+
+            res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" })
         }
     }
 );
