@@ -34,6 +34,7 @@ const initialState = {
 
 /**
  * Корневой редюсер.
+ * @deprecated Удалить когда хотя бы один crud будет сделан.
  */
 export const rootReducer = (state = initialState, action) => {
     switch (action.type) {

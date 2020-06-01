@@ -134,7 +134,7 @@ export function login({email, password}) {
 
         try {
             const response = await tryLogin({email, password});
-            dispatch({type: AUTHENTICATION_SUCCESS, payload: response});
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
             /**
              * Складываем данные пользователя в локал сторедж.
              */

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
-import {rootReducer} from "./Reducers/rootReducer";
+import reducer from "./Reducers";
 
 import "./Styles/Styles";
 import "./Styles/Autosuggest";
@@ -11,7 +11,7 @@ import "semantic-ui-css/semantic.min.css";
 
 import {App} from "./Components/App";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(reducer, applyMiddleware(thunk));
 
 ReactDOM.render(
     <Provider store={store} >

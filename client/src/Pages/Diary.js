@@ -18,7 +18,7 @@ const years = [
  */
 export const Diary = () => {
     const dispatch = useDispatch();
-    const {records, user: {data: {userId}}} = useSelector(state => state);
+    const {records: {data: records}, user: {data: {userId}}} = useSelector(state => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
