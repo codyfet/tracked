@@ -9,7 +9,7 @@ import {noop} from "lodash";
  */
 export const TMDbSelect = ({searchAction, addDetailedRecordAction, titlePropName, releasePropName, placeholder}) => {
     const dispatch = useDispatch();
-    const records = useSelector(state => state.emptyRecord.records);
+    const records = useSelector(state => state.emptyRecordTMDbItems);
     const user = useSelector(state => state.user);
     const userId = user.data?.userId;
     const [emptyRecordInputValue, setEmptyRecordInputValue] = useState("");

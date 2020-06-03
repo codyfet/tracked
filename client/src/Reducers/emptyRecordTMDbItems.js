@@ -10,34 +10,26 @@ import {
 } from "../Actions/ActionTypes";
 
 /**
- * Редюсер для узла "emptyRecord".
+ * Редюсер для узла "emptyRecordTMDbItems".
  */
-export default function emptyRecord(state = {records: []}, action) {
+export default function emptyRecordTMDbItems(state = [], action) {
     switch (action.type) {
         case POPULATE_MOVIES_AUTOSUGGEST_START:
             return state;
         case POPULATE_MOVIES_AUTOSUGGEST_SUCCESS:
-            return {
-                records: action.payload.data.results
-            };
+            return action.payload.data.results;
         case POPULATE_MOVIES_AUTOSUGGEST_FAILURE:
             return state;
         case POPULATE_TV_AUTOSUGGEST_START:
             return state;
         case POPULATE_TV_AUTOSUGGEST_SUCCESS:
-            return {
-                records: action.payload.data.results
-            };
+            return action.payload.data.results;
         case POPULATE_TV_AUTOSUGGEST_FAILURE:
             return state;
         case REMOVE_RECORD:
-            return {
-                records: []
-            };
+            return [];
         case ADD_RECORD_SUCCESS:
-            return {
-                records: []
-            };
+            return [];
         default:
             return state;
     }
