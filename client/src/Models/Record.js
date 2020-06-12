@@ -22,7 +22,7 @@ export class Record {
             this.genres = details.genres;
             this.overview = details.overview;
             this.production_countries = map(details.production_countries, (item) => item.iso_3166_1);
-            this.director = [find(credits.crew, (crewItem) => crewItem.job === "Director")?.name];
+            this.director = [credits.crew?.find((crewItem) => crewItem.job === "Director")?.name];
             this.reViewed = false;
             this.notFinished = false;
             this.cast = credits.cast;

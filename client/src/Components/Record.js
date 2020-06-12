@@ -1,7 +1,6 @@
 import React, {Fragment} from "react";
 import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
-import {ORDER_RECORDS_BY, REMOVE_RECORD, UPDATE_RECORD} from "../Actions/ActionTypes";
 import {TMDbSelect} from "./TMDbSelect";
 import {Flag, Grid, Icon, Image, Input, Segment} from "semantic-ui-react";
 import {SimpleDialog} from "./Common/SimpleDialog";
@@ -9,8 +8,9 @@ import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
 import {getFormattedDate} from "../Utils/DateUtils";
 import {IMAGE_URL} from "../Consts";
-import {addDetailedMovieRecord, addDetailedTvSeriesRecord, searchMovies, searchTvSeries} from "../Actions/Actions";
+import {addDetailedMovieRecord, addDetailedTvSeriesRecord, deleteRecord, searchMovies, searchTvSeries, updateRecord} from "../Actions/Actions";
 import {useToggle} from "../Hooks/Toggle.hook";
+import {useUpdate} from "../Hooks/Update.hook";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
  * Компонент карточка фильма.
  */
 export const Record = ({
+    _id,
     id,
     viewdate,
     posterpath,
@@ -43,10 +44,14 @@ export const Record = ({
     const [isEditModeRatingEnabled, toggleRatingEditMode] = useToggle(false);
     const [isEditModeSeasonInfoEnabled, toggleSeasonInfoEditMode] = useToggle(false);
 
+    const [viewdateValue, setViewdateValue] = useUpdate(viewdate, (newValue) => dispatch(updateRecord(_id, {viewdate: newValue})));
+    const [ratingValue, setRatingValue] = useUpdate(rating, (newValue) => dispatch(updateRecord(_id, {rating: newValue})));
+    const [seasonValue, setSeasonValue] = useUpdate(season, (newValue) => dispatch(updateRecord(_id, {season: newValue})));
+
     /**
      * Удаляет запись.
      */
-    const removeRecord = () => dispatch({type: REMOVE_RECORD, payload: {id}});
+    const removeRecord = () => dispatch(deleteRecord(_id));
 
     /**
      * Рисует дату просмотра.
@@ -65,10 +70,9 @@ export const Record = ({
                 <DatePicker
                     dateFormat="d MMMM"
                     locale={ru}
-                    selected={viewdate}
+                    selected={viewdateValue}
                     onChange={(viewdate) => {
-                        dispatch({type: UPDATE_RECORD, payload: {id, viewdate}});
-                        dispatch({type: ORDER_RECORDS_BY, payload: "viewdate"});
+                        setViewdateValue(viewdate);
                         toggleViewdateEditMode();
                     }}
                     customInput={<CustomInput  />}
@@ -98,9 +102,9 @@ export const Record = ({
         return isEditModeSeasonInfoEnabled ? (
             <Input
                 className="edit-mode-season-info"
-                value={season}
+                value={seasonValue}
                 autoFocus
-                onChange={(e) => dispatch({type: UPDATE_RECORD, payload: {id, season: e.target.value}})}
+                onChange={(e) => setSeasonValue(e.target.value)}
                 onFocus={(e) => e.currentTarget.select()}
                 onBlur={toggleSeasonInfoEditMode}
                 size="mini"
@@ -168,9 +172,9 @@ export const Record = ({
             return (
                 <Input
                     className="edit-mode-rating"
-                    value={rating}
+                    value={ratingValue}
                     autoFocus
-                    onChange={(e) => dispatch({type: UPDATE_RECORD, payload: {id, rating: e.target.value}})}
+                    onChange={(e) => setRatingValue(e.target.value)}
                     onFocus={(e) => e.currentTarget.select()}
                     onBlur={toggleRatingEditMode}
                 />
@@ -191,14 +195,14 @@ export const Record = ({
                 <Icon
                     key="notFinished"
                     name='adjust'
-                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, notFinished: !notFinished}})}
+                    onClick={() => dispatch(updateRecord(_id, {notFinished: !notFinished}))}
                     title="не досмотрен"
                     color={notFinished ? "black" : "grey"}
                 />,
                 <Icon
                     key="reViewed"
                     name='sync alternate'
-                    onClick={() => dispatch({type: UPDATE_RECORD, payload: {id, reViewed: !reViewed}})}
+                    onClick={() => dispatch(updateRecord(_id, {reViewed: !reViewed}))}
                     title="повторный просмотр"
                     color={reViewed ? "black" : "grey"}
                 />,

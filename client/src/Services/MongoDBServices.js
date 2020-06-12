@@ -28,10 +28,35 @@ export function createRecord(record) {
 }
 
 /**
+ * Изменяет запись.
+ *
+ * @param {string} recordId ObjectId идентификатор записи.
+ * @param {object} fields Объект с измеёнными полями.
+ */
+export function updateRecord(recordId, fields) {
+    return axios.put(`/api/record/${recordId}/update`, fields);
+}
+
+/**
+ * Удаляет запись.
+ *
+ * @param {string} recordId ObjectId идентификатор записи.
+ */
+export function deleteRecord(recordId) {
+    return axios.delete(`/api/record/${recordId}/delete`);
+}
+
+/**
  * Возвращает массив записей пользователя.
  *
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
  */
-export function getRecords(userId) {
-    return axios.get("/api/record", {params: {userId}});
+export function getRecords(userId, options) {
+    let params = {userId};
+
+    if (options?.sortBy) {
+        params.sortBy = options.sortBy;
+    }
+
+    return axios.get("/api/record", {params});
 }

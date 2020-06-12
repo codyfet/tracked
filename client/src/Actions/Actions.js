@@ -6,6 +6,9 @@ import {
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
+    DELETE_RECORD_FAILURE,
+    DELETE_RECORD_START,
+    DELETE_RECORD_SUCCESS,
     GET_RECORDS_FAILURE,
     GET_RECORDS_START,
     GET_RECORDS_SUCCESS,
@@ -15,6 +18,9 @@ import {
     POPULATE_TV_AUTOSUGGEST_FAILURE,
     POPULATE_TV_AUTOSUGGEST_START,
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
+    UPDATE_RECORD_FAILURE,
+    UPDATE_RECORD_START,
+    UPDATE_RECORD_SUCCESS
 } from "./ActionTypes";
 import {
     getMovieCreditsById,
@@ -23,7 +29,14 @@ import {
     searchMoviesByTitle,
     searchTvSeriesByTitle
 } from "../Services/TMDBServices";
-import {createRecord as tryCreateRecord, getRecords as tryGetRecords, login as tryLogin, register as tryRegister} from "../Services/MongoDBServices";
+import {
+    createRecord as tryCreateRecord,
+    deleteRecord as tryDeleteRecord,
+    getRecords as tryGetRecords,
+    login as tryLogin,
+    register as tryRegister,
+    updateRecord as tryUpdateRecord
+} from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
 import {Record} from "../Models/Record";
 
@@ -72,8 +85,8 @@ export function addDetailedMovieRecord(id, userId) {
         try {
             const results = await Promise.all([getMovieDetailsById(id), getMovieCreditsById(id)]);
             const newRecord = new Record({userId, type: "movie", data: {details: results[0].data, credits: results[1].data}});
-            await tryCreateRecord(newRecord);
-            dispatch({type: ADD_RECORD_SUCCESS, payload: newRecord});
+            const result = await tryCreateRecord(newRecord);
+            dispatch({type: ADD_RECORD_SUCCESS, payload: result.data});
             return results;
         } catch (error) {
             dispatch({type: ADD_RECORD_FAILURE, payload: error});
@@ -106,16 +119,56 @@ export function addDetailedTvSeriesRecord(id, userId) {
 }
 
 /**
- * Thunk функция для выполнения ajax запроса для получения полной информации о сериале.
+ * Thunk функция для выполнения ajax запроса для получения полной информации о фильме.
+ *
+ * @param {string} recordId ObjectId идентификатор записи.
+ * @param {object} fields Объект с измеёнными полями.
+ */
+export function updateRecord(recordId, fields) {
+    return async function (dispatch) {
+        dispatch({type: UPDATE_RECORD_START});
+
+        try {
+            const result = await tryUpdateRecord(recordId, fields);
+            dispatch({type: UPDATE_RECORD_SUCCESS, payload: result});
+            return result;
+        } catch (error) {
+            dispatch({type: UPDATE_RECORD_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения полной информации о фильме.
+ *
+ * @param {string} recordId ObjectId идентификатор записи.
+ */
+export function deleteRecord(recordId) {
+    return async function (dispatch) {
+        dispatch({type: DELETE_RECORD_START});
+
+        try {
+            await tryDeleteRecord(recordId);
+            dispatch({type: DELETE_RECORD_SUCCESS, payload: recordId});
+        } catch (error) {
+            dispatch({type: DELETE_RECORD_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения списка записей пользователя.
  *
  * @param {ObjectId} userId Идентификатор пользователя.
  */
-export function getRecords(userId) {
+export function getRecords(userId, options) {
     return async function (dispatch) {
         dispatch({type: GET_RECORDS_START});
 
         try {
-            const records = await tryGetRecords(userId);
+            const records = await tryGetRecords(userId, options);
             dispatch({type: GET_RECORDS_SUCCESS, payload: records});
             return records;
         } catch (error) {

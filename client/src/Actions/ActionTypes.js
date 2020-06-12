@@ -1,9 +1,4 @@
 /**
- * Удаляет запись.
- */
-export const REMOVE_RECORD = "REMOVE_RECORD";
-
-/**
  * Старт запроса на получение записей пользователя.
  */
 export const GET_RECORDS_START = "GET_RECORDS_START";
@@ -39,9 +34,34 @@ export const ADD_EMPTY_TVSERIES_RECORD = "ADD_EMPTY_TVSERIES_RECORD";
 export const ADD_RECORD = "ADD_RECORD";
 
 /**
- * Изменяет запись с данными.
+ * Старт запроса на изменение записи.
  */
-export const UPDATE_RECORD = "UPDATE_RECORD";
+export const UPDATE_RECORD_START = "UPDATE_RECORD_START";
+
+/**
+ * Успешное выполнение запроса на изменение записи.
+ */
+export const UPDATE_RECORD_SUCCESS = "UPDATE_RECORD_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на изменение записи.
+ */
+export const UPDATE_RECORD_FAILURE = "UPDATE_RECORD_FAILURE";
+
+/**
+ * Старт запроса на удаление записи.
+ */
+export const DELETE_RECORD_START = "DELETE_RECORD_START";
+
+/**
+ * Успешное выполнение запроса на удаление записи.
+ */
+export const DELETE_RECORD_SUCCESS = "DELETE_RECORD_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на удаление записи.
+ */
+export const DELETE_RECORD_FAILURE = "DELETE_RECORD_FAILURE";
 
 /**
  * Старт запроса на наполнение выпадающего списка компонента поиска фильмов.

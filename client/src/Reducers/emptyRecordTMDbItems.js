@@ -6,7 +6,6 @@ import {
     POPULATE_TV_AUTOSUGGEST_FAILURE,
     POPULATE_TV_AUTOSUGGEST_START,
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
-    REMOVE_RECORD,
 } from "../Actions/ActionTypes";
 
 /**
@@ -26,8 +25,6 @@ export default function emptyRecordTMDbItems(state = [], action) {
             return action.payload.data.results;
         case POPULATE_TV_AUTOSUGGEST_FAILURE:
             return state;
-        case REMOVE_RECORD:
-            return [];
         case ADD_RECORD_SUCCESS:
             return [];
         default:

@@ -31,7 +31,7 @@ export const Diary = () => {
     const notFinishedCount = filter(records, ({notFinished}) => notFinished).length;
 
     useEffect(() => {
-        dispatch(getRecords(userId));
+        dispatch(getRecords(userId, {sortBy: "-viewdate"}));
         return () => {
             dispatch({type: CLEAR_RECORDS});
         };

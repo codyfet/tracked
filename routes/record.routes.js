@@ -9,14 +9,45 @@ router.post(
     async (req, res) => {
         try {
             const record = new Record(req.body);
+            const result = await record.save();
 
-            await record.save();
-
-            res.status(201).json({ message: "Запись успешно добавлена" });
+            res.status(201).json(result);
         } catch (error) {
             console.log('Error:', error.message);
 
             res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" })
+        }
+    }
+);
+
+// /api/record/:id/update
+router.put(
+    "/:id/update",
+    async (req, res) => {
+        try {
+            const record = await Record.findByIdAndUpdate(req.params.id, {$set: req.body}, {useFindAndModify: false, new: true}).exec();
+
+            res.status(201).json(record);
+        } catch (error) {
+            console.log('Error:', error.message);
+
+            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
+        }
+    }
+);
+
+// /api/record/:id/delete
+router.delete(
+    "/:id/delete",
+    async (req, res) => {
+        try {
+            await Record.findOneAndDelete({'_id' : req.params.id}).exec();
+
+            res.status(201).json({message: "Запись успешно удалена"});
+        } catch (error) {
+            console.log('Error:', error.message);
+
+            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
         }
     }
 );
@@ -26,7 +57,7 @@ router.get(
     "/",
     async (req, res) => {
         try {
-            const records = await Record.find({userId: req.query.userId}).exec();
+            const records = await Record.find({userId: req.query.userId}).sort(req.query.sortBy).exec();
 
             res.status(201).json(records);
         } catch (error) {
