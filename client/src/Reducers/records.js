@@ -4,6 +4,7 @@ import {
     ADD_EMPTY_TVSERIES_RECORD,
     ADD_RECORD_SUCCESS,
     CLEAR_RECORDS,
+    DELETE_EMPTY_RECORD,
     DELETE_RECORD_FAILURE,
     DELETE_RECORD_START,
     DELETE_RECORD_SUCCESS,
@@ -110,6 +111,11 @@ export default function records(state = getInitialAsyncContainer(), action) {
                 error: null,
                 isLoading: false,
                 data: null
+            };
+        case DELETE_EMPTY_RECORD:
+            return {
+                ...state,
+                data: filter(state.data, (record) => record._id !== "0")
             };
         case GET_RECORDS_START:
             return {

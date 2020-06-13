@@ -11,6 +11,7 @@ import {IMAGE_URL} from "../Consts";
 import {addDetailedMovieRecord, addDetailedTvSeriesRecord, deleteRecord, searchMovies, searchTvSeries, updateRecord} from "../Actions/Actions";
 import {useToggle} from "../Hooks/Toggle.hook";
 import {useUpdate} from "../Hooks/Update.hook";
+import {DELETE_EMPTY_RECORD} from "../Actions/ActionTypes";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -19,7 +20,6 @@ import "react-datepicker/dist/react-datepicker.css";
  */
 export const Record = ({
     _id,
-    id,
     viewdate,
     posterpath,
     title,
@@ -34,7 +34,7 @@ export const Record = ({
     notFinished,
     season,
 }) => {
-    const isEmptyRecord = (id === "0");
+    const isEmptyRecord = (_id === "0");
     const isMovie = type === "movie";
     const isTvSeries = !isMovie;
     const dispatch = useDispatch();
@@ -49,9 +49,9 @@ export const Record = ({
     const [seasonValue, setSeasonValue] = useUpdate(season, (newValue) => dispatch(updateRecord(_id, {season: newValue})));
 
     /**
-     * Удаляет запись.
+     * Удаляет пустую запись.
      */
-    const removeRecord = () => dispatch(deleteRecord(_id));
+    const removeEmptyRecord = () => dispatch({type: DELETE_EMPTY_RECORD});
 
     /**
      * Рисует дату просмотра.
@@ -213,7 +213,7 @@ export const Record = ({
             <Icon
                 key="remove"
                 name='remove'
-                onClick={isEmptyRecord ? removeRecord : toggleRemoveDialog}
+                onClick={isEmptyRecord ? removeEmptyRecord : toggleRemoveDialog}
                 title="удалить запись"
             />
         );
@@ -223,7 +223,7 @@ export const Record = ({
 
     return (
         <Fragment>
-            <Segment className={`record ${isMovie ? "blue-bg" : "violet-bg"}`} id={id}>
+            <Segment className={`record ${isMovie ? "blue-bg" : "violet-bg"}`} id={_id}>
                 <Grid verticalAlign="middle">
                     <Grid.Column width={2} textAlign="center" className="column-viewdate">
                         {renderViewdate()}
@@ -250,7 +250,7 @@ export const Record = ({
                     text="Вы уверены, что хотите удалить запись?"
                     onClose={toggleRemoveDialog}
                     onNegative={toggleRemoveDialog}
-                    onPositive={removeRecord}
+                    onPositive={() => dispatch(deleteRecord(_id))}
                 />
             )}
         </Fragment>

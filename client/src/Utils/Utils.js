@@ -3,7 +3,7 @@
  */
 export function createEmptyRecord (type) {
     return {
-        id: "0",
+        _id: "0",
         viewdate: null,
         posterpath: null,
         title: null,

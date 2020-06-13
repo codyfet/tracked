@@ -57,7 +57,16 @@ router.get(
     "/",
     async (req, res) => {
         try {
-            const records = await Record.find({userId: req.query.userId}).sort(req.query.sortBy).exec();
+            const filter = {
+                userId: req.query.userId,
+                viewdate: {"$gte": new Date(req.query.year, 0, 1), "$lt": new Date(req.query.year, 11, 31)}
+            }
+
+            if (req.query.types) {
+                filter.type = {"$in": req.query.types};
+            }
+
+            const records = await Record.find(filter).sort(req.query.sortBy).exec();
 
             res.status(201).json(records);
         } catch (error) {

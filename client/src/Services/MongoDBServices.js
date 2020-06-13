@@ -54,8 +54,16 @@ export function deleteRecord(recordId) {
 export function getRecords(userId, options) {
     let params = {userId};
 
-    if (options?.sortBy) {
+    if (options.sortBy) {
         params.sortBy = options.sortBy;
+    }
+
+    if (options.year) {
+        params.year = options.year;
+    }
+
+    if (options.types) {
+        params.types = options.types;
     }
 
     return axios.get("/api/record", {params});

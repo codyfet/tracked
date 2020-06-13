@@ -64,6 +64,11 @@ export const DELETE_RECORD_SUCCESS = "DELETE_RECORD_SUCCESS";
 export const DELETE_RECORD_FAILURE = "DELETE_RECORD_FAILURE";
 
 /**
+ * Удаляет пустую запись.
+ */
+export const DELETE_EMPTY_RECORD = "DELETE_EMPTY_RECORD";
+
+/**
  * Старт запроса на наполнение выпадающего списка компонента поиска фильмов.
  */
 export const POPULATE_MOVIES_AUTOSUGGEST_START = "POPULATE_MOVIES_AUTOSUGGEST_START";
