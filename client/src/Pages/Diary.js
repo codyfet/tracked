@@ -82,7 +82,7 @@ export const Diary = () => {
                             setMoviesFilterApplied(!isMoviesFilterApplied);
                         }}
                     >
-                        Фильмы {moviesCount ? `(${moviesCount})` : ""}
+                        Фильмы ({moviesCount})
                     </span>&nbsp;&nbsp;&nbsp;
                     <span
                         className={`record-filter ${isTvSeriesFilterApplied ? "" : "not-selected"}`}
@@ -99,7 +99,7 @@ export const Diary = () => {
                             setTvSeriesFilterApplied(!isTvSeriesFilterApplied);
                         }}
                     >
-                        Сериалы {tvseriesCount ? `(${tvseriesCount})` : ""}
+                        Сериалы ({tvseriesCount})
                     </span>&nbsp;&nbsp;&nbsp;
                     <span
                         className={`record-filter ${isNotFinishedFilterApplied ? "" : "not-selected"}`}
