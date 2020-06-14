@@ -4,6 +4,7 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import {Main} from "../Pages/Main";
 import {Login} from "../Pages/Login";
 import {Diary} from "../Pages/Diary";
+import {Profile} from "../Pages/Profile";
 
 /**
  * Возвращает набор доступных роутов приложения.
@@ -19,6 +20,7 @@ export const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Main} />
                 <Route path="/diary" component={Diary} />
+                <Route path="/profile" component={Profile} />
                 <Redirect to="/" />
             </Switch>
         );

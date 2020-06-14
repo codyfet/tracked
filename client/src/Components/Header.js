@@ -28,7 +28,7 @@ export const Header = () => {
                         <Menu.Item as="a" name="results" key="results" position="right">
                             итоги
                         </Menu.Item>
-                        <Menu.Item as="a" name="avatar" key="avatar" position="right">
+                        <Menu.Item as={Link} to='/profile' name="avatar" key="avatar" position="right">
                             <div className="avatar-block">
                                 <Image size="mini" src='src/Assets/matthew.png' avatar />
                                 <span>Alexander Volkov</span>
