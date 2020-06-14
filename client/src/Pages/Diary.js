@@ -23,7 +23,6 @@ export const Diary = () => {
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
-    const [isNotFinishedFilterApplied, setNotFinishedFilterApplied] = useState(true);
 
     const [recordsFilter, setRecordsFilter] = useState({sortBy: "-viewdate", year: new Date().getFullYear(), types: TYPES});
 
@@ -31,7 +30,6 @@ export const Diary = () => {
 
     const moviesCount = filter(records, ({type, isEmptyRecord}) => !isEmptyRecord && type === "movie").length;
     const tvseriesCount = filter(records, ({type, isEmptyRecord}) => !isEmptyRecord && type === "tvseries").length;
-    const notFinishedCount = filter(records, ({notFinished}) => notFinished).length;
 
     useEffect(() => {
         dispatch(getRecords(userId, recordsFilter));
@@ -50,10 +48,6 @@ export const Diary = () => {
             return true;
         }
 
-        if (isNotFinishedFilterApplied) {
-            return true;
-        }
-
         return false;
     });
 
@@ -69,43 +63,17 @@ export const Diary = () => {
                     />&nbsp;&nbsp;&nbsp;
                     <span
                         className={`record-filter ${isMoviesFilterApplied ? "" : "not-selected"}`}
-                        onClick={() => {
-                            // setRecordsFilter({
-                            //     ...recordsFilter,
-                            //     types: filter(
-                            //         TYPES,
-                            //         (type) => {
-                            //             return type !== "movie" || (type === "movie" && isMoviesFilterApplied);
-                            //         }
-                            //     )
-                            // });
-                            setMoviesFilterApplied(!isMoviesFilterApplied);
-                        }}
+                        onClick={() => setMoviesFilterApplied(!isMoviesFilterApplied)}
+                        title={isMoviesFilterApplied ? "Скрыть фильмы" : "Показать фильмы"}
                     >
                         Фильмы ({moviesCount})
                     </span>&nbsp;&nbsp;&nbsp;
                     <span
                         className={`record-filter ${isTvSeriesFilterApplied ? "" : "not-selected"}`}
-                        onClick={() => {
-                            // setRecordsFilter({
-                            //     ...recordsFilter,
-                            //     types: filter(
-                            //         TYPES,
-                            //         (type) => {
-                            //             return type !== "tvseries" || (type === "tvseries" && isTvSeriesFilterApplied);
-                            //         }
-                            //     )
-                            // });
-                            setTvSeriesFilterApplied(!isTvSeriesFilterApplied);
-                        }}
+                        onClick={() => setTvSeriesFilterApplied(!isTvSeriesFilterApplied)}
+                        title={isTvSeriesFilterApplied ? "Скрыть сериалы" : "Показать сериалы"}
                     >
                         Сериалы ({tvseriesCount})
-                    </span>&nbsp;&nbsp;&nbsp;
-                    <span
-                        className={`record-filter ${isNotFinishedFilterApplied ? "" : "not-selected"}`}
-                        onClick={() => setNotFinishedFilterApplied(!isNotFinishedFilterApplied)}
-                    >
-                        Недосмотренные ({notFinishedCount})
                     </span>&nbsp;&nbsp;&nbsp;
                 </Grid.Column>
                 <Grid.Column textAlign="right">
