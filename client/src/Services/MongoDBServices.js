@@ -68,3 +68,14 @@ export function getRecords(userId, options) {
 
     return axios.get("/api/record", {params});
 }
+
+/**
+ * Возвращает объект со статистикой.
+ *
+ * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
+ */
+export function getStat(userId) {
+    let params = {userId};
+
+    return axios.get("/api/stat", {params});
+}

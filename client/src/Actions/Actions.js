@@ -12,6 +12,9 @@ import {
     GET_RECORDS_FAILURE,
     GET_RECORDS_START,
     GET_RECORDS_SUCCESS,
+    GET_STAT_FAILURE,
+    GET_STAT_START,
+    GET_STAT_SUCCESS,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
     POPULATE_MOVIES_AUTOSUGGEST_START,
     POPULATE_MOVIES_AUTOSUGGEST_SUCCESS,
@@ -20,7 +23,7 @@ import {
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
     UPDATE_RECORD_FAILURE,
     UPDATE_RECORD_START,
-    UPDATE_RECORD_SUCCESS
+    UPDATE_RECORD_SUCCESS,
 } from "./ActionTypes";
 import {
     getMovieCreditsById,
@@ -33,6 +36,7 @@ import {
     createRecord as tryCreateRecord,
     deleteRecord as tryDeleteRecord,
     getRecords as tryGetRecords,
+    getStat as tryGetStat,
     login as tryLogin,
     register as tryRegister,
     updateRecord as tryUpdateRecord
@@ -108,8 +112,8 @@ export function addDetailedTvSeriesRecord(id, userId) {
         try {
             const results = await getTvSeriesDetailsById(id);
             const newRecord = new Record({userId, type: "tvseries", data: {details: results.data}});
-            await tryCreateRecord(newRecord);
-            dispatch({type: ADD_RECORD_SUCCESS, payload: newRecord});
+            const result = await tryCreateRecord(newRecord);
+            dispatch({type: ADD_RECORD_SUCCESS, payload: result.data});
             return results;
         } catch (error) {
             dispatch({type: ADD_RECORD_FAILURE, payload: error});
@@ -173,6 +177,26 @@ export function getRecords(userId, options) {
             return records;
         } catch (error) {
             dispatch({type: GET_RECORDS_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения статистики записей пользователя.
+ *
+ * @param {ObjectId} userId Идентификатор пользователя.
+ */
+export function getStat(userId) {
+    return async function (dispatch) {
+        dispatch({type: GET_STAT_START});
+
+        try {
+            const statResponse = await tryGetStat(userId);
+            dispatch({type: GET_STAT_SUCCESS, payload: statResponse});
+            return statResponse;
+        } catch (error) {
+            dispatch({type: GET_STAT_FAILURE, payload: error});
             throw error;
         }
     };

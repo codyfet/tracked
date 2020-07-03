@@ -1,6 +1,5 @@
 import React from "react";
 import {Image} from "semantic-ui-react";
-import {getRandomInt} from "../Utils/Utils";
 
 /**
  * Главная страница приложения.
@@ -8,7 +7,7 @@ import {getRandomInt} from "../Utils/Utils";
 export const Main = () => {
     return (
         <div className="hero">
-            <Image src={`../src/Assets/films/${getRandomInt(1, 3)}.jpg`} fluid />
+            <Image src={"../src/Assets/films/2.jpg"} fluid />
         </div>
     );
 };

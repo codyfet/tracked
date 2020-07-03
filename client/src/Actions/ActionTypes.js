@@ -14,6 +14,21 @@ export const GET_RECORDS_SUCCESS = "GET_RECORDS_SUCCESS";
 export const GET_RECORDS_FAILURE = "GET_RECORDS_FAILURE";
 
 /**
+ * Старт запроса на получение статистики записей пользователя.
+ */
+export const GET_STAT_START = "GET_STAT_START";
+
+/**
+ * Успешное выполнение запроса на получение статистики записей пользователя.
+ */
+export const GET_STAT_SUCCESS = "GET_STAT_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на получение статистики записей пользователя.
+ */
+export const GET_STAT_FAILURE = "GET_STAT_FAILURE";
+
+/**
  * Очистка данных о записях пользователя.
  */
 export const CLEAR_RECORDS = "CLEAR_RECORDS";

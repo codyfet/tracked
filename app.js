@@ -8,6 +8,7 @@ app.use(express.json({extended: true, limit: '50mb'}));
 
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/record", require("./routes/record.routes"));
+app.use("/api/stat", require("./routes/stat.routes"));
 
 const PORT = config.get("port") || 5000;
 
