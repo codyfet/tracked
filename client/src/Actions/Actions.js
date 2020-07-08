@@ -37,6 +37,7 @@ import {
     deleteRecord as tryDeleteRecord,
     getRecords as tryGetRecords,
     getStat as tryGetStat,
+    getUserInfo as tryGetUserInfo,
     login as tryLogin,
     register as tryRegister,
     updateRecord as tryUpdateRecord
@@ -251,6 +252,24 @@ export function register({email, password, username}) {
 
         try {
             const response = await tryRegister({email, password, username});
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
+            return response;
+        } catch (error) {
+            dispatch({type: AUTHENTICATION_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения информации о пользователе.
+ */
+export function getUserInfo(userId) {
+    return async function (dispatch) {
+        dispatch({type: AUTHENTICATION_START});
+
+        try {
+            const response = await tryGetUserInfo(userId);
             dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
             return response;
         } catch (error) {

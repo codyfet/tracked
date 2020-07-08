@@ -54,7 +54,6 @@ export const Profile = () => {
 
     useEffect(() => {
         dispatch(getStat(userId));
-        // TODO: get User Info
     }, [dispatch, userId]);
 
     return (

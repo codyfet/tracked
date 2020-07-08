@@ -19,6 +19,17 @@ export function register(data) {
 }
 
 /**
+ * Возвращает данные пользователя.
+ *
+ * @param {object} data Данные, введённые пользователем (логин/пароль).
+ */
+export function getUserInfo(userId) {
+    const params = {userId};
+
+    return axios.get("/api/auth/user", {params});
+}
+
+/**
  * Создаёт новую запись.
  *
  * @param {object} record Данные новой записи.
@@ -75,7 +86,7 @@ export function getRecords(userId, options) {
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
  */
 export function getStat(userId) {
-    let params = {userId};
+    const params = {userId};
 
     return axios.get("/api/stat", {params});
 }

@@ -129,4 +129,26 @@ router.post(
         }
     });
 
+// /api/auth/user
+router.get(
+    "/user",
+    async (req, res) => {
+        try {
+            const user = await User.findById(req.query.userId).exec();
+
+            res.status(201).json({
+                userId: user.id,
+                email: user.email,
+                username: user.username,
+                // years: [],
+                // recordsCurrentYearCount: 0,
+                // recordsTotalCount: 0
+                // user
+            });
+        } catch (error) {
+            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
+        }
+    }
+);
+
 module.exports = router;
