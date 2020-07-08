@@ -9,7 +9,7 @@ import {AUTHENTICATION_CLEAR} from "../Actions/ActionTypes";
  * Страница логин/регистрация.
  */
 export const Login = () => {
-    const [form, setForm] = useState({email: "", password: ""});
+    const [form, setForm] = useState({email: "", password: "", username: ""});
     const [isLoginMode, toggleMode] = useToggle(true);
     const dispatch = useDispatch();
     const {user} = useSelector(state => state);
@@ -76,7 +76,7 @@ export const Login = () => {
                     <Segment>
                         <Form.Input
                             fluid
-                            icon='user'
+                            icon='at'
                             iconPosition='left'
                             placeholder='E-mail'
                             value={form.email}
@@ -93,6 +93,19 @@ export const Login = () => {
                             name="password"
                             onChange={handleInputChange}
                         />
+                        {
+                            !isLoginMode && (
+                                <Form.Input
+                                    fluid
+                                    icon='user'
+                                    iconPosition='left'
+                                    placeholder='Имя пользователя'
+                                    value={form.username}
+                                    name="username"
+                                    onChange={handleInputChange}
+                                />
+                            )
+                        }
                         <Button
                             color='teal'
                             fluid

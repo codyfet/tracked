@@ -9,7 +9,7 @@ import {logout} from "../Actions/Actions";
 export const Header = () => {
     const {user} = useSelector(state => state);
     const dispatch = useDispatch();
-    const isAutheticated = user?.data;
+    const isAutheticated = !!user.data;
 
     /**
      * Формирует доступные пункты меню.
@@ -31,7 +31,7 @@ export const Header = () => {
                         <Menu.Item as={Link} to='/profile' name="avatar" key="avatar" position="right">
                             <div className="avatar-block">
                                 <Image size="mini" src='src/Assets/matthew.png' avatar />
-                                <span>Alexander Volkov</span>
+                                <span>{`${user.data?.username}`}</span>
                             </div>
                         </Menu.Item>
                         <Menu.Item as="a" name="logout" key="logout" onClick={() => dispatch(logout())} position="right">

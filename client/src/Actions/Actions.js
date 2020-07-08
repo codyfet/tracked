@@ -215,7 +215,10 @@ export function login({email, password}) {
             /**
              * Складываем данные пользователя в локал сторедж.
              */
-            localStorage.setItem(TRACKED_USER_DATA, JSON.stringify({userId: response.data.userId, token: response.data.token}));
+            localStorage.setItem(TRACKED_USER_DATA, JSON.stringify({
+                userId: response.data.userId,
+                token: response.data.token
+            }));
 
             return response;
         } catch (error) {
@@ -242,13 +245,13 @@ export function logout() {
 /**
  * Thunk функция для выполнения ajax запроса для регистрации пользователя.
  */
-export function register({email, password}) {
+export function register({email, password, username}) {
     return async function (dispatch) {
         dispatch({type: AUTHENTICATION_START});
 
         try {
-            const response = await tryRegister({email, password});
-            dispatch({type: AUTHENTICATION_SUCCESS, payload: response});
+            const response = await tryRegister({email, password, username});
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
             return response;
         } catch (error) {
             dispatch({type: AUTHENTICATION_FAILURE, payload: error});

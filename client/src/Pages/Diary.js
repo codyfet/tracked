@@ -2,15 +2,10 @@ import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, CLEAR_RECORDS} from "
 import {getRecords} from "../Actions/Actions";
 import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
-import {filter, some} from "lodash";
+import {filter, map, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 
 import {Record} from "../Components/Record";
-
-const YEARS = [
-    {key: "2020", value: "2020", text: "2020"},
-    {key: "2019", value: "2019", text: "2019"},
-];
 
 const TYPES = ["movie", "tvseries"];
 
@@ -19,7 +14,7 @@ const TYPES = ["movie", "tvseries"];
  */
 export const Diary = () => {
     const dispatch = useDispatch();
-    const {records: {data: records}, user: {data: {userId}}} = useSelector(state => state);
+    const {records: {data: records}, user: {data: {userId, years}}} = useSelector(state => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
@@ -51,14 +46,16 @@ export const Diary = () => {
         return false;
     });
 
+    const yearsOptions = map(years, (year) => ({key: year, value: year, text: year}));
+
     return (
         <Container className="main">
             <Grid columns="2" verticalAlign="middle">
                 <Grid.Column>
                     <Dropdown
                         inline
-                        options={YEARS}
-                        defaultValue={YEARS[0].value}
+                        options={yearsOptions}
+                        defaultValue={yearsOptions[0].value}
                         onChange={(e) => setRecordsFilter({...recordsFilter, year: e.target.textContent})}
                     />&nbsp;&nbsp;&nbsp;
                     <span

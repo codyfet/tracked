@@ -1,9 +1,10 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid, Image, List, Segment} from "semantic-ui-react";
+import {Container, Dropdown, Grid, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, Cell, LabelList, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
+import {map} from "lodash";
 
 const COLORS = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
@@ -31,10 +32,29 @@ const renderCustomizedLabel = ({
  */
 export const Profile = () => {
     const dispatch = useDispatch();
-    const {user: {data: {userId}}, stat: {data: statData}} = useSelector(state => state);
+    const {
+        user: {
+            data: {
+                userId,
+                username,
+                years,
+                recordsCurrentYearCount,
+                recordsTotalCount
+            }
+        },
+        stat: {
+            data: statData
+        }
+    } = useSelector(state => state);
+
+    const yearsOptions = [
+        {key: "total", value: "total", text: "За всё время"},
+        ...map(years, (year) => ({key: year, value: year, text: year}))
+    ];
 
     useEffect(() => {
         dispatch(getStat(userId));
+        // TODO: get User Info
     }, [dispatch, userId]);
 
     return (
@@ -43,12 +63,12 @@ export const Profile = () => {
                 <Grid className="profile-data">
                     <Grid.Column width={4}>
                         <Image className="profile-data-image" src='src/Assets/matthew.png' circular />
-                        <div className="title">Alexander Volkov</div>
+                        <div className="title">{`${username}`}</div>
                         <div className="additional">Russia, Tver</div>
                         <div className="label">В этом году</div>
-                        <div className="counter">60</div>
+                        <div className="counter">{recordsCurrentYearCount}</div>
                         <div className="label">За всё время</div>
-                        <div className="counter">170</div>
+                        <div className="counter">{recordsTotalCount}</div>
                     </Grid.Column>
                     <Grid.Column width={12}>
                         Здесь будет секция Любимые
@@ -56,12 +76,18 @@ export const Profile = () => {
                 </Grid>
             </Segment>
 
-            <h1>За всё время</h1>
-
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={4}></Grid.Column>
                     <Grid.Column width={8} textAlign="center">
+                        <h1>
+                            <Dropdown
+                                inline
+                                options={yearsOptions}
+                                defaultValue={yearsOptions[0].value}
+                                onChange={() => {}}
+                            />
+                        </h1>
                         <h3>700 оценок</h3>
                         <ResponsiveContainer width="100%" height={200}>
                             <BarChart margin={{top: 30}} data={statData?.marksData}>
