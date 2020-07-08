@@ -38,8 +38,6 @@ export const Profile = () => {
                 userId,
                 username,
                 years,
-                recordsCurrentYearCount,
-                recordsTotalCount
             }
         },
         stat: {
@@ -65,9 +63,9 @@ export const Profile = () => {
                         <div className="title">{`${username}`}</div>
                         <div className="additional">Russia, Tver</div>
                         <div className="label">В этом году</div>
-                        <div className="counter">{recordsCurrentYearCount}</div>
+                        <div className="counter">{statData?.recordsCurrentYearCount}</div>
                         <div className="label">За всё время</div>
-                        <div className="counter">{recordsTotalCount}</div>
+                        <div className="counter">{statData?.recordsTotalCount}</div>
                     </Grid.Column>
                     <Grid.Column width={12}>
                         Здесь будет секция Любимые

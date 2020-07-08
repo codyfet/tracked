@@ -63,8 +63,6 @@ router.post(
                 email,
                 username,
                 years: [],
-                recordsCurrentYearCount: 0,
-                recordsTotalCount: 0
             });
         } catch (error) {
             res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
@@ -111,9 +109,6 @@ router.post(
 
             const groupedRecordsByYears = _.groupBy(records, (r) => new Date(r.viewdate).getFullYear());
             const years = Object.keys(groupedRecordsByYears).sort((a, b) => b - a);
-            const currentYear = new Date().getFullYear();
-            const recordsCurrentYearCount = groupedRecordsByYears[currentYear] ? groupedRecordsByYears[currentYear].length : 0;
-            const recordsTotalCount = records.length;
 
             res.json({
                 token: createToken(user.id),
@@ -121,8 +116,6 @@ router.post(
                 email,
                 username: user.username,
                 years,
-                recordsCurrentYearCount,
-                recordsTotalCount
             });
         } catch (error) {
             res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
@@ -140,10 +133,6 @@ router.get(
                 userId: user.id,
                 email: user.email,
                 username: user.username,
-                // years: [],
-                // recordsCurrentYearCount: 0,
-                // recordsTotalCount: 0
-                // user
             });
         } catch (error) {
             res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})

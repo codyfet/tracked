@@ -196,6 +196,24 @@ class StatCalculator {
             actressesData: actressesFilteredResult
         }
     }
+
+    /**
+     * Возвращает количество просмотренных фильмов в текущем году.
+     */
+    static getRecordsCurrentYearCount(records) {
+        const groupedRecordsByYears = _.groupBy(records, (r) => new Date(r.viewdate).getFullYear());
+        const currentYear = new Date().getFullYear();
+        const recordsCurrentYearCount = groupedRecordsByYears[currentYear] ? groupedRecordsByYears[currentYear].length : 0;
+
+        return recordsCurrentYearCount;
+    }
+
+    /**
+     * Возвращает количество просмотренных фильмов за все года.
+     */
+    static getRecordsTotalCount(records) {
+        return records.length;
+    }
 }
 
 // /api/stat
@@ -222,7 +240,9 @@ router.get(
                 yearsData: StatCalculator.getYearsData(movies),
                 directorsData: StatCalculator.getDirectorsData(movies),
                 actorsData: actStat.actorsData,
-                actressesData: actStat.actressesData
+                actressesData: actStat.actressesData,
+                recordsCurrentYearCount: StatCalculator.getRecordsCurrentYearCount(records),
+                recordsTotalCount: StatCalculator.getRecordsTotalCount(records)
             });
         } catch (error) {
             console.log('Error:', error.message);
