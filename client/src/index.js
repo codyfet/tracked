@@ -6,6 +6,10 @@ import thunk from "redux-thunk";
 import reducer from "./Reducers";
 
 import "./Styles/Styles";
+import "./Styles/Login";
+import "./Styles/Main";
+import "./Styles/Profile";
+import "./Styles/Diary";
 import "./Styles/Autosuggest";
 import "semantic-ui-css/semantic.min.css";
 

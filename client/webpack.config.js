@@ -1,11 +1,11 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssestsWebpackPlugin = require('optimize-css-assets-webpack-plugin');
-const TerserWebpackPlugin = require('terser-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssestsWebpackPlugin = require("optimize-css-assets-webpack-plugin");
+const TerserWebpackPlugin = require("terser-webpack-plugin");
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV === "development";
 const isProd = !isDev;
 
 /**
@@ -14,7 +14,7 @@ const isProd = !isDev;
 const getOptimization = () => {
     const config = {
         splitChunks: {
-            chunks: 'all'
+            chunks: "all"
         }
     };
 
@@ -33,11 +33,11 @@ const getOptimization = () => {
  */
 const getJsLoaders = () => {
     const loaders = [{
-        loader: 'babel-loader'
+        loader: "babel-loader"
     }];
 
     if (isDev) {
-        loaders.push('eslint-loader');
+        loaders.push("eslint-loader");
     }
 
     return loaders;
@@ -58,7 +58,13 @@ const getCssLoaders = (extraLoaders) => {
           reloadAll: true
         },
       },
-      'css-loader'
+      "css-loader",
+      {
+        loader: "postcss-loader",
+        options: {
+            plugins: () => [require("autoprefixer")],
+        }
+    }
     ];
 
     if (extraLoaders) {
@@ -78,11 +84,11 @@ const getDistFilename = (extension) => {
 };
 
 module.exports = {
-    context: path.resolve(__dirname, 'src'),
-    entry: ['@babel/polyfill', './index.js'],
+    context: path.resolve(__dirname, "src"),
+    entry: ["@babel/polyfill", "./index.js"],
     output: {
-        filename: getDistFilename('js'),
-        path: path.resolve(__dirname, 'dist'),
+        filename: getDistFilename("js"),
+        path: path.resolve(__dirname, "dist"),
     },
     devServer: {
         port: 4210,
@@ -90,12 +96,12 @@ module.exports = {
         historyApiFallback: true,
         proxy: {
             "/api/**": {
-                target: 'http://localhost:5000',
+                target: "http://localhost:5000",
                 secure: false
             }
         }
     },
-    devtool: isDev ? 'source-map' : '',
+    devtool: isDev ? "source-map" : "",
     module: {
         rules: [
             {
@@ -109,32 +115,32 @@ module.exports = {
             },
             {
                 test: /\.less$/,
-                use: getCssLoaders('less-loader')
+                use: getCssLoaders("less-loader")
             },
             {
                 test: /\.(png|jpg|svg|gif)$/,
-                use: ['file-loader']
+                use: ["file-loader"]
             },
             {
                 test: /\.(ttf|woff|woff2|eot)$/,
-                use: ['file-loader']
+                use: ["file-loader"]
             },
         ]
     },
     resolve: {
-        extensions: ['.js', '.css', '.less', '.png']
+        extensions: [".js", ".css", ".less", ".png"]
     },
     optimization: getOptimization(),
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html',
+            template: "./index.html",
             minify: {
                 collapseWhitespace: isProd
             }
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename: getDistFilename('css'),
+            filename: getDistFilename("css"),
         })
     ]
 };

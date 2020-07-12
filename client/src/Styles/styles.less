@@ -1,123 +1,16 @@
 body {
-    background: #F4F6FC;
+    background: linear-gradient(265deg, rgb(104, 230, 197), rgb(169, 136, 175)) 0% 200%;
 
-    .menu {
+    .ui.menu {
         height: 70px;
+        border-radius: 0;
+        position: fixed;
+        width: 100%;
+        z-index: 100;
+        top: 0;
 
         .item.logo:hover {
             background: white;
-        }
-    }
-
-    .hero {
-        margin-top: -15px;
-    }
-
-    .main {
-        .record-filter {
-            cursor: pointer;
-
-            &.not-selected {
-                color: grey;
-            }
-        }
-
-        .record {
-            height: 150px;
-
-            .grid {
-                height: inherit;
-            }
-
-            .column-viewdate {
-                .datepicker-input {
-                    width: 100px;
-                }
-            }
-
-            .title {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-
-            .additional-info,
-            .genre {
-                font-size: 12px;
-            }
-
-            .director {
-                font-style: italic;
-            }
-
-            .rating {
-                font-size: 24px;
-            }
-
-            .edit-mode-rating {
-                width: 50px;
-                margin: 0 auto;
-            }
-
-            .edit-mode-season-info {
-                width: 60px;
-                height: 26px;
-                margin-left: 10px;
-            }
-
-            .icons-panel {
-                position: absolute;
-                top: 0;
-                right: 0;
-
-                i {
-                    cursor: pointer;
-                }
-            }
-
-            &.blue-bg {
-                background: #56CCF2;
-            }
-
-            &.violet-bg {
-                background: #9B51E0;
-            }
-        }
-    }
-
-    .profile {
-        h1, h3 {
-            text-align: center;
-        }
-
-        .profile-data {
-            padding: 40px 20px;
-
-            .profile-data-image {
-                margin-bottom: 30px;
-            }
-
-            .title {
-                font-size: 18px;
-                margin-bottom: 10px;
-            }
-
-            .additional {
-                margin-bottom: 32px;
-            }
-
-            .label {
-                margin-bottom: 10px;
-            }
-
-            .counter {
-                font-size: 32px;
-                margin-bottom: 32px;
-            }
-        }
-
-        .genres-chart-wrapper {
-            margin: 0 auto;
-            // width: 200px;
         }
     }
 

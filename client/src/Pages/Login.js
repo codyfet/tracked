@@ -69,7 +69,7 @@ export const Login = () => {
     };
 
     return (
-        <Grid textAlign='center' >
+        <Grid className="login" textAlign='center'>
             <Grid.Column style={{maxWidth: 450}}>
                 <Header size='large'>{headerTitle}</Header>
                 <Form size='large'>

@@ -106,7 +106,6 @@ router.post(
                 userId: user.id,
             }
             const records = await Record.find(filter).exec();
-
             const groupedRecordsByYears = _.groupBy(records, (r) => new Date(r.viewdate).getFullYear());
             const years = Object.keys(groupedRecordsByYears).sort((a, b) => b - a);
 
@@ -129,10 +128,18 @@ router.get(
         try {
             const user = await User.findById(req.query.userId).exec();
 
+            const filter = {
+                userId: user.id,
+            }
+            const records = await Record.find(filter).exec();
+            const groupedRecordsByYears = _.groupBy(records, (r) => new Date(r.viewdate).getFullYear());
+            const years = Object.keys(groupedRecordsByYears).sort((a, b) => b - a);
+
             res.status(201).json({
                 userId: user.id,
                 email: user.email,
                 username: user.username,
+                years
             });
         } catch (error) {
             res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})

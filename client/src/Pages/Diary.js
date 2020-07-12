@@ -49,7 +49,7 @@ export const Diary = () => {
     const yearsOptions = map(years, (year) => ({key: year, value: year, text: year}));
 
     return (
-        <Container className="main">
+        <Container className="diary">
             <Grid columns="2" verticalAlign="middle">
                 <Grid.Column>
                     <Dropdown

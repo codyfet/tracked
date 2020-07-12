@@ -22,11 +22,11 @@ export const Header = () => {
                         <Image size='tiny' src='src/Assets/logo.png' />
                     </Menu.Item>
                     <div className="right menu">
-                        <Menu.Item as={Link} to='/diary' key="diary" position="right">
-                            дневник
+                        <Menu.Item as={Link} to='/users' key="users" position="right">
+                            пользователи
                         </Menu.Item>
-                        <Menu.Item as="a" name="results" key="results" position="right">
-                            итоги
+                        <Menu.Item as={Link} to='/diary' key="diary" position="right">
+                            журнал просмотров
                         </Menu.Item>
                         <Menu.Item as={Link} to='/profile' name="avatar" key="avatar" position="right">
                             <div className="avatar-block">
@@ -43,9 +43,14 @@ export const Header = () => {
         }
 
         return (
-            <Menu.Item as={Link} to="/login" key="login">
-                войти
-            </Menu.Item>
+            <Fragment>
+                <Menu.Item as={Link} to='/' key="main" className="logo">
+                    <Image size='tiny' src='src/Assets/logo.png' />
+                </Menu.Item>
+                <Menu.Item as={Link} to="/login" key="login" position="right">
+                    войти
+                </Menu.Item>
+            </Fragment>
         );
     };
 
