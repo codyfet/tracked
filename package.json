@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "description": "Application for tracking movies",
   "main": "app.js",
+  "private": true,
   "scripts": {
     "start": "node app.js",
     "server": "nodemon app.js",
     "client": "npm run start --prefix client",
+    "build": "npm run build --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {

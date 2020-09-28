@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const app = express();
 
 app.use(express.json({extended: true, limit: '50mb'}));
+app.use(express.static('client/dist'));
 
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/record", require("./routes/record.routes"));
