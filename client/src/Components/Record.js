@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
 import {TMDbSelect} from "./TMDbSelect";
-import {Flag, Grid, Icon, Image, Input, Segment} from "semantic-ui-react";
+import {Flag, Grid, Image, Input, Segment} from "semantic-ui-react";
 import {SimpleDialog} from "./Common/SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
@@ -12,6 +12,7 @@ import {addDetailedMovieRecord, addDetailedTvSeriesRecord, deleteRecord, searchM
 import {useToggle} from "../Hooks/Toggle.hook";
 import {useUpdate} from "../Hooks/Update.hook";
 import {DELETE_EMPTY_RECORD} from "../Actions/ActionTypes";
+import {IconRemove} from "./Icons/IconRemove";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -30,8 +31,6 @@ export const Record = ({
     rating,
     type,
     production_countries,
-    reViewed,
-    notFinished,
     season,
 }) => {
     const isEmptyRecord = (_id === "0");
@@ -190,31 +189,29 @@ export const Record = ({
     const renderIconsPanel = () => {
         let icons = [];
 
-        if (!isEmptyRecord) {
-            icons.push(
-                <Icon
-                    key="notFinished"
-                    name='adjust'
-                    onClick={() => dispatch(updateRecord(_id, {notFinished: !notFinished}))}
-                    title="не досмотрен"
-                    color={notFinished ? "black" : "grey"}
-                />,
-                <Icon
-                    key="reViewed"
-                    name='sync alternate'
-                    onClick={() => dispatch(updateRecord(_id, {reViewed: !reViewed}))}
-                    title="повторный просмотр"
-                    color={reViewed ? "black" : "grey"}
-                />,
-            );
-        }
+        // if (!isEmptyRecord) {
+        //     icons.push(
+        //         <Icon
+        //             key="notFinished"
+        //             name='adjust'
+        //             onClick={() => dispatch(updateRecord(_id, {notFinished: !notFinished}))}
+        //             title="не досмотрен"
+        //             color={notFinished ? "black" : "grey"}
+        //         />,
+        //         <Icon
+        //             key="reViewed"
+        //             name='sync alternate'
+        //             onClick={() => dispatch(updateRecord(_id, {reViewed: !reViewed}))}
+        //             title="повторный просмотр"
+        //             color={reViewed ? "black" : "grey"}
+        //         />,
+        //     );
+        // }
 
         icons.push(
-            <Icon
-                key="remove"
-                name='remove'
-                onClick={isEmptyRecord ? removeEmptyRecord : toggleRemoveDialog}
+            <IconRemove
                 title="удалить запись"
+                onClick={isEmptyRecord ? removeEmptyRecord : toggleRemoveDialog}
             />
         );
 
