@@ -19,7 +19,7 @@ export const Header = () => {
             return (
                 <Fragment>
                     <Menu.Item as={Link} to='/' key="main" className="logo">
-                        <Image size='tiny' src='src/Assets/logo.png' />
+                        <span className="logo">tracked</span>
                     </Menu.Item>
                     <div className="right menu">
                         <Menu.Item as={Link} to='/users' key="users" position="right">
@@ -45,7 +45,7 @@ export const Header = () => {
         return (
             <Fragment>
                 <Menu.Item as={Link} to='/' key="main" className="logo">
-                    <Image size='tiny' src='src/Assets/logo.png' />
+                    <span className="logo">tracked</span>
                 </Menu.Item>
                 <Menu.Item as={Link} to="/login" key="login" position="right">
                     войти

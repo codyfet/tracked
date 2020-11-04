@@ -1,7 +1,79 @@
+@import "_Variables";
+@import "_Mixins";
+
 /**
  * Стили для главной страницы.
  */
 
+.main-page_ {
+    height: 100vh;
+
+    #grid-posters {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 2vw;
+
+        position: absolute;
+        right: -40px;
+        top: -45px;
+
+        .main-poster {
+            box-shadow: 0 0.2rem 1.2rem rgba(0,0,0,0.2);
+        }
+    }
+
+    .main-text {
+        text-align: right;
+
+        .main-text-block {
+            display: inline-block;
+            text-align: right;
+            padding: 20px 40px 20px;
+
+            .logo {
+                .colored(@blue, 20px);
+                margin-right: 10px;
+            }
+
+            .desc {
+                margin-top: 12px;
+            }
+        }
+
+    }
+
+    .left-panel {
+        overflow: hidden;
+    }
+
+    .right-panel {
+        background: white;
+        z-index: -2;
+
+        .items {
+            margin-top: 30vh;
+        }
+
+        .item-wrapper {
+            margin-bottom: 40px;
+        }
+
+        .movies {
+            .colored(@blue, 24px);
+        }
+
+        .rates {
+            .colored(@pink, 24px);
+        }
+
+        .stats {
+            .colored(@yellow, 24px);
+        }
+    }
+}
+
+// @deprecated
 .main-page {
     height: 100vh;
     position: fixed;

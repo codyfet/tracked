@@ -1,8 +1,18 @@
 @import "_Variables";
+@import "_Mixins";
+
+html,
+body {
+    height: 100%;
+}
 
 body {
     background: #F5F5F5;
     font-family: @font;
+
+    .logo {
+        .colored(@blue, 20px)
+    }
 
     .ui.menu {
         height: 70px;

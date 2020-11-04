@@ -1,0 +1,16 @@
+
+.colored (@color, @font-size) {
+    position: relative;
+    font-size: @font-size;
+
+    &::before {
+        content: ' ';
+        background: @color;
+        position: absolute;
+        width: 120%; // 122%
+        height: 60%;
+        z-index: -1;
+        top: 3px;
+        left: -2px;
+    }
+}
