@@ -152,3 +152,23 @@ export const AUTHENTICATION_SUCCESS = "AUTHENTICATION_SUCCESS";
  * Неуспешное выполнение запроса на аутентификацию (логин/регистрация) пользователя.
  */
 export const AUTHENTICATION_FAILURE = "AUTHENTICATION_FAILURE";
+
+/**
+ * Старт запроса на получение списка пользователей.
+ */
+export const GET_USERS_START = "GET_USERS_START";
+
+/**
+ * Успешное выполнение запроса на получение списка пользователей.
+ */
+export const GET_USERS_SUCCESS = "GET_USERS_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на получение списка пользователей.
+ */
+export const GET_USERS_FAILURE = "GET_USERS_FAILURE";
+
+/**
+ * Очистка данных о пользователях.
+ */
+export const CLEAR_USERS = "CLEAR_USERS";

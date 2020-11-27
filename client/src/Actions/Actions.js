@@ -15,6 +15,9 @@ import {
     GET_STAT_FAILURE,
     GET_STAT_START,
     GET_STAT_SUCCESS,
+    GET_USERS_FAILURE,
+    GET_USERS_START,
+    GET_USERS_SUCCESS,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
     POPULATE_MOVIES_AUTOSUGGEST_START,
     POPULATE_MOVIES_AUTOSUGGEST_SUCCESS,
@@ -23,7 +26,7 @@ import {
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
     UPDATE_RECORD_FAILURE,
     UPDATE_RECORD_START,
-    UPDATE_RECORD_SUCCESS,
+    UPDATE_RECORD_SUCCESS
 } from "./ActionTypes";
 import {
     getMovieCreditsById,
@@ -38,9 +41,10 @@ import {
     getRecords as tryGetRecords,
     getStat as tryGetStat,
     getUserInfo as tryGetUserInfo,
+    getUsers as tryGetUsers,
     login as tryLogin,
     register as tryRegister,
-    updateRecord as tryUpdateRecord
+    updateRecord as tryUpdateRecord,
 } from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
 import {Record} from "../Models/Record";
@@ -278,3 +282,22 @@ export function getUserInfo(userId) {
         }
     };
 }
+
+/**
+ * Thunk функция для выполнения ajax запроса для получения информации о пользователе.
+ */
+export function getUsers() {
+    return async function (dispatch) {
+        dispatch({type: GET_USERS_START});
+
+        try {
+            const response = await tryGetUsers();
+            dispatch({type: GET_USERS_SUCCESS, payload: response.data});
+            return response;
+        } catch (error) {
+            dispatch({type: GET_USERS_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+

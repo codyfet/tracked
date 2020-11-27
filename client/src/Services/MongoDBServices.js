@@ -90,3 +90,10 @@ export function getStat(userId) {
 
     return axios.get("/api/stat", {params});
 }
+
+/**
+ * Возвращает массив пользователей.
+ */
+export function getUsers() {
+    return axios.get("/api/users");
+}

@@ -5,6 +5,7 @@ import {Main} from "../Pages/Main";
 import {Login} from "../Pages/Login";
 import {Diary} from "../Pages/Diary";
 import {Profile} from "../Pages/Profile";
+import {Users} from "../Pages/Users";
 
 /**
  * Возвращает набор доступных роутов приложения.
@@ -21,6 +22,7 @@ export const Routes = () => {
                 <Route path="/" exact component={Main} />
                 <Route path="/diary" component={Diary} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/users" component={Users} />
                 <Redirect to="/" />
             </Switch>
         );

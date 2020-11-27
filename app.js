@@ -10,6 +10,7 @@ app.use(express.static('client/dist'));
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
+app.use("/api/users", require("./routes/users.routes"));
 
 const PORT = config.get("port") || 5000;
 
@@ -29,5 +30,3 @@ async function start() {
 }
 
 start();
-
-

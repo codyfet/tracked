@@ -9,7 +9,7 @@
         "object-curly-spacing": [2, "never"],
         "react/prop-types": 0,
         "no-case-declarations": 0,
-        "sort-imports": ["error", {
+        "sort-imports": ["warn", {
             "ignoreCase": false,
             "ignoreDeclarationSort": true,
             "ignoreMemberSort": false,
