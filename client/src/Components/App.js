@@ -3,6 +3,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {Routes} from "../Routes/Routes";
 import {useCheckAuth} from "../Hooks/Auth.hook";
 import {Header} from "./Header";
+import {Footer} from "./Footer";
 
 export const App = () => {
     /**
@@ -15,6 +16,7 @@ export const App = () => {
             <Router>
                 <Header />
                 <Routes />
+                <Footer />
             </Router>
         </Fragment>
     );

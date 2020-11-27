@@ -23,7 +23,7 @@ export const Routes = () => {
                 <Route path="/diary" component={Diary} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/users" component={Users} />
-                <Redirect to="/" />
+                <Redirect to="/diary" />
             </Switch>
         );
     }

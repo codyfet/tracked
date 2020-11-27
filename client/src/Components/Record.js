@@ -80,7 +80,7 @@ export const Record = ({
             );
         }
 
-        return <span onClick={toggleViewdateEditMode}>{getFormattedDate(viewdate)}</span>;
+        return <span title="Нажите дважды, чтобы изменить" onClick={toggleViewdateEditMode}>{getFormattedDate(viewdate)}</span>;
     };
 
     /**
@@ -180,7 +180,7 @@ export const Record = ({
             );
         }
 
-        return <span className="rating" onClick={toggleRatingEditMode}>{rating}</span>;
+        return <span title="Нажите, чтобы изменить" className="rating" onClick={toggleRatingEditMode}>{rating}</span>;
     };
 
     /**

@@ -10,13 +10,20 @@ body {
     background: #F5F5F5;
     font-family: @font;
 
+    #root {
+        position: relative;
+        padding-bottom: 100px;
+        min-height: 100%;
+    }
+
     .logo {
         .colored(@blue, 20px)
     }
 
     .ui.menu {
         height: 70px;
-        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid rgba(34,36,38,.15);
         position: fixed;
         width: 100%;
         z-index: 100;
@@ -24,7 +31,26 @@ body {
         box-shadow: none;
 
         .item.logo:hover {
-            background: white;
+            background: initial;
+        }
+
+        .item.right {
+            background: initial;
+        }
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        height: 70px;
+        background: #C4C4C4;
+        width: 100%;
+        border-top: 1px solid rgba(34,36,38,.15);
+
+        .copyright {
+            text-align: right;
+            padding-right: 40px;
+            padding-top: 26px;
         }
     }
 

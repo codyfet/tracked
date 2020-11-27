@@ -1,6 +1,6 @@
 import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, CLEAR_RECORDS} from "../Actions/ActionTypes";
 import {getRecords} from "../Actions/Actions";
-import {Button, Container, Dropdown, Grid} from "semantic-ui-react";
+import {Button, Container, Dropdown, Grid, Message} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {filter, map, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
@@ -86,6 +86,13 @@ export const Diary = () => {
                     {...record}
                 />
             ))}
+
+            {filtered.length === 0 && (
+                  <Message info>
+                    <Message.Header>В вашем журнале пока нет ни одной записи</Message.Header>
+                    <p>Добавьте запись о просмотренном фильме или сериале</p>
+                </Message>
+            )}
         </Container>
     );
 };

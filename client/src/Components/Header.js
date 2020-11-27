@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Image, Menu} from "semantic-ui-react";
+import {Container, Menu} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import {logout} from "../Actions/Actions";
 /**
@@ -28,11 +28,8 @@ export const Header = () => {
                         <Menu.Item as={Link} to='/diary' key="diary" position="right">
                             журнал просмотров
                         </Menu.Item>
-                        <Menu.Item as={Link} to='/profile' name="avatar" key="avatar" position="right">
-                            <div className="avatar-block">
-                                <Image size="mini" src='src/Assets/matthew.png' avatar />
-                                <span>{`${user.data?.username}`}</span>
-                            </div>
+                        <Menu.Item as={Link} to='/profile' key="profile" position="right">
+                            {`${user.data?.username}`}
                         </Menu.Item>
                         <Menu.Item as="a" name="logout" key="logout" onClick={() => dispatch(logout())} position="right">
                             выйти

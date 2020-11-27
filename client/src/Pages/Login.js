@@ -107,7 +107,6 @@ export const Login = () => {
                             )
                         }
                         <Button
-                            color='teal'
                             fluid
                             size='large'
                             onClick={() => dispatch(isLoginMode ? login(form) : register(form))}

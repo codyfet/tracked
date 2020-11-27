@@ -21,7 +21,10 @@ export default function user(state = getInitialAsyncContainer(), action) {
             };
         case AUTHENTICATION_SUCCESS:
             return {
-                data: action.payload,
+                data: {
+                    ...action.payload,
+                    years: action.payload.years.length > 0 ? action.payload.years : [new Date().getFullYear().toString()]
+                },
                 isLoading: false,
                 error: null,
             };
