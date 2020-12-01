@@ -3,6 +3,8 @@ import {
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
+    UPDATE_USER_FAILURE,
+    UPDATE_USER_SUCCESS,
 } from "../Actions/ActionTypes";
 import {getInitialAsyncContainer} from "../Utils/Utils";
 
@@ -29,6 +31,27 @@ export default function user(state = getInitialAsyncContainer(), action) {
                 error: null,
             };
         case AUTHENTICATION_FAILURE:
+            return {
+                data: null,
+                isLoading: false,
+                error: action.payload.response
+            };
+        // case UPDATE_USER_START:
+        //     return {
+        //         data: null,
+        //         isLoading: true,
+        //         error: null
+        //     };
+        case UPDATE_USER_SUCCESS:
+            return {
+                data: {
+                    ...state.data,
+                    ...action.payload,
+                },
+                isLoading: false,
+                error: null,
+            };
+        case UPDATE_USER_FAILURE:
             return {
                 data: null,
                 isLoading: false,

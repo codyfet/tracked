@@ -172,3 +172,18 @@ export const GET_USERS_FAILURE = "GET_USERS_FAILURE";
  * Очистка данных о пользователях.
  */
 export const CLEAR_USERS = "CLEAR_USERS";
+
+/**
+ * Старт запроса на изменение даных пользователя.
+ */
+export const UPDATE_USER_START = "UPDATE_USER_START";
+
+/**
+ * Успешное выполнение запроса на изменение даных пользователя.
+ */
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+
+/**
+ * Неуспешное выполнение запроса на изменение даных пользователя.
+ */
+export const UPDATE_USER_FAILURE = "UPDATE_USER_FAILURE";

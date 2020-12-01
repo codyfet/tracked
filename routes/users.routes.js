@@ -19,4 +19,20 @@ router.get(
     }
 );
 
+// /api/users/:id/update
+router.put(
+    "/:id/update",
+    async (req, res) => {
+        try {
+            const user = await User.findByIdAndUpdate(req.params.id, {$set: req.body}, {useFindAndModify: false, new: true}).exec();
+
+            res.status(201).json(user);
+        } catch (error) {
+            console.log('Error:', error.message);
+
+            res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" })
+        }
+    }
+);
+
 module.exports = router;

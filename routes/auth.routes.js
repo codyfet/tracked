@@ -115,6 +115,7 @@ router.post(
                 email,
                 username: user.username,
                 years,
+                favouriteMovies: user.favouriteMovies
             });
         } catch (error) {
             res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})
@@ -139,7 +140,8 @@ router.get(
                 userId: user.id,
                 email: user.email,
                 username: user.username,
-                years
+                years,
+                favouriteMovies: user.favouriteMovies
             });
         } catch (error) {
             res.status(500).json({message: "Что-то пошло не так, попробуйте снова"})

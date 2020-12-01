@@ -5,6 +5,7 @@ import {Bar, BarChart, Cell, LabelList, Legend, Pie, PieChart, ResponsiveContain
 import {getStat} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
 import {map} from "lodash";
+import {FavouriteMovie} from "./../Components/FavouriteMovie";
 
 const COLORS = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
@@ -38,12 +39,18 @@ export const Profile = () => {
                 userId,
                 username,
                 years,
+                favouriteMovies = []
             }
         },
         stat: {
             data: statData
         }
     } = useSelector(state => state);
+    let favs = [];
+
+    for (let i = 0; i < 10; i++) {
+        favs.push(<FavouriteMovie movie={favouriteMovies[i]} index={i} />);
+    }
 
     const yearsOptions = [
         {key: "total", value: "total", text: "За всё время"},
@@ -68,7 +75,10 @@ export const Profile = () => {
                         <div className="counter">{statData?.recordsTotalCount}</div>
                     </Grid.Column>
                     <Grid.Column width={12}>
-                        Здесь будет секция Любимые
+                        <div>Любимые фильмы</div>
+                        <div className="grid-panel">
+                            {favs}
+                        </div>
                     </Grid.Column>
                 </Grid>
             </Segment>

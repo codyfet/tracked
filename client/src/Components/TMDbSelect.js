@@ -7,7 +7,7 @@ import {noop} from "lodash";
  * Компонент выпадающий список для поиска фильмов/сериалов в TMDb.
  * Единовременно может существовать только один на странице.
  */
-export const TMDbSelect = ({searchAction, addDetailedRecordAction, titlePropName, releasePropName, placeholder}) => {
+export const TMDbSelect = ({searchAction, onSuggestionSelected, titlePropName, releasePropName, placeholder}) => {
     const dispatch = useDispatch();
     const records = useSelector(state => state.emptyRecordTMDbItems);
     const user = useSelector(state => state.user);
@@ -58,8 +58,7 @@ export const TMDbSelect = ({searchAction, addDetailedRecordAction, titlePropName
      */
     const handleSuggestionSelected = (_event, {suggestion}) => {
         setEmptyRecordInputValue(suggestion[titlePropName]);
-        // Добавляем запись с выбранной записью.
-        dispatch(addDetailedRecordAction(suggestion.id, userId));
+        onSuggestionSelected(suggestion, userId);
     };
 
     /**

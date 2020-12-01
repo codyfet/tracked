@@ -97,3 +97,13 @@ export function getStat(userId) {
 export function getUsers() {
     return axios.get("/api/users");
 }
+
+/**
+ * Изменяет данные о пользователе.
+ *
+ * @param {string} userId ObjectId идентификатор записи.
+ * @param {object} fields Объект с изменёнными полями.
+ */
+export function updateUser(userId, fields) {
+    return axios.put(`/api/users/${userId}/update`, fields);
+}

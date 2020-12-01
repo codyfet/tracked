@@ -120,13 +120,13 @@ export const Record = ({
         if (isEmptyRecord) {
             const configProps = isMovie ? {
                 searchAction: debounceAction(searchMovies, 300, {leading: true}),
-                addDetailedRecordAction: addDetailedMovieRecord,
+                onSuggestionSelected: (suggestion, userId) => dispatch(addDetailedMovieRecord(suggestion.id, userId)),
                 titlePropName: "title",
                 releasePropName: "release_date",
                 placeholder: "Найти фильм..."
             } : {
                 searchAction: debounceAction(searchTvSeries, 300, {leading: true}),
-                addDetailedRecordAction: addDetailedTvSeriesRecord,
+                onSuggestionSelected: (suggestion, userId) => dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
                 titlePropName: "name",
                 releasePropName: "first_air_date",
                 placeholder: "Найти сериал..."

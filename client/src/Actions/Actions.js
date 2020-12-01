@@ -26,7 +26,10 @@ import {
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
     UPDATE_RECORD_FAILURE,
     UPDATE_RECORD_START,
-    UPDATE_RECORD_SUCCESS
+    UPDATE_RECORD_SUCCESS,
+    UPDATE_USER_FAILURE,
+    UPDATE_USER_START,
+    UPDATE_USER_SUCCESS,
 } from "./ActionTypes";
 import {
     getMovieCreditsById,
@@ -45,6 +48,7 @@ import {
     login as tryLogin,
     register as tryRegister,
     updateRecord as tryUpdateRecord,
+    updateUser as tryUpdateUser,
 } from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
 import {Record} from "../Models/Record";
@@ -301,3 +305,23 @@ export function getUsers() {
     };
 }
 
+/**
+ * Thunk функция для выполнения ajax запроса для изменения данных о пользователе.
+ *
+ * @param {string} userId ObjectId идентификатор пользователя.
+ * @param {object} fields Объект с измеёнными полями.
+ */
+export function updateUser(userId, fields) {
+    return async function (dispatch) {
+        dispatch({type: UPDATE_USER_START});
+
+        try {
+            const result = await tryUpdateUser(userId, fields);
+            dispatch({type: UPDATE_USER_SUCCESS, payload: result.data});
+            return result;
+        } catch (error) {
+            dispatch({type: UPDATE_USER_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
