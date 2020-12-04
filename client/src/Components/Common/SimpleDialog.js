@@ -10,7 +10,10 @@ export const SimpleDialog = ({header, text, onClose, onNegative, onPositive}) =>
         <Modal.Content><p>{text}</p></Modal.Content>
         <Modal.Actions>
             <Button negative onClick={onNegative}>Нет</Button>
-            <Button positive onClick={onPositive}>Да</Button>
+            <Button positive onClick={() => {
+                onPositive();
+                onClose();
+            }}>Да</Button>
         </Modal.Actions>
     </Modal>
 );

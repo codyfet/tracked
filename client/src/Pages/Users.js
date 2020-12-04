@@ -17,7 +17,7 @@ export const Users = () => {
         return () => {
             dispatch({type: CLEAR_USERS});
         };
-    }, []);
+    });
 
 
     return (

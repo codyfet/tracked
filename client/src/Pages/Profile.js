@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Container, Dropdown, Grid, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, Cell, LabelList, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import {getStat} from "../Actions/Actions";
+import {getStat, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
 import {map} from "lodash";
 import {FavouriteMovie} from "./../Components/FavouriteMovie";
@@ -49,7 +49,23 @@ export const Profile = () => {
     let favs = [];
 
     for (let i = 0; i < 10; i++) {
-        favs.push(<FavouriteMovie movie={favouriteMovies[i]} index={i} />);
+        favs.push(
+            <FavouriteMovie
+                movie={favouriteMovies[i]}
+                index={i}
+                onRemove={() => {
+                    const updatedFavouriteMovies = favouriteMovies.map(
+                        (item, index) => {
+                            if (index === i) {
+                                return null;
+                            }
+                            return item;
+                        }
+                    );
+                    dispatch(updateUser(userId, {favouriteMovies: updatedFavouriteMovies}));
+                }}
+            />
+        );
     }
 
     const yearsOptions = [
