@@ -1,75 +1,42 @@
 @import "_Variables";
 @import "_Mixins";
 
-html,
-body {
-    height: 100%;
+#app {
+    position: relative;
+    padding-bottom: 100px;
+    min-height: 100%;
 }
 
-body {
-    background: #F5F5F5;
-    font-family: @font;
+.footer {
+    position: absolute;
+    bottom: 0;
+    height: 70px;
+    background: #C4C4C4;
+    width: 100%;
+    border-top: 1px solid rgba(34,36,38,.15);
 
-    #root {
-        position: relative;
-        padding-bottom: 100px;
-        min-height: 100%;
+    .copyright {
+        text-align: right;
+        padding-right: 40px;
+        padding-top: 26px;
     }
+}
 
-    .logo {
-        .colored(@blue, 20px)
-    }
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background: black;
+    opacity: .4;
+    z-index: 1;
 
-    .ui.menu {
-        height: 70px;
-        border: 0;
-        border-bottom: 1px solid rgba(34,36,38,.15);
-        position: fixed;
-        width: 100%;
-        z-index: 100;
-        top: 0;
-        box-shadow: none;
-
-        .item.logo:hover {
-            background: initial;
-        }
-
-        .item.right {
-            background: initial;
-        }
-    }
-
-    .footer {
+    div.loader {
         position: absolute;
-        bottom: 0;
-        height: 70px;
-        background: #C4C4C4;
-        width: 100%;
-        border-top: 1px solid rgba(34,36,38,.15);
-
-        .copyright {
-            text-align: right;
-            padding-right: 40px;
-            padding-top: 26px;
-        }
-    }
-
-    .loading-overlay {
-        position: fixed;
+        margin: auto;
         top: 0;
-        height: 100%;
-        width: 100%;
-        background: black;
-        opacity: .4;
-        z-index: 1;
-
-        div.loader {
-            position: absolute;
-            margin: auto;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-        }
+        left: 0;
+        bottom: 0;
+        right: 0;
     }
 }

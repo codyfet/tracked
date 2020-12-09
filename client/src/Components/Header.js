@@ -1,12 +1,14 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Menu} from "semantic-ui-react";
+import {Icon} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import {logout} from "../Actions/Actions";
+
 /**
  * Компонент шапка-приложения.
  */
 export const Header = () => {
+    const [isResponsive, setResponsive] = useState(false);
     const {user} = useSelector(state => state);
     const dispatch = useDispatch();
     const isAutheticated = !!user.data;
@@ -18,44 +20,38 @@ export const Header = () => {
         if (isAutheticated) {
             return (
                 <Fragment>
-                    <Menu.Item as={Link} to='/' key="main" className="logo">
-                        <span className="logo">tracked</span>
-                    </Menu.Item>
-                    <div className="right menu">
-                        <Menu.Item as={Link} to='/users' key="users" position="right">
-                            пользователи
-                        </Menu.Item>
-                        <Menu.Item as={Link} to='/diary' key="diary" position="right">
-                            журнал просмотров
-                        </Menu.Item>
-                        <Menu.Item as={Link} to='/profile' key="profile" position="right">
-                            {`${user.data?.username}`}
-                        </Menu.Item>
-                        <Menu.Item as="a" name="logout" key="logout" onClick={() => dispatch(logout())} position="right">
-                            выйти
-                        </Menu.Item>
-                    </div>
+                    <span className={`menu ${isResponsive ? "responsive" : ""}`}>
+                        <Link to="/diary" key="diary">журнал просмотров</Link>
+                        <Link to="/users" key="users">пользователи</Link>
+                        <Link to="/profile" key="profile">{`${user.data?.username}`}</Link>
+                        <a onClick={() => dispatch(logout())}>выйти</a>
+                    </span>
+
+                    <Icon
+                        name='bars'
+                        onClick={() => setResponsive(!isResponsive)}
+                        title="меню"
+                        className="burger"
+                    />
                 </Fragment>
             );
         }
 
         return (
-            <Fragment>
-                <Menu.Item as={Link} to='/' key="main" className="logo">
-                    <span className="logo">tracked</span>
-                </Menu.Item>
-                <Menu.Item as={Link} to="/login" key="login" position="right">
-                    войти
-                </Menu.Item>
-            </Fragment>
+            <span className="menu">
+                <Link to="/login" key="login">войти</Link>
+            </span>
         );
     };
 
     return (
-        <Menu borderless>
-            <Container>
-                {getMenuItems()}
-            </Container>
-        </Menu>
+        <div className="header">
+            <span className="logo">
+                <Link to="/" key="main">
+                    <span>tracked</span>
+                </Link>
+            </span>
+            {getMenuItems()}
+        </div>
     );
 };

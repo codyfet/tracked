@@ -1,0 +1,65 @@
+@import "_Variables";
+@import "_Mixins";
+
+.header {
+    height: @headerHeight;
+    padding: 0 60px;
+    background-color: @headerBackground;
+
+    .logo {
+        line-height: @headerHeight;
+        .colored(@blue, 20px);
+    }
+
+    .menu {
+        line-height: @headerHeight;
+        float: right;
+
+        a {
+            margin: 0 16px;
+            cursor: pointer;
+            color: black;
+
+            &:hover {
+                border-bottom: 1px solid @blue;
+            }
+        }
+    }
+
+    .burger {
+        cursor: pointer;
+        display: none;
+        position: absolute;
+        top: 22px;
+        right: 18px;
+    }
+}
+
+/**
+ * Стили, схлопывающие меню (Semantic UI Tablet Breakpoint).
+ */
+@media screen and (max-width: 723px) {
+    .header {
+        .menu {
+            a {
+                display: none;
+            }
+        }
+
+        .menu.responsive {
+            position: absolute;
+            left: 0;
+            margin-top: 60px;
+            background: @headerBackground;
+            z-index: 1;
+
+            a {
+                display: block;
+            }
+        }
+
+        .burger {
+            display: block;
+        }
+    }
+}
