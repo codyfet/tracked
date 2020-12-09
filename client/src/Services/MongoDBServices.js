@@ -93,9 +93,13 @@ export function getStat(userId) {
 
 /**
  * Возвращает массив пользователей.
+ *
+ * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
  */
-export function getUsers() {
-    return axios.get("/api/users");
+export function getUsers(userId) {
+    const params = {userId};
+
+    return axios.get("/api/users", {params});
 }
 
 /**

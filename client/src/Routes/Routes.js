@@ -21,7 +21,7 @@ export const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Main} />
                 <Route path="/diary" component={Diary} />
-                <Route path="/profile" component={Profile} />
+                <Route path="/profile/:id" component={Profile} />
                 <Route path="/users" component={Users} />
                 <Redirect to="/diary" />
             </Switch>

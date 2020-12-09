@@ -289,13 +289,15 @@ export function getUserInfo(userId) {
 
 /**
  * Thunk функция для выполнения ajax запроса для получения информации о пользователе.
+ *
+ * @param {string} userId ObjectId идентификатор записи (если не передать, вернутся все записи).
  */
-export function getUsers() {
+export function getUsers(userId) {
     return async function (dispatch) {
         dispatch({type: GET_USERS_START});
 
         try {
-            const response = await tryGetUsers();
+            const response = await tryGetUsers(userId);
             dispatch({type: GET_USERS_SUCCESS, payload: response.data});
             return response;
         } catch (error) {

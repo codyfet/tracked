@@ -12,7 +12,8 @@ import {IMAGE_URL} from "./../Consts";
  */
 export const FavouriteMovieModal = ({onClose, index}) => {
     const [suggestion, setSuggestion] = useState(null);
-    const {user: {data: {userId, favouriteMovies}}} = useSelector(state => state);
+    const {users: {data: users}} = useSelector(state => state);
+    const user = users ? users[0] : null;
     const dispatch = useDispatch();
 
     const content = (
@@ -49,10 +50,10 @@ export const FavouriteMovieModal = ({onClose, index}) => {
             release_date: suggestion.release_date
         };
 
-        const updatedFavouriteMovies = [...favouriteMovies];
+        const updatedFavouriteMovies = [...user?.favouriteMovies];
         updatedFavouriteMovies[index] = movie;
 
-        dispatch(updateUser(userId, {favouriteMovies: updatedFavouriteMovies}));
+        dispatch(updateUser(user?._id, {favouriteMovies: updatedFavouriteMovies}));
         onClose();
     };
 

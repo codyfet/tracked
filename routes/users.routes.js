@@ -8,7 +8,13 @@ router.get(
     "/",
     async (req, res) => {
         try {
-            const users = await User.find({}).exec();
+            const filter = {};
+
+            if (req.query.userId) {
+                filter._id = req.query.userId;
+            }
+
+            const users = await User.find(filter).exec();
 
             res.status(201).json(users);
         } catch (error) {

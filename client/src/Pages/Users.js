@@ -20,7 +20,6 @@ export const Users = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     return (
         <Container className="users">
             <Table singleLine>
@@ -34,7 +33,7 @@ export const Users = () => {
                     {users?.map((user) => (
                         <Table.Row>
                             <Table.Cell>
-                                <Link to="/profile" key="profile">{user.username}</Link>
+                                <Link to={`/profile/${user._id}`} key="profile">{user.username}</Link>
                             </Table.Cell>
                         </Table.Row>
                     ))}

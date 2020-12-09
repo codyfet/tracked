@@ -3,8 +3,10 @@ import {
     GET_USERS_FAILURE,
     GET_USERS_START,
     GET_USERS_SUCCESS,
+    UPDATE_USER_SUCCESS
 } from "../Actions/ActionTypes";
 import {getInitialAsyncContainer} from "../Utils/Utils";
+import {cloneDeep} from "lodash";
 
 /**
  * Редюсер для узла "users".
@@ -30,6 +32,23 @@ export default function users(state = getInitialAsyncContainer(), action) {
                 data: null,
                 isLoading: false,
                 error: action.payload.response
+            };
+        case UPDATE_USER_SUCCESS:
+            const newUsers = cloneDeep(state.data);
+
+            for (let i = 0; i < newUsers.length; i++) {
+                const user = newUsers[i];
+
+                if (user._id === action.payload._id) {
+                    user.favouriteMovies = action.payload.favouriteMovies;
+                    break;
+                }
+            }
+
+            return {
+                data: newUsers,
+                isLoading: false,
+                error: null,
             };
         default:
             return state;
