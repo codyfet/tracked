@@ -17,7 +17,8 @@ export const Users = () => {
         return () => {
             dispatch({type: CLEAR_USERS});
         };
-    });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
 
     return (
