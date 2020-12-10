@@ -180,7 +180,7 @@ export const Record = ({
             );
         }
 
-        return <span title="Нажите, чтобы изменить" className="rating" onClick={toggleRatingEditMode}>{rating}</span>;
+        return <span title="Нажите, чтобы изменить" className={`rating ${rating === "0" ? "red" : ""}`} onClick={toggleRatingEditMode}>{rating}</span>;
     };
 
     /**

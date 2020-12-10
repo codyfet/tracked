@@ -37,16 +37,16 @@ export const Profile = ({match}) => {
     const profileUserId = match.params.id;
     const {
         users: {
-            data: users
+            data: usersData
         },
         stat: {
             data: statData
         }
     } = useSelector(state => state);
-    const profileUser = users ? users[0] : null;
+    const profileUser = usersData ? usersData.items[0] : null;
 
     useEffect(() => {
-        dispatch(getUsers(profileUserId));
+        dispatch(getUsers({userId: profileUserId}));
         dispatch(getStat(profileUserId));
 
         return () => {
@@ -90,7 +90,7 @@ export const Profile = ({match}) => {
             <Segment >
                 <Grid className="profile-data">
                     <Grid.Column width={4}>
-                        <Image className="profile-data-image" src='src/Assets/matthew.png' circular />
+                        <Image className="profile-data-image" src='../src/Assets/matthew.png' circular />
                         <div className="title">{`${profileUser?.username}`}</div>
                         <div className="additional">Russia, Tver</div>
                         <div className="label">В этом году</div>

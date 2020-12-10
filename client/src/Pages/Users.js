@@ -1,7 +1,7 @@
 import {CLEAR_USERS} from "../Actions/ActionTypes";
 import {getUsers} from "../Actions/Actions";
-import {Container, Table} from "semantic-ui-react";
-import React, {useEffect} from "react";
+import {Container, Pagination, Table} from "semantic-ui-react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 
@@ -10,15 +10,23 @@ import {Link} from "react-router-dom";
  */
 export const Users = () => {
     const dispatch = useDispatch();
-    const {users: {data: users}} = useSelector(state => state);
+    const {users: {data: usersData}} = useSelector(state => state);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        dispatch(getUsers());
+        dispatch(getUsers({page: currentPage}));
         return () => {
             dispatch({type: CLEAR_USERS});
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [currentPage]);
+
+    useEffect(() => {
+        if (usersData) {
+            setTotalPages(Math.ceil(usersData.total / usersData.limit));
+        }
+    }, [usersData]);
 
     return (
         <Container className="users">
@@ -30,7 +38,7 @@ export const Users = () => {
                 </Table.Header>
 
                 <Table.Body>
-                    {users?.map((user) => (
+                    {usersData?.items.map((user) => (
                         <Table.Row>
                             <Table.Cell>
                                 <Link to={`/profile/${user._id}`} key="profile">{user.username}</Link>
@@ -39,6 +47,13 @@ export const Users = () => {
                     ))}
                 </Table.Body>
             </Table>
+            <Pagination
+                defaultActivePage={currentPage + 1}
+                totalPages={totalPages}
+                onPageChange={(_event, data) => {
+                    setCurrentPage(data.activePage - 1);
+                }}
+            />
         </Container>
     );
 };

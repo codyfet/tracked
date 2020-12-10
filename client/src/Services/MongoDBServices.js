@@ -95,9 +95,11 @@ export function getStat(userId) {
  * Возвращает массив пользователей.
  *
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
+ * @param {number} limit Количество записей в одной пачке данных (по умолчанию 10).
+ * @param {number} page Номер текущей пачки (по умолчанию 0).
  */
-export function getUsers(userId) {
-    const params = {userId};
+export function getUsers({userId, limit = 10, page = 0}) {
+    const params = {userId, limit, page};
 
     return axios.get("/api/users", {params});
 }

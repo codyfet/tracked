@@ -291,13 +291,14 @@ export function getUserInfo(userId) {
  * Thunk функция для выполнения ajax запроса для получения информации о пользователе.
  *
  * @param {string} userId ObjectId идентификатор записи (если не передать, вернутся все записи).
+ * @param {number} page Номер запрашиваемой страницы.
  */
-export function getUsers(userId) {
+export function getUsers({userId, page}) {
     return async function (dispatch) {
         dispatch({type: GET_USERS_START});
 
         try {
-            const response = await tryGetUsers(userId);
+            const response = await tryGetUsers({userId, page});
             dispatch({type: GET_USERS_SUCCESS, payload: response.data});
             return response;
         } catch (error) {

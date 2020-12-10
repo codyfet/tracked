@@ -34,10 +34,11 @@ export default function users(state = getInitialAsyncContainer(), action) {
                 error: action.payload.response
             };
         case UPDATE_USER_SUCCESS:
-            const newUsers = cloneDeep(state.data);
+            const newUsersData = cloneDeep(state.data);
+            const {items} = newUsersData;
 
-            for (let i = 0; i < newUsers.length; i++) {
-                const user = newUsers[i];
+            for (let i = 0; i < items.length; i++) {
+                const user = items[i];
 
                 if (user._id === action.payload._id) {
                     user.favouriteMovies = action.payload.favouriteMovies;
@@ -46,7 +47,7 @@ export default function users(state = getInitialAsyncContainer(), action) {
             }
 
             return {
-                data: newUsers,
+                data: newUsersData,
                 isLoading: false,
                 error: null,
             };

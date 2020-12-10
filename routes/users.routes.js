@@ -9,14 +9,27 @@ router.get(
     async (req, res) => {
         try {
             const filter = {};
+            const limit = +req.query.limit;
+            const page = +req.query.page;
 
             if (req.query.userId) {
                 filter._id = req.query.userId;
             }
 
-            const users = await User.find(filter).exec();
+            const total = await User.countDocuments();
+            const users = await User
+                .find(filter)
+                .skip(page * limit)
+                .limit(limit)
+                .exec();
 
-            res.status(201).json(users);
+            res.status(201).json({
+                items: users,
+                total,
+                page,
+                limit,
+                hasNext: total - (limit * (page + 1)) > 0
+            });
         } catch (error) {
             console.log('Error:', error.message);
 

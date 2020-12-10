@@ -12,8 +12,8 @@ import {IMAGE_URL} from "./../Consts";
  */
 export const FavouriteMovieModal = ({onClose, index}) => {
     const [suggestion, setSuggestion] = useState(null);
-    const {users: {data: users}} = useSelector(state => state);
-    const user = users ? users[0] : null;
+    const {users: {data: usersData}} = useSelector(state => state);
+    const user = usersData ? usersData.items[0] : null;
     const dispatch = useDispatch();
 
     const content = (
