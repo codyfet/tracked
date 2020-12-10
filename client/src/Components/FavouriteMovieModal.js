@@ -20,7 +20,7 @@ export const FavouriteMovieModal = ({onClose, index}) => {
         <Fragment>
             <div className="falvourite-movie-search">
                 <TMDbSelect
-                    searchAction={debounceAction(searchMovies, 300, {leading: true})}
+                    searchAction={debounceAction(searchMovies, 300, {leading: false})}
                     onSuggestionSelected={(selectedSuggestion) => setSuggestion(selectedSuggestion)}
                     titlePropName="title"
                     releasePropName="release_date"
