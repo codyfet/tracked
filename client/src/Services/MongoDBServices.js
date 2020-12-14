@@ -1,4 +1,18 @@
 import axios from "axios";
+import {TRACKED_USER_DATA} from "../Consts";
+
+/**
+ * Добавляет токен в каждый запрос.
+ */
+axios.interceptors.request.use(function (config) {
+    const data = JSON.parse(localStorage.getItem(TRACKED_USER_DATA));
+
+    if (data) {
+        config.headers.Authorization = "Bearer " + data.token;
+    }
+
+    return config;
+});
 
 /**
  * Осуществляет попытку логина пользователя.

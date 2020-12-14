@@ -1,5 +1,6 @@
 {
     "port": 5000,
     "mongoUri": "mongodb://localhost:27017/trackeddb",
-    "jwtSecret": "codyfet tracked brilliant"
+    "jwtSecret": "codyfet tracked brilliant",
+    "sessionExpiresIn": "1h"
 }

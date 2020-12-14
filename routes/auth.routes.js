@@ -1,29 +1,15 @@
 const _ = require("lodash");
 const {Router} = require("express");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+const {createToken} = require("../utils/tokenUtils");
 const {check, validationResult} = require("express-validator");
 
 const User = require("../models/User");
 const Record = require("../models/Record");
 
+
+
 const router = new Router();
-
-/**
- * Создаёт jwt-токен для пользователя.
- *
- * @param {string} userId Идентификатор пользователя.
- */
-function createToken(userId) {
-    const token = jwt.sign(
-        {userId},
-        config.get("jwtSecret"),
-        {expiresIn: "1h"}
-    );
-
-    return token;
-}
 
 // /api/auth/register
 router.post(

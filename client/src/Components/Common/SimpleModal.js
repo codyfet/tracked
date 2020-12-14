@@ -4,7 +4,7 @@ import {Button, Modal} from "semantic-ui-react";
 /**
  * Компонент стандартное модальное окно с кнопками Отмена/Ок.
  */
-export const SimpleModal = ({header, content, onClose, onSuccess, successText, successDisabled}) => (
+export const SimpleModal = ({header, content, onClose, onSuccess, successText, successDisabled, hideCancel}) => (
     <Modal
         onClose={onClose}
         open
@@ -15,7 +15,7 @@ export const SimpleModal = ({header, content, onClose, onSuccess, successText, s
             {content}
         </Modal.Content>
         <Modal.Actions>
-            <Button onClick={onClose}>Отмена</Button>
+            {!hideCancel && <Button onClick={onClose}>Отмена</Button>}
             <Button onClick={onSuccess} disabled={successDisabled} positive>{successText || "Ок"}</Button>
         </Modal.Actions>
     </Modal>

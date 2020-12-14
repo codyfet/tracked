@@ -261,6 +261,15 @@ export function register({email, password, username}) {
         try {
             const response = await tryRegister({email, password, username});
             dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
+
+            /**
+             * Складываем данные пользователя в локал сторедж.
+             */
+            localStorage.setItem(TRACKED_USER_DATA, JSON.stringify({
+                userId: response.data.userId,
+                token: response.data.token
+            }));
+
             return response;
         } catch (error) {
             dispatch({type: AUTHENTICATION_FAILURE, payload: error});

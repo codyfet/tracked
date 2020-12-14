@@ -53,9 +53,14 @@ export default function user(state = getInitialAsyncContainer(), action) {
             };
         case UPDATE_USER_FAILURE:
             return {
-                data: null,
+                data: {
+                    ...state.data
+                },
                 isLoading: false,
-                error: action.payload.response
+                error: {
+                    status: action.payload.response.status,
+                    message: action.payload.response.data.message
+                }
             };
         default:
             return state;

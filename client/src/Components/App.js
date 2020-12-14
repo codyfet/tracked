@@ -1,9 +1,10 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {BrowserRouter as Router} from "react-router-dom";
 import {Routes} from "../Routes/Routes";
 import {useCheckAuth} from "../Hooks/Auth.hook";
 import {Header} from "./Header";
 import {Footer} from "./Footer";
+import {ErrorChecker} from "./ErrorChecker";
 
 export const App = () => {
     /**
@@ -12,12 +13,12 @@ export const App = () => {
     useCheckAuth();
 
     return (
-        <Fragment>
+        <ErrorChecker>
             <Router>
                 <Header />
                 <Routes />
                 <Footer />
             </Router>
-        </Fragment>
+        </ErrorChecker>
     );
 };

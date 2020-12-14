@@ -1,5 +1,9 @@
 const {Router} = require("express");
 const User = require("../models/User");
+const {verifyToken} = require("../utils/tokenUtils");
+const {NotAuthorizedError} = require("../utils/errorUtils");
+const jwt = require("jsonwebtoken");
+const config = require("config");
 
 const router = new Router();
 
@@ -41,15 +45,27 @@ router.get(
 // /api/users/:id/update
 router.put(
     "/:id/update",
+    verifyToken,
     async (req, res) => {
         try {
-            const user = await User.findByIdAndUpdate(req.params.id, {$set: req.body}, {useFindAndModify: false, new: true}).exec();
+            const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
 
+            if (decoded.userId !== req.params.id) {
+                throw new NotAuthorizedError();
+            }
+
+            const user = await User.findByIdAndUpdate(req.params.id, {$set: req.body}, {useFindAndModify: false, new: true}).exec();
             res.status(201).json(user);
         } catch (error) {
-            console.log('Error:', error.message);
+            console.log('Error:', error);
 
-            res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" })
+            if (error.name === "TokenExpiredError") {
+                res.status(403).json({message: "Сессия истекла."});
+            } else if (error.name === "NotAuthorizedError") {
+                res.status(403).json({message: error.message});
+            } else {
+                res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
+            }
         }
     }
 );
