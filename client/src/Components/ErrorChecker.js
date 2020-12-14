@@ -8,10 +8,12 @@ import {SimpleModal} from "./Common/SimpleModal";
  */
 export const ErrorChecker = ({children}) => {
     const dispatch = useDispatch();
-    const {user: {error}} = useSelector(state => state);
-    const [showError, setShowError] = useState(!!error);
+    const {user: {error: userError}, records: {error: recordsError}} = useSelector(state => state);
+    const errors = [userError, recordsError];
+    const hasError = errors.some(e => e);
+    const [showError, setShowError] = useState(hasError);
 
-    if (!showError && error) {
+    if (!showError && hasError) {
         setShowError(true);
     }
 
@@ -25,7 +27,7 @@ export const ErrorChecker = ({children}) => {
             {children}
             {showError && (
                 <SimpleModal
-                    content={<div>{error.message}</div>}
+                    content={<div>{errors.map(e => e?.message)}</div>}
                     header="Ошибка"
                     onClose={handelCloseError}
                     onSuccess={handelCloseError}

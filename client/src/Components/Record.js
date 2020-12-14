@@ -210,6 +210,7 @@ export const Record = ({
 
         icons.push(
             <IconRemove
+                key="icon"
                 title="удалить запись"
                 onClick={isEmptyRecord ? removeEmptyRecord : toggleRemoveDialog}
             />

@@ -9,7 +9,7 @@ import {SimpleDialog} from "./Common/SimpleDialog";
 /**
  * Компонент-карточка "Любимый фильм".
  */
-export const FavouriteMovie = ({movie, index, onRemove}) => {
+export const FavouriteMovie = ({movie, index, onRemove, disabled}) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isRemoveDialogVisible, toggleRemoveDialog] = useToggle(false);
     let card;
@@ -24,13 +24,14 @@ export const FavouriteMovie = ({movie, index, onRemove}) => {
                     className="remove-icon"
                 />
                 <Image
+                    onError={(e) => {e.target.onerror = null; e.target.src="../src/Assets/empty.png";}}
                     src={`${IMAGE_URL}/${movie.poster_path}`}
                     title={`${movie.title} (${new Date(movie.release_date).getFullYear()})`}
                 />
             </div>
         );
     } else {
-        card = <EmptyCard onClick={() => setModalVisible(true)} />;
+        card = <EmptyCard onClick={() => {if (!disabled) {setModalVisible(true);}}} />;
     }
 
     return (

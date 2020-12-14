@@ -25,7 +25,7 @@ export const Main = () => {
             );
         } else {
             return (
-                <Button as={Link} to="/diary" key="diary">
+                <Button as={Link} to={`/diary/${user.data.userId}`} key="diary">
                     Мой журнал
                 </Button>
             );

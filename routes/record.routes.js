@@ -15,7 +15,7 @@ router.post(
         try {
             const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
 
-            if (decoded.userId !== req.params.id) {
+            if (decoded.userId !== req.body.userId) {
                 throw new NotAuthorizedError();
             }
 
@@ -45,7 +45,7 @@ router.put(
         try {
             const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
 
-            if (decoded.userId !== req.params.id) {
+            if (decoded.userId !== req.body.userId) {
                 throw new NotAuthorizedError();
             }
 
@@ -74,7 +74,7 @@ router.delete(
         try {
             const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
 
-            if (decoded.userId !== req.params.id) {
+            if (decoded.userId !== req.body.userId) {
                 throw new NotAuthorizedError();
             }
 

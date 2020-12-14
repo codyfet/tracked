@@ -1,16 +1,17 @@
 import {CLEAR_USERS} from "../Actions/ActionTypes";
 import {getUsers} from "../Actions/Actions";
-import {Container, Pagination, Table} from "semantic-ui-react";
+import {Container, Header, Pagination, Table} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
+import {LoadingOverlay} from "../Components/Common/LoadingOverlay";
 
 /**
  * Страница журнал просмотров.
  */
 export const Users = () => {
     const dispatch = useDispatch();
-    const {users: {data: usersData}} = useSelector(state => state);
+    const {users: {data: usersData, isLoading}} = useSelector(state => state);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -28,8 +29,13 @@ export const Users = () => {
         }
     }, [usersData]);
 
+    if (isLoading) {
+        return <LoadingOverlay />;
+    }
+
     return (
         <Container className="users">
+            <Header as="h2" size='large'>Пользователи</Header>
             <Table singleLine>
                 <Table.Header>
                     <Table.Row>

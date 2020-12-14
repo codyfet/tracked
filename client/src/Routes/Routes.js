@@ -20,10 +20,10 @@ export const Routes = () => {
         return (
             <Switch>
                 <Route path="/" exact component={Main} />
-                <Route path="/diary" component={Diary} />
+                <Route path="/diary/:id" component={Diary} />
                 <Route path="/profile/:id" component={Profile} />
                 <Route path="/users" component={Users} />
-                <Redirect to="/diary" />
+                <Redirect to="/" />
             </Switch>
         );
     }

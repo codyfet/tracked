@@ -1,20 +1,21 @@
 import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, CLEAR_RECORDS} from "../Actions/ActionTypes";
 import {getRecords} from "../Actions/Actions";
-import {Button, Container, Dropdown, Grid, Message} from "semantic-ui-react";
+import {Button, Container, Dropdown, Header, Grid, Message} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {filter, map, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
-
 import {Record} from "../Components/Record";
+import {LoadingOverlay} from "./../Components/Common/LoadingOverlay";
 
 const TYPES = ["movie", "tvseries"];
 
 /**
  * Страница журнал просмотров.
  */
-export const Diary = () => {
+export const Diary = ({match}) => {
     const dispatch = useDispatch();
-    const {records: {data: records}, user: {data: {userId, years}}} = useSelector(state => state);
+    const userId = match.params.id;
+    const {records: {data: records, isLoading}, user: {data: {userId: loggedInUser, years}}} = useSelector(state => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
@@ -46,10 +47,18 @@ export const Diary = () => {
         return false;
     });
 
+    /**
+     * TODO: С годами нужно переделывать.
+     */
     const yearsOptions = map(years, (year) => ({key: year, value: year, text: year}));
+
+    if (isLoading) {
+        return <LoadingOverlay />;
+    }
 
     return (
         <Container className="diary">
+            <Header as="h2" size='large'>Журнал пользователя</Header>
             <Grid columns="2" verticalAlign="middle">
                 <Grid.Column>
                     <Dropdown
@@ -74,9 +83,13 @@ export const Diary = () => {
                     </span>&nbsp;&nbsp;&nbsp;
                 </Grid.Column>
                 <Grid.Column textAlign="right">
-                    <span>Добавить</span>&nbsp;&nbsp;&nbsp;
-                    <Button disabled={isEmptyRecordExist} onClick={() => dispatch({type: ADD_EMPTY_MOVIE_RECORD})}>Фильм</Button>
-                    <Button disabled={isEmptyRecordExist} onClick={() => dispatch({type: ADD_EMPTY_TVSERIES_RECORD})}>Сериал</Button>
+                    {loggedInUser === userId && (
+                        <>
+                            <span>Добавить</span>&nbsp;&nbsp;&nbsp;
+                            <Button disabled={isEmptyRecordExist} onClick={() => dispatch({type: ADD_EMPTY_MOVIE_RECORD})}>Фильм</Button>
+                            <Button disabled={isEmptyRecordExist} onClick={() => dispatch({type: ADD_EMPTY_TVSERIES_RECORD})}>Сериал</Button>
+                        </>
+                    )}
                 </Grid.Column>
             </Grid>
 

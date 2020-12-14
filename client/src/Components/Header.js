@@ -22,7 +22,7 @@ export const Header = () => {
                 <Fragment>
                     <span className={`menu ${isResponsive ? "responsive" : ""}`}>
                         <Link to="/users" key="users">пользователи</Link>
-                        <Link to="/diary" key="diary">журнал просмотров</Link>
+                        <Link to={`/diary/${user.data.userId}`} key="diary">журнал просмотров</Link>
                         <Link to={`/profile/${user.data.userId}`} key="profile">{`${user.data.username}`}</Link>
                         <a onClick={() => dispatch(logout())}>выйти</a>
                     </span>
@@ -45,7 +45,7 @@ export const Header = () => {
     };
 
     return (
-        <div className="header">
+        <div className="header-app">
             <span className="logo">
                 <Link to="/" key="main">
                     <span>tracked</span>

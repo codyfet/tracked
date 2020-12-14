@@ -1,12 +1,14 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Dropdown, Grid, Image, List, Segment} from "semantic-ui-react";
+import {Container, Dropdown, Grid, Header, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, Cell, LabelList, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
 import {map} from "lodash";
 import {FavouriteMovie} from "./../Components/FavouriteMovie";
 import {CLEAR_USERS} from "./../Actions/ActionTypes";
+import {Link} from "react-router-dom";
+import {LoadingOverlay} from "./../Components/Common/LoadingOverlay";
 
 const COLORS = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
@@ -37,10 +39,15 @@ export const Profile = ({match}) => {
     const profileUserId = match.params.id;
     const {
         users: {
-            data: usersData
+            data: usersData,
+            isLoading: isUsersLoading
         },
         stat: {
-            data: statData
+            data: statData,
+            isLoading: isStatLoading
+        },
+        user: {
+            data: loggedInUser
         }
     } = useSelector(state => state);
     const profileUser = usersData ? usersData.items[0] : null;
@@ -73,6 +80,7 @@ export const Profile = ({match}) => {
                     );
                     dispatch(updateUser(profileUserId, {favouriteMovies: updatedFavouriteMovies}));
                 }}
+                disabled={profileUserId !== loggedInUser.userId}
             />
         );
     }
@@ -85,8 +93,13 @@ export const Profile = ({match}) => {
     //     ...map(years, (year) => ({key: year, value: year, text: year}))
     // ];
 
+    if (isUsersLoading || isStatLoading) {
+        return <LoadingOverlay />;
+    }
+
     return (
         <Container className="profile">
+            <Header as="h2" size='large'>Профиль пользователя</Header>
             <Segment >
                 <Grid className="profile-data">
                     <Grid.Column width={4}>
@@ -97,6 +110,9 @@ export const Profile = ({match}) => {
                         <div className="counter">{statData?.recordsCurrentYearCount}</div>
                         <div className="label">За всё время</div>
                         <div className="counter">{statData?.recordsTotalCount}</div>
+                        <div>
+                            <Link to={`/diary/${profileUserId}`}>Смотреть журнал</Link>
+                        </div>
                     </Grid.Column>
                     <Grid.Column width={12}>
                         <div>Любимые фильмы</div>

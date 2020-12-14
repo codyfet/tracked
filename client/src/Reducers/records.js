@@ -2,6 +2,7 @@ import {filter, map} from "lodash";
 import {
     ADD_EMPTY_MOVIE_RECORD,
     ADD_EMPTY_TVSERIES_RECORD,
+    ADD_RECORD_FAILURE,
     ADD_RECORD_SUCCESS,
     CLEAR_RECORDS,
     DELETE_EMPTY_RECORD,
@@ -48,6 +49,17 @@ export default function records(state = getInitialAsyncContainer(), action) {
                 data: newRecords,
                 isLoading: false,
                 error: null
+            };
+        case ADD_RECORD_FAILURE:
+            return {
+                data: {
+                    ...state.data
+                },
+                isLoading: false,
+                error: {
+                    status: action.payload.response.status,
+                    message: action.payload.response.data.message
+                }
             };
         case ORDER_RECORDS_BY:
             // TODO: Исправить когда будет обновление через сервис
