@@ -4,6 +4,7 @@ const {verifyToken} = require("../utils/tokenUtils");
 const {NotAuthorizedError} = require("../utils/errorUtils");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const _ = require("lodash");
 
 const router = new Router();
 
@@ -25,6 +26,10 @@ router.get(
                 .find(filter)
                 .skip(page * limit)
                 .limit(limit)
+                .populate({
+                    path: 'records',
+                    select: 'viewdate -_id'
+                })
                 .exec();
 
             res.status(201).json({

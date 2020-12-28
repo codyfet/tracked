@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid, Header, Image, List, Segment} from "semantic-ui-react";
+import {Container, Dropdown, Grid, Header, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, Cell, LabelList, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
@@ -8,10 +8,27 @@ import {FavouriteMovie} from "./../Components/FavouriteMovie";
 import {CLEAR_USERS} from "./../Actions/ActionTypes";
 import {Link} from "react-router-dom";
 import {Page} from "./../Components/Common/Page";
+import {map} from "lodash";
 
 const COLORS = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5", "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
 const RADIAN = Math.PI / 180;
+
+/**
+ * Формирует опции для выпадающего списка "Годы".
+ *
+ * @param {Array<string>} years Массив лет.
+ */
+const getYearsOptions = (years = []) => {
+    return [
+        {
+            key: "total",
+            value: "total",
+            text: "За всё время"
+        },
+        ...map(years, (year) => ({key: year, value: year, text: year}))
+    ];
+};
 
 /**
  * Рисует легенду для графика "Жанры".
@@ -48,6 +65,7 @@ export const Profile = ({match}) => {
         }
     } = useSelector(state => state);
     const profileUser = usersData ? usersData.items[0] : null;
+    const yearsOptions = getYearsOptions(profileUser?.years);
 
     useEffect(() => {
         dispatch(getUsers({userId: profileUserId}));
@@ -82,14 +100,6 @@ export const Profile = ({match}) => {
         );
     }
 
-    /**
-     * TODO: Нужно научить брать из статистики.
-     */
-    // const yearsOptions = [
-    //     {key: "total", value: "total", text: "За всё время"},
-    //     ...map(years, (year) => ({key: year, value: year, text: year}))
-    // ];
-
     return (
         <Page asyncDataKeys={["users", "stat"]}>
             <Container className="profile">
@@ -122,13 +132,12 @@ export const Profile = ({match}) => {
                         <Grid.Column width={4}></Grid.Column>
                         <Grid.Column width={8} textAlign="center">
                             <h1>
-                                {/* TODO: Оживить после починик статистики. */}
-                                {/* <Dropdown
+                                <Dropdown
                                     inline
                                     options={yearsOptions}
                                     defaultValue={yearsOptions[0].value}
                                     onChange={() => {}}
-                                /> */}
+                                />
                             </h1>
                             <h3>700 оценок</h3>
                             <ResponsiveContainer width="100%" height={200}>

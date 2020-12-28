@@ -11,7 +11,7 @@ export class Record {
             const {details, credits} = data;
 
             this.id = details.id;
-            this.viewdate = new Date();
+            this.viewdate = new Date().setHours(0, 0, 0, 0);
             this.posterpath = details.poster_path;
             this.title = details.title;
             this.releaseYear = details.release_date.substring(0, 4);
