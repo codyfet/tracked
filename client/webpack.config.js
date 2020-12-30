@@ -89,6 +89,7 @@ module.exports = {
     output: {
         filename: getDistFilename("js"),
         path: path.resolve(__dirname, "dist"),
+        publicPath: "/",
     },
     devServer: {
         port: 4210,

@@ -1,0 +1,37 @@
+/**
+ * Стили для страницы Итоги.
+ */
+
+ .results {
+    padding-top: 14px;
+
+    .record-filter {
+        cursor: pointer;
+        border-bottom: 1px solid @blue;
+
+        &.not-selected {
+            border-bottom: none;
+        }
+    }
+
+    .results-table {
+        tr {
+            cursor: pointer;
+
+            &.selected {
+                background: #cbf2ff;
+            }
+
+            .position input {
+                width: 50px;
+                border: 1px solid @blue;
+                border-top: 0;
+                border-left: 0;
+                border-right: 0;
+                border-radius: 0;
+                text-align: center;
+                background: #ececec;
+            }
+        }
+    }
+}

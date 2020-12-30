@@ -3,9 +3,10 @@ import {useSelector} from "react-redux";
 import {Redirect, Route, Switch} from "react-router-dom";
 import {Main} from "../Pages/Main";
 import {Login} from "../Pages/Login";
+import {Users} from "../Pages/Users";
+import {Results} from "../Pages/Results";
 import {Diary} from "../Pages/Diary";
 import {Profile} from "../Pages/Profile";
-import {Users} from "../Pages/Users";
 
 /**
  * Возвращает набор доступных роутов приложения.
@@ -20,9 +21,10 @@ export const Routes = () => {
         return (
             <Switch>
                 <Route path="/" exact component={Main} />
+                <Route path="/users" component={Users} />
+                <Route path="/results/:id" component={Results} />
                 <Route path="/diary/:id" component={Diary} />
                 <Route path="/profile/:id" component={Profile} />
-                <Route path="/users" component={Users} />
                 <Redirect to="/" />
             </Switch>
         );

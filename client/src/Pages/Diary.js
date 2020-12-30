@@ -6,8 +6,7 @@ import {filter, map, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import {Record} from "../Components/Record";
 import {Page} from "./../Components/Common/Page";
-
-const TYPES = ["movie", "tvseries"];
+import {DEFAULT_RECORDS_FILTER} from "./../Consts";
 
 /**
  * Страница журнал просмотров.
@@ -20,7 +19,7 @@ export const Diary = ({match}) => {
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
 
-    const [recordsFilter, setRecordsFilter] = useState({sortBy: "-viewdate", year: new Date().getFullYear(), types: TYPES});
+    const [recordsFilter, setRecordsFilter] = useState(DEFAULT_RECORDS_FILTER);
 
     const isEmptyRecordExist = some(records, ({isEmptyRecord}) => isEmptyRecord);
 
@@ -98,7 +97,7 @@ export const Diary = ({match}) => {
                 ))}
 
                 {filtered.length === 0 && (
-                        <Message info>
+                    <Message info>
                         <Message.Header>В вашем журнале пока нет ни одной записи</Message.Header>
                         <p>Добавьте запись о просмотренном фильме или сериале</p>
                     </Message>

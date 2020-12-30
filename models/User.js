@@ -25,7 +25,9 @@ const userSchema = new Schema({
  * Добавляем виртуальное поле years (которого нет в БД).
  */
 userSchema.virtual('years').get(function() {
-    return this.records.map((record) => record.viewdate.getFullYear());
+    const years = this.records.map((record) => record.viewdate.getFullYear());
+    const uniqueYears = [...new Set(years)];
+    return uniqueYears;
 });
 
 /**

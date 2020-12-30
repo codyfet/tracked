@@ -22,6 +22,7 @@ export const Header = () => {
                 <Fragment>
                     <span className={`menu ${isResponsive ? "responsive" : ""}`}>
                         <Link to="/users" key="users">пользователи</Link>
+                        <Link to={`/results/${user.data.userId}`} key="results">итоги</Link>
                         <Link to={`/diary/${user.data.userId}`} key="diary">журнал просмотров</Link>
                         <Link to={`/profile/${user.data.userId}`} key="profile">{`${user.data.username}`}</Link>
                         <a onClick={() => dispatch(logout())}>выйти</a>
