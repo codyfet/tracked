@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
 import {TMDbSelect} from "./TMDbSelect";
-import {Flag, Grid, Image, Input, Segment} from "semantic-ui-react";
+import {Flag, Grid, Image, Input, Label, Segment} from "semantic-ui-react";
 import {SimpleDialog} from "./Common/SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
@@ -32,6 +32,8 @@ export const Record = ({
     type,
     production_countries,
     season,
+    position,
+    isReadonly
 }) => {
     const isEmptyRecord = (_id === "0");
     const isMovie = type === "movie";
@@ -71,8 +73,10 @@ export const Record = ({
                     locale={ru}
                     selected={viewdateValue}
                     onChange={(viewdate) => {
-                        setViewdateValue(viewdate);
-                        toggleViewdateEditMode();
+                        if (!isReadonly) {
+                            setViewdateValue(viewdate);
+                            toggleViewdateEditMode();
+                        }
                     }}
                     customInput={<CustomInput  />}
                     onBlur={toggleViewdateEditMode}
@@ -98,7 +102,7 @@ export const Record = ({
      * Рисует информацию о сезоне (для сериалов).
      */
     const renderSeasonInfo = () => {
-        return isEditModeSeasonInfoEnabled ? (
+        return !isReadonly && isEditModeSeasonInfoEnabled ? (
             <Input
                 className="edit-mode-season-info"
                 value={seasonValue}
@@ -173,7 +177,7 @@ export const Record = ({
                     className="edit-mode-rating"
                     value={ratingValue}
                     autoFocus
-                    onChange={(e) => setRatingValue(e.target.value)}
+                    onChange={(e) => !isReadonly && setRatingValue(e.target.value)}
                     onFocus={(e) => e.currentTarget.select()}
                     onBlur={toggleRatingEditMode}
                 />
@@ -239,7 +243,8 @@ export const Record = ({
                         {renderRating()}
                     </Grid.Column>
                 </Grid>
-                {renderIconsPanel()}
+                {!isReadonly && renderIconsPanel()}
+                {isReadonly && <Label circular className="position" color="orange">{position}</Label>}
             </Segment>
 
             {isRemoveDialogVisible && (

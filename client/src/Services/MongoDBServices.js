@@ -63,6 +63,15 @@ export function updateRecord(recordId, fields) {
 }
 
 /**
+ * Изменяет массив запись.
+ *
+ * @param {[{id, ...fieldsToUpdate}]} records Массив записей для изменения.
+ */
+export function updateRecords(records) {
+    return axios.put("/api/record/update", records);
+}
+
+/**
  * Удаляет запись.
  *
  * @param {string} recordId ObjectId идентификатор записи.

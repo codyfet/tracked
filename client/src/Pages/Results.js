@@ -1,11 +1,27 @@
-import {getRecords} from "../Actions/Actions";
+import {getRecords, updateRecords} from "../Actions/Actions";
 import {Container, Header, Input, Message, Table} from "semantic-ui-react";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Page} from "./../Components/Common/Page";
 import {YearsSelect} from "../Components/YearsSelect";
 import {CLEAR_RECORDS} from "./../Actions/ActionTypes";
 import {DEFAULT_RECORDS_FILTER} from "./../Consts";
+import {isEmpty} from "lodash";
+import {Link} from "react-router-dom";
+import {Record} from "./../Components/Record";
+
+/**
+ * Сравнивает объекты записи по значению Position.
+ */
+function compareRecordsByPosition(a, b) {
+    if (parseInt(a.position) < parseInt(b.position)) {
+        return -1;
+    }
+    if (parseInt(a.position) > parseInt(b.position)) {
+        return 1;
+    }
+    return 0;
+}
 
 /**
  * Возвращает отфильтрованные записи (фильмы или сериалы).
@@ -25,9 +41,12 @@ const getFilteredRecords = (records, isMoviesSelected) => {
 export const Results = ({match}) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
-    const {records: {data: records}, user: {data: {years}}} = useSelector(state => state);
+    const {records: {data: records}, user: {data: {years, userId}}} = useSelector(state => state);
     const [isMoviesSelected, setMoviesSelected] = useState(true);
     const [enrichedRecords, setEnrichedRecords] = useState(null);
+    const [isEditModeClicked, setEditModeClicked] = useState(false);
+    const isRecordsEmpty = isEmpty(enrichedRecords);
+    const isResultsExist = !isRecordsEmpty && records?.some((r) => r.position && r.type === (isMoviesSelected ? "movie" : "tvseries"));
 
     useEffect(() => {
         dispatch(getRecords(profileUserId, DEFAULT_RECORDS_FILTER));
@@ -66,7 +85,120 @@ export const Results = ({match}) => {
                 positionMap[positionElements[i].dataset.id] = positionValue;
             }
         }
-        // TODO: Выполняем запрос, добавляем атрибуты с позицией к записи
+        const ids = Object.keys(positionMap);
+        const records = [];
+        ids.forEach((id) => {
+            records.push({
+                id,
+                position: positionMap[id],
+                viewdate: "2020-12-27T21:00:00.000Z", // TODO: изменить в зависимости от выбранного года
+                userId
+            });
+        });
+        if (isEditModeClicked) {
+            setEditModeClicked(false);
+        }
+        dispatch(updateRecords(records));
+    };
+
+    const handleEditResultsClick = () => {
+        setEditModeClicked(true);
+    };
+
+    const renderContent = () => {
+        /**
+         * Итоги уже существуют.
+         */
+        if (isResultsExist && !isEditModeClicked) {
+            return (
+                <>
+                    {getFilteredRecords(records, isMoviesSelected)
+                        .filter((record) => record.position)
+                        .sort(compareRecordsByPosition)
+                        .map((record) => (
+                            <Record
+                                isReadonly
+                                key={record._id}
+                                {...record}
+                            />
+                        ))
+                    }
+                    <a href="#" onClick={handleEditResultsClick}>Редактировать</a>
+                </>
+            );
+            /**
+             * Итогов ещё нет.
+             */
+        } else {
+            /**
+             * У пользователя нет записей в журнале за этот год.
+             */
+            if (isRecordsEmpty) {
+                return (
+                    <>
+                        <Message info>
+                            <p>В вашем журнале нет ни одной записи за текущий год.</p>
+                        </Message>
+                        <Link to={`/diary/${userId}`} key="diary">Перейти к журналу</Link>
+                    </>
+                );
+                /**
+                 * У пользователя есть записи в журнале за этот год.
+                 */
+            } else {
+                return (
+                    <>
+                        <Message info>
+                            <p>Расcтавьте позиции в таблице ниже и нажмите кнопку &#34;Сохранить&#34;</p>
+                        </Message>
+                        {!isEmpty(enrichedRecords) && (
+                            <Table className="results-table" celled>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell>Позиция</Table.HeaderCell>
+                                        <Table.HeaderCell>Наименование</Table.HeaderCell>
+                                        <Table.HeaderCell>Оценка</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+
+                                <Table.Body>
+                                    {getFilteredRecords(enrichedRecords, isMoviesSelected).map((record) => {
+                                        return (
+                                            <Table.Row
+                                                data-id={record._id}
+                                                key={record._id}
+                                                onClick={handleRowClick}
+                                                className={`${record.isSelected ? "selected" : ""}`
+                                                }>
+                                                <Table.Cell collapsing>
+                                                    <Input
+                                                        data-id={record._id}
+                                                        className="position"
+                                                        maxLength="2"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        onChange={(e) => {
+                                                            setEditModeClicked(true);
+                                                            const newRecords = [...enrichedRecords];
+                                                            const newRecord = newRecords.find((enrichedRecord) => enrichedRecord._id === record._id);
+                                                            newRecord.position = e.target.value;
+                                                            setEnrichedRecords(newRecords);
+                                                        }}
+                                                        value={record.position}
+                                                    />
+                                                </Table.Cell>
+                                                <Table.Cell>{record.title}</Table.Cell>
+                                                <Table.Cell className={record.rating === "0" ? "red" : ""}>{record.rating}</Table.Cell>
+                                            </Table.Row>
+                                        );
+                                    })}
+                                </Table.Body>
+                            </Table>
+                        )}
+                        <a href="#" onClick={handeCreateResultsClick}>Сохранить</a>
+                    </>
+                );
+            }
+        }
     };
 
     return (
@@ -88,49 +220,7 @@ export const Results = ({match}) => {
                 >
                     Сериалы
                 </span>&nbsp;&nbsp;&nbsp;
-                <Message info>
-                    <Message.Header>Итоги ещё не сформированы</Message.Header>
-                    <p>Расcтавьте позиции в таблице ниже и нажмите кнопку &#34;Создать итоги&#34;</p>
-                </Message>
-
-                {enrichedRecords && (
-                    <Fragment>
-                        <Table className="results-table" celled>
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell>Позиция</Table.HeaderCell>
-                                    <Table.HeaderCell>Наименование</Table.HeaderCell>
-                                    <Table.HeaderCell>Оценка</Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-
-                            <Table.Body>
-                                {getFilteredRecords(enrichedRecords, isMoviesSelected).map((record) => {
-                                    return (
-                                        <Table.Row
-                                            data-id={record._id}
-                                            key={record._id}
-                                            onClick={handleRowClick}
-                                            className={`${record.isSelected ? "selected" : ""}`
-                                        }>
-                                            <Table.Cell collapsing>
-                                                <Input
-                                                    data-id={record._id}
-                                                    className="position"
-                                                    maxLength="2"
-                                                    onClick={(e) => e.stopPropagation()}
-                                                />
-                                            </Table.Cell>
-                                            <Table.Cell>{record.title}</Table.Cell>
-                                            <Table.Cell className={record.rating === "0" ? "red" : ""}>{record.rating}</Table.Cell>
-                                        </Table.Row>
-                                    );
-                                })}
-                            </Table.Body>
-                        </Table>
-                        <a href="#" onClick={handeCreateResultsClick}>Создать итоги</a>
-                    </Fragment>
-                )}
+                {renderContent()}
             </Container>
         </Page>
     );

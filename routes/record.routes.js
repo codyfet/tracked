@@ -5,6 +5,7 @@ const {verifyToken} = require("../utils/tokenUtils");
 const {NotAuthorizedError} = require("../utils/errorUtils");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const async = require('async');
 
 const router = new Router();
 
@@ -61,6 +62,51 @@ router.put(
             const record = await Record.findByIdAndUpdate(req.params.id, {$set: req.body}, {useFindAndModify: false, new: true}).exec();
 
             res.status(201).json(record);
+        } catch (error) {
+            console.log('Error:', error.message);
+
+            if (error.name === "TokenExpiredError") {
+                res.status(403).json({message: "Сессия истекла."});
+            } else if (error.name === "NotAuthorizedError") {
+                res.status(403).json({message: error.message});
+            } else {
+                res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
+            }
+        }
+    }
+);
+
+// Обновление массива записей.
+// /api/record/update
+router.put(
+    "/update",
+    verifyToken,
+    async (req, res) => {
+        try {
+            /**
+             * Единовременно обновляется только один запрос к бд.
+             */
+            async.eachSeries(req.body, function iteratee(item, callback) {
+                Record.findByIdAndUpdate(item.id, {position: item.position}, {useFindAndModify: false}).exec();
+                callback();
+            }, async function allDone (err) {
+                if (!err) {
+                    const userId = req.body[0].userId;
+                    const year = new Date(req.body[0].viewdate).getFullYear();
+                    const filter = {
+                        userId,
+                        viewdate: {"$gte": new Date(year, 0, 1), "$lt": new Date(year, 11, 31)}
+                    }
+                    try {
+                        const records = await Record.find(filter).exec();
+                        res.status(201).json(records);
+                    } catch (errorF) {
+                        res.status(403).json({message: errorF.message});
+                    }
+
+                }
+                console.log("Обновление закончено, либо произошла ошибка. Ошибка: ", err);
+            });
         } catch (error) {
             console.log('Error:', error.message);
 

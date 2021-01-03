@@ -18,6 +18,6 @@ const TYPES = ["movie", "tvseries"];
  */
 export const DEFAULT_RECORDS_FILTER = {
     sortBy: "-viewdate",
-    year: new Date().getFullYear(),
+    year: new Date().getFullYear() - 1,
     types: TYPES
 };

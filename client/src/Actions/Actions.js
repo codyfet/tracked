@@ -48,6 +48,7 @@ import {
     login as tryLogin,
     register as tryRegister,
     updateRecord as tryUpdateRecord,
+    updateRecords as tryUpdateRecords,
     updateUser as tryUpdateUser,
 } from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
@@ -147,6 +148,26 @@ export function updateRecord(recordId, fields) {
             return result;
         } catch (error) {
             dispatch({type: UPDATE_RECORD_FAILURE, payload: error});
+            throw error;
+        }
+    };
+}
+
+/**
+ * Thunk функция для выполнения ajax запроса для обновления массива записей.
+ *
+ * @param {Object[]} records Массив записей.
+ */
+export function updateRecords(records) {
+    return async function (dispatch) {
+        dispatch({type: GET_RECORDS_START});
+
+        try {
+            const result = await tryUpdateRecords(records);
+            dispatch({type: GET_RECORDS_SUCCESS, payload: result});
+            return result;
+        } catch (error) {
+            dispatch({type: GET_RECORDS_FAILURE, payload: error});
             throw error;
         }
     };

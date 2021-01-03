@@ -58,6 +58,7 @@ const Record = new Schema({
     notFinished: {type: Boolean},
     cast: [CastItem],
     crew: [CrewItem],
+    position: {type: String},
 
     season: {type: String},
     inProduction: {type: Boolean},
