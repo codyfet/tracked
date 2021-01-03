@@ -73,38 +73,52 @@ export const Results = ({match}) => {
     };
 
     /**
-     * Обработчик нажатия на кнопку "Создать итоги".
+     * Обработчик нажатия на кнопку "Сохранить".
      */
     const handeCreateResultsClick = (event) => {
         event.preventDefault();
+        const recordsToUpdate = [];
         const positionElements = event.target.closest(".results").getElementsByClassName("position");
         const positionMap = {};
+
         for (let i = 0; i < positionElements.length; i++) {
             const positionValue = positionElements[i].getElementsByTagName("input")[0].value;
-            if (positionValue !== "") {
-                positionMap[positionElements[i].dataset.id] = positionValue;
-            }
+            positionMap[positionElements[i].dataset.id] = positionValue;
         }
-        const ids = Object.keys(positionMap);
-        const records = [];
-        ids.forEach((id) => {
-            records.push({
-                id,
-                position: positionMap[id],
-                viewdate: "2020-12-27T21:00:00.000Z", // TODO: изменить в зависимости от выбранного года
-                userId
-            });
+
+        getFilteredRecords(records, isMoviesSelected).forEach((record) => {
+            const id = record._id;
+            const oldValue = record.position;
+            const newValue = positionMap[record._id];
+
+
+            if (oldValue !== newValue) {
+                recordsToUpdate.push({
+                    id,
+                    position: positionMap[id],
+                    viewdate: "2020-12-27T21:00:00.000Z", // TODO: изменить в зависимости от выбранного года
+                    userId
+                });
+            }
         });
+
         if (isEditModeClicked) {
             setEditModeClicked(false);
         }
-        dispatch(updateRecords(records));
+
+        dispatch(updateRecords(recordsToUpdate));
     };
 
+    /**
+     * Обработчик нажатия на кнопку "Редактировать".
+     */
     const handleEditResultsClick = () => {
         setEditModeClicked(true);
     };
 
+    /**
+     * Рисует содержимое страницы.
+     */
     const renderContent = () => {
         /**
          * Итоги уже существуют.
@@ -179,8 +193,12 @@ export const Results = ({match}) => {
                                                         onChange={(e) => {
                                                             setEditModeClicked(true);
                                                             const newRecords = [...enrichedRecords];
-                                                            const newRecord = newRecords.find((enrichedRecord) => enrichedRecord._id === record._id);
-                                                            newRecord.position = e.target.value;
+                                                            const newRecordIndex = newRecords.findIndex((nr) => nr._id === record._id);
+                                                            const newRecord = {
+                                                                ...newRecords.find((enrichedRecord) => enrichedRecord._id === record._id),
+                                                                position: e.target.value
+                                                            };
+                                                            newRecords[newRecordIndex] = newRecord;
                                                             setEnrichedRecords(newRecords);
                                                         }}
                                                         value={record.position}
