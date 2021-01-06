@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Page} from "./../Components/Common/Page";
 import {YearsSelect} from "../Components/YearsSelect";
 import {CLEAR_RECORDS} from "./../Actions/ActionTypes";
-import {DEFAULT_RECORDS_FILTER} from "./../Consts";
+import {CURRENT_YEAR, DEFAULT_RECORDS_FILTER} from "./../Consts";
 import {isEmpty} from "lodash";
 import {Link} from "react-router-dom";
 import {Record} from "./../Components/Record";
@@ -45,7 +45,7 @@ export const Results = ({match}) => {
     const [isMoviesSelected, setMoviesSelected] = useState(true);
     const [enrichedRecords, setEnrichedRecords] = useState(null);
     const [isEditModeClicked, setEditModeClicked] = useState(false);
-    const [year, setYear] = useState(0);
+    const [year, setYear] = useState(CURRENT_YEAR);
     const isRecordsEmpty = isEmpty(enrichedRecords);
     const isResultsExist = !isRecordsEmpty && records?.some((r) => r.position && r.type === (isMoviesSelected ? "movie" : "tvseries"));
 
@@ -96,12 +96,11 @@ export const Results = ({match}) => {
             const oldValue = record.position;
             const newValue = positionMap[record._id];
 
-
             if (oldValue !== newValue) {
                 recordsToUpdate.push({
                     id,
                     position: positionMap[id],
-                    viewdate: "2020-12-27T21:00:00.000Z", // TODO: изменить в зависимости от выбранного года
+                    viewdate: new Date().setYear(year),
                     userId
                 });
             }

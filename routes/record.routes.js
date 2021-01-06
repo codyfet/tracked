@@ -105,7 +105,10 @@ router.put(
                     }
 
                 }
-                console.log("Обновление закончено, либо произошла ошибка. Ошибка: ", err);
+                console.log("Обновление закончено.");
+                if (err) {
+                    console.log("Ошибка: ", err);
+                }
             });
         } catch (error) {
             console.log('Error:', error.message);
