@@ -26,10 +26,13 @@ router.get(
                 .find(filter)
                 .skip(page * limit)
                 .limit(limit)
-                .populate({
-                    path: 'records',
-                    select: 'viewdate -_id'
-                })
+                /**
+                 * Отключено за ненадобностью.
+                 */
+                // .populate({
+                //     path: 'records',
+                //     select: 'viewdate -_id'
+                // })
                 .exec();
 
             res.status(201).json({

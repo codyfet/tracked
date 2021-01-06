@@ -32,9 +32,11 @@ userSchema.virtual('years').get(function() {
 
 /**
  * Добавляем виртуальные поля в ответ.
+ *
+ * Отключено за ненадобностью. При необходимости перевести в true.
  */
 userSchema.set('toJSON', {
-    virtuals: true
+    virtuals: false
 });
 
 /**

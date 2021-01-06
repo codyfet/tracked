@@ -49,6 +49,7 @@ export const Profile = ({match}) => {
         }
     } = useSelector(state => state);
     const profileUser = usersData ? usersData.items[0] : null;
+    const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
 
     useEffect(() => {
@@ -122,9 +123,9 @@ export const Profile = ({match}) => {
                             <h1>
                                 <YearsSelect showAllOption selectedYear={year} onSelect={(event, data) => setYear(data.value)}/>
                             </h1>
-                            <h3>700 оценок</h3>
+                            <h3>{`${marksData.reduce((acc, cur) => acc += cur.markCount, 0)}`} оценок</h3>
                             <ResponsiveContainer width="100%" height={200}>
-                                <BarChart margin={{top: 30}} data={statData?.marksData}>
+                                <BarChart margin={{top: 30}} data={marksData}>
                                     <Bar dataKey="markCount" fill="#5CE0E6" >
                                         <LabelList dataKey="markCount" position="top" />
                                     </Bar>
