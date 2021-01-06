@@ -216,13 +216,14 @@ export function getRecords(userId, options) {
  * Thunk функция для выполнения ajax запроса для получения статистики записей пользователя.
  *
  * @param {ObjectId} userId Идентификатор пользователя.
+ * @param {number} year Выбраннй год.
  */
-export function getStat(userId) {
+export function getStat(userId, year) {
     return async function (dispatch) {
         dispatch({type: GET_STAT_START});
 
         try {
-            const statResponse = await tryGetStat(userId);
+            const statResponse = await tryGetStat(userId, year);
             dispatch({type: GET_STAT_SUCCESS, payload: statResponse});
             return statResponse;
         } catch (error) {

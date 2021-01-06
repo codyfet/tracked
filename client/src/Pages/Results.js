@@ -41,19 +41,24 @@ const getFilteredRecords = (records, isMoviesSelected) => {
 export const Results = ({match}) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
-    const {records: {data: records}, user: {data: {years, userId}}} = useSelector(state => state);
+    const {records: {data: records}, user: {data: {userId}}} = useSelector(state => state);
     const [isMoviesSelected, setMoviesSelected] = useState(true);
     const [enrichedRecords, setEnrichedRecords] = useState(null);
     const [isEditModeClicked, setEditModeClicked] = useState(false);
+    const [year, setYear] = useState(0);
     const isRecordsEmpty = isEmpty(enrichedRecords);
     const isResultsExist = !isRecordsEmpty && records?.some((r) => r.position && r.type === (isMoviesSelected ? "movie" : "tvseries"));
 
     useEffect(() => {
-        dispatch(getRecords(profileUserId, DEFAULT_RECORDS_FILTER));
+        const filter = {
+            ...DEFAULT_RECORDS_FILTER,
+            year
+        };
+        dispatch(getRecords(profileUserId, filter));
         return () => {
             dispatch({type: CLEAR_RECORDS});
         };
-    }, [dispatch, profileUserId]);
+    }, [dispatch, profileUserId, year]);
 
     useEffect(() => {
         setEnrichedRecords(records);
@@ -223,7 +228,7 @@ export const Results = ({match}) => {
         <Page asyncDataKeys={["records"]}>
             <Container className="results">
                 <Header as="h2" size='large'>Итоги</Header>
-                <YearsSelect years={years} />&nbsp;&nbsp;&nbsp;
+                <YearsSelect selectedYear={year} onSelect={(event, data) => setYear(data.value)}/>&nbsp;&nbsp;&nbsp;
                 <span
                     className={`record-filter ${isMoviesSelected ? "" : "not-selected"}`}
                     onClick={() => setMoviesSelected(true)}

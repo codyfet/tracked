@@ -14,10 +14,15 @@ export const TRACKED_USER_DATA = "TRACKED_USER_DATA";
 const TYPES = ["movie", "tvseries"];
 
 /**
+ * Текущий год.
+ */
+export const CURRENT_YEAR = new Date().getFullYear();
+
+/**
  * Дефолтный фильтр для сервиса, возвращающего записи пользователя.
  */
 export const DEFAULT_RECORDS_FILTER = {
     sortBy: "-viewdate",
-    year: new Date().getFullYear() - 1,
+    year: CURRENT_YEAR,
     types: TYPES
 };

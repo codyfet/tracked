@@ -225,9 +225,15 @@ router.get(
                 userId: req.query.userId,
             }
 
+            /**
+             * Если пользователь выбрал "За все года", то фильтр по году не добавляем.
+             */
+            if (req.query.year !== "0") {
+                filter.viewdate = {"$gte": new Date(req.query.year, 0, 1), "$lt": new Date(req.query.year, 11, 31)}
+            }
+
             const records = await Record.find(filter).exec();
             const movies = _.filter(records, (item) => item.type === "movie");
-
             const actStat = StatCalculator.getActorsActressesData(movies);
 
             /**

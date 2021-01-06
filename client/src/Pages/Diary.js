@@ -1,12 +1,13 @@
 import {ADD_EMPTY_MOVIE_RECORD, ADD_EMPTY_TVSERIES_RECORD, CLEAR_RECORDS} from "../Actions/ActionTypes";
 import {getRecords} from "../Actions/Actions";
-import {Button, Container, Dropdown, Grid, Header, Message} from "semantic-ui-react";
+import {Button, Container, Grid, Header, Message} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
-import {filter, map, some} from "lodash";
+import {filter, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import {Record} from "../Components/Record";
 import {Page} from "./../Components/Common/Page";
 import {DEFAULT_RECORDS_FILTER} from "./../Consts";
+import {YearsSelect} from "../Components/YearsSelect";
 
 /**
  * Страница журнал просмотров.
@@ -14,7 +15,7 @@ import {DEFAULT_RECORDS_FILTER} from "./../Consts";
 export const Diary = ({match}) => {
     const dispatch = useDispatch();
     const userId = match.params.id;
-    const {records: {data: records}, user: {data: {userId: loggedInUser, years}}} = useSelector(state => state);
+    const {records: {data: records}, user: {data: {userId: loggedInUser}}} = useSelector(state => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
@@ -46,22 +47,15 @@ export const Diary = ({match}) => {
         return false;
     });
 
-    /**
-     * TODO: С годами нужно переделывать.
-     */
-    const yearsOptions = map(years, (year) => ({key: year, value: year, text: year}));
-
     return (
         <Page asyncDataKeys={["records"]}>
             <Container className="diary">
                 <Header as="h2" size='large'>Журнал пользователя</Header>
                 <Grid columns="2" verticalAlign="middle">
                     <Grid.Column>
-                        <Dropdown
-                            inline
-                            options={yearsOptions}
-                            defaultValue={yearsOptions[0].value}
-                            onChange={(e) => setRecordsFilter({...recordsFilter, year: e.target.textContent})}
+                        <YearsSelect
+                            selectedYear={recordsFilter.year}
+                            onSelect={(event, data) => setRecordsFilter({...recordsFilter, year: data.value})}
                         />&nbsp;&nbsp;&nbsp;
                         <span
                             className={`record-filter ${isMoviesFilterApplied ? "" : "not-selected"}`}
@@ -98,7 +92,7 @@ export const Diary = ({match}) => {
 
                 {filtered.length === 0 && (
                     <Message info>
-                        <Message.Header>В вашем журнале пока нет ни одной записи</Message.Header>
+                        <Message.Header>В вашем журнале пока нет ни одной записи для выбранного года</Message.Header>
                         <p>Добавьте запись о просмотренном фильме или сериале</p>
                     </Message>
                 )}

@@ -13,9 +13,9 @@ export const Page = (props) => {
     const keys = props.asyncDataKeys;
 
     for (let i = 0; i < keys.length; i++) {
-        const {isLoading} = state[keys[i]];
+        const {isLoading, data} = state[keys[i]];
 
-        if (isLoading) {
+        if (!data && isLoading) {
             return <LoadingOverlay />;
         }
     }

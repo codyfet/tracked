@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Container, Grid, Header, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, Cell, LabelList, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
@@ -49,16 +49,21 @@ export const Profile = ({match}) => {
         }
     } = useSelector(state => state);
     const profileUser = usersData ? usersData.items[0] : null;
+    const [year, setYear] = useState(0);
 
     useEffect(() => {
         dispatch(getUsers({userId: profileUserId}));
-        dispatch(getStat(profileUserId));
 
         return () => {
             dispatch({type: CLEAR_USERS});
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        dispatch(getStat(profileUserId, year));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [year]);
 
     let favs = [];
 
@@ -115,7 +120,7 @@ export const Profile = ({match}) => {
                         <Grid.Column width={4}></Grid.Column>
                         <Grid.Column width={8} textAlign="center">
                             <h1>
-                                <YearsSelect years={profileUser?.years} showAllOption/>
+                                <YearsSelect showAllOption selectedYear={year} onSelect={(event, data) => setYear(data.value)}/>
                             </h1>
                             <h3>700 оценок</h3>
                             <ResponsiveContainer width="100%" height={200}>

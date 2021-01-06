@@ -107,9 +107,10 @@ export function getRecords(userId, options) {
  * Возвращает объект со статистикой.
  *
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
+ * @param {number} year Выбранный год.
  */
-export function getStat(userId) {
-    const params = {userId};
+export function getStat(userId, year) {
+    const params = {userId, year};
 
     return axios.get("/api/stat", {params});
 }

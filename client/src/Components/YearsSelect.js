@@ -1,21 +1,28 @@
 import React from "react";
 import {Dropdown} from "semantic-ui-react";
 import {map} from "lodash";
+import {CURRENT_YEAR} from "./../Consts";
 
 /**
- * Формирует опции для выпадающего списка "Годы".
+ * Формирует опции для выпадающего списка "Годы" от 2010 до текущего года.
  *
- * @param {string[]} years Массив лет.
  * @param {boolean} showAllOption Признак отрисовки опции "Все года".
  */
-const getYearsOptions = (years = [], showAllOption) => {
+const getBasicYearsOptions = (showAllOption) => {
     const options = showAllOption ? [{
         key: "total",
-        value: "total",
+        value: 0,
         text: "За всё время"
     }] : [];
 
-    options.push(...map(years, (year) => ({key: year, value: year, text: year})));
+    for (let year = CURRENT_YEAR; year >= 2010; year--) {
+        options.push({
+            key: year,
+            value: year,
+            text: year
+        });
+    }
+
     return options;
 };
 
@@ -23,21 +30,21 @@ const getYearsOptions = (years = [], showAllOption) => {
  * Компонент выпадающий список для поиска фильмов/сериалов в TMDb.
  * Единовременно может существовать только один на странице.
  *
- * @prop {string[]} years Массив лет.
+ * @prop {string} selectedYear Выбранный год.
+ * @prop {Function} onSelect Обработчик выбора значения в селекте.
+ * @prop {boolean} showAllOption Признак отрисовки опции "Все".
  */
-export const YearsSelect = ({years, onSelect, showAllOption}) => {
-    const yearsOptions = getYearsOptions(years, showAllOption);
-
-    const handleSelect = () => {
-        onSelect();
-    };
+export const YearsSelect = ({selectedYear, onSelect, showAllOption}) => {
+    const yearsOptions = getBasicYearsOptions(showAllOption);
+    const selectedOption = yearsOptions.find((option) => option.value === selectedYear) || yearsOptions[0];
 
     return (
         <Dropdown
             inline
             options={yearsOptions}
-            defaultValue={yearsOptions[0].value}
-            onChange={handleSelect}
+            defaultValue={yearsOptions[yearsOptions.length - 1].value}
+            value={selectedOption.value}
+            onChange={onSelect}
         />
     );
 };
