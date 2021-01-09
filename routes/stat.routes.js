@@ -212,18 +212,29 @@ class StatCalculator {
      * Возвращает количество просмотренных фильмов в текущем году.
      */
     static getRecordsCurrentYearCount(records) {
-        const groupedRecordsByYears = _.groupBy(records, (r) => new Date(r.viewdate).getFullYear());
+        const [moviesRecords, tvseriesRecords] = _.partition(records, (r) => r.type === "movie");
+        const groupedMoviesByYears = _.groupBy(moviesRecords, (r) => new Date(r.viewdate).getFullYear());
+        const groupedTvseriesByYears = _.groupBy(tvseriesRecords, (r) => new Date(r.viewdate).getFullYear());
         const currentYear = new Date().getFullYear();
-        const recordsCurrentYearCount = groupedRecordsByYears[currentYear] ? groupedRecordsByYears[currentYear].length : 0;
+        const movies = groupedMoviesByYears[currentYear] ? groupedMoviesByYears[currentYear].length : 0;
+        const tvseries = groupedTvseriesByYears[currentYear] ? groupedTvseriesByYears[currentYear].length : 0;
 
-        return recordsCurrentYearCount;
+        return {
+            movies,
+            tvseries
+        };
     }
 
     /**
      * Возвращает количество просмотренных фильмов за все года.
      */
     static getRecordsTotalCount(records) {
-        return records.length;
+        const [moviesRecords, tvseriesRecords] = _.partition(records, (r) => r.type === "movie");
+
+        return {
+            movies: moviesRecords.length,
+            tvseries: tvseriesRecords.length
+        };
     }
 }
 

@@ -109,9 +109,21 @@ export const Profile = ({match}) => {
                             <div className="title">{`${profileUser?.username}`}</div>
                             <div className="additional">Russia, Tver</div>
                             <div className="label">В этом году</div>
-                            <div className="counter">{statData?.recordsCurrentYearCount}</div>
+                            <div className="counter">
+                                <div className="total">{statData?.recordsCurrentYearCount.movies + statData?.recordsCurrentYearCount.tvseries}</div>
+                                <div className="divided">
+                                    <div>{statData?.recordsCurrentYearCount.movies} фильмов</div>
+                                    <div>{statData?.recordsCurrentYearCount.tvseries} сериалов</div>
+                                </div>
+                            </div>
                             <div className="label">За всё время</div>
-                            <div className="counter">{statData?.recordsTotalCount}</div>
+                            <div className="counter">
+                                <div className="total">{statData?.recordsTotalCount.movies + statData?.recordsTotalCount.tvseries}</div>
+                                <div className="divided">
+                                    <div>{statData?.recordsTotalCount.movies} фильмов</div>
+                                    <div>{statData?.recordsTotalCount.tvseries} сериалов</div>
+                                </div>
+                            </div>
                             <div>
                                 <Link to={`/diary/${profileUserId}`}>Смотреть журнал</Link>
                             </div>
