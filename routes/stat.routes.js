@@ -1,6 +1,7 @@
 const {Router} = require("express");
 const _ = require("lodash");
 const Record = require("../models/Record");
+const {COUNTRIES_MAP} = require("../consts");
 
 const router = new Router();
 
@@ -75,13 +76,23 @@ class StatCalculator {
         _.forEach(countryKeys, (key) => {
             countriesData.push({
                 country: key,
-                countryCount: countryResult[key]
+                countryCount: countryResult[key],
+                countryName: COUNTRIES_MAP[key.toLowerCase()]
             });
         });
 
-        countriesData.sort((a, b) => b.countryCount - a.countryCount);
+        const countriesFilteredResult = countriesData.sort((a, b) => b.countryCount - a.countryCount).slice(0, 10);
 
-        return countriesData;
+        /**
+         * Остальные складываем в "Другое".
+         */
+        countriesFilteredResult.push({
+            country: "другое",
+            countryCount: countriesData.slice(10, (countriesData.length - 1)).reduce((acc, item) => item.countryCount + acc, 0),
+            countryName: "другое"
+        });
+
+        return countriesFilteredResult;
     }
 
     /**
