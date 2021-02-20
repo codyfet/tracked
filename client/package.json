@@ -49,7 +49,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "autoprefixer": "^9.8.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "date-fns": "^2.13.0",
     "debounce-action": "^0.1.0",
     "lodash": "^4.17.19",
