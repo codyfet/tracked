@@ -46,7 +46,7 @@ export const Users = () => {
 
                     <Table.Body>
                         {usersData?.items.map((user) => (
-                            <Table.Row>
+                            <Table.Row key={user._id}>
                                 <Table.Cell>
                                     <Link to={`/profile/${user._id}`} key="profile">
                                         {user.username}

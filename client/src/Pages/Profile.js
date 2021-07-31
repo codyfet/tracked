@@ -225,7 +225,9 @@ export const Profile = ({match}) => {
                             <List ordered>
                                 {statData?.directorsData.map((item) => {
                                     return (
-                                        <List.Item>{`${item.director} (${item.directorCount})`}</List.Item>
+                                        <List.Item
+                                            key={item.id}
+                                        >{`${item.director} (${item.directorCount})`}</List.Item>
                                     );
                                 })}
                             </List>
@@ -233,9 +235,11 @@ export const Profile = ({match}) => {
                         <Grid.Column>
                             <h3>Актёры</h3>
                             <List ordered>
-                                {statData?.actorsData.map((item) => {
+                                {statData?.actorsData.map((item, index) => {
                                     return (
-                                        <List.Item>{`${item.actor} (${item.actorCount})`}</List.Item>
+                                        <List.Item
+                                            key={index}
+                                        >{`${item.actor} (${item.actorCount})`}</List.Item>
                                     );
                                 })}
                             </List>
@@ -243,9 +247,11 @@ export const Profile = ({match}) => {
                         <Grid.Column>
                             <h3>Актрисы</h3>
                             <List ordered>
-                                {statData?.actressesData.map((item) => {
+                                {statData?.actressesData.map((item, index) => {
                                     return (
-                                        <List.Item>{`${item.actress} (${item.actressCount})`}</List.Item>
+                                        <List.Item
+                                            key={index}
+                                        >{`${item.actress} (${item.actressCount})`}</List.Item>
                                     );
                                 })}
                             </List>

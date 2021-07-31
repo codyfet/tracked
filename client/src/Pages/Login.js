@@ -59,7 +59,7 @@ export const Login = () => {
             <Message
                 error
                 list={user.error.data?.errors?.map((e, index) => (
-                    <p>{e.msg}</p>
+                    <p key={index}>{e.msg}</p>
                 ))}
             />
         );
