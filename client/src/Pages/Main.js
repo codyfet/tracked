@@ -10,7 +10,7 @@ import {ChartItem} from "../Components/Icons/ChartItem";
  * Главная страница приложения.
  */
 export const Main = () => {
-    const {user} = useSelector(state => state);
+    const {user} = useSelector((state) => state);
     const isAutheticated = user?.data;
 
     /**
@@ -45,7 +45,9 @@ export const Main = () => {
                         <Grid.Column>
                             <MovieItem className="item-icon" />
                             <div className="item-title">Фильмы</div>
-                            <div className="item-description">Отмечайте просмотренные фильмы и сериалы.</div>
+                            <div className="item-description">
+                                Отмечайте просмотренные фильмы и сериалы.
+                            </div>
                         </Grid.Column>
                         <Grid.Column>
                             <StarItem className="item-icon" />
@@ -55,7 +57,9 @@ export const Main = () => {
                         <Grid.Column>
                             <ChartItem className="item-icon" />
                             <div className="item-title">Статистика</div>
-                            <div className="item-description">Просматривайте статистику ваших просмотров.</div>
+                            <div className="item-description">
+                                Просматривайте статистику ваших просмотров.
+                            </div>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

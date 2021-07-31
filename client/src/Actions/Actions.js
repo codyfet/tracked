@@ -36,7 +36,7 @@ import {
     getMovieDetailsById,
     getTvSeriesDetailsById,
     searchMoviesByTitle,
-    searchTvSeriesByTitle
+    searchTvSeriesByTitle,
 } from "../Services/TMDBServices";
 import {
     createRecord as tryCreateRecord,
@@ -64,8 +64,16 @@ export function searchMovies(searchInput) {
         dispatch({type: POPULATE_MOVIES_AUTOSUGGEST_START});
 
         return searchMoviesByTitle(searchInput).then(
-            (result) => dispatch({type: POPULATE_MOVIES_AUTOSUGGEST_SUCCESS, payload: result}),
-            (error) => dispatch({type: POPULATE_MOVIES_AUTOSUGGEST_FAILURE, payload: error}),
+            (result) =>
+                dispatch({
+                    type: POPULATE_MOVIES_AUTOSUGGEST_SUCCESS,
+                    payload: result,
+                }),
+            (error) =>
+                dispatch({
+                    type: POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
+                    payload: error,
+                })
         );
     };
 }
@@ -80,8 +88,16 @@ export function searchTvSeries(searchInput) {
         dispatch({type: POPULATE_TV_AUTOSUGGEST_START});
 
         return searchTvSeriesByTitle(searchInput).then(
-            (result) => dispatch({type: POPULATE_TV_AUTOSUGGEST_SUCCESS, payload: result}),
-            (error) => dispatch({type: POPULATE_TV_AUTOSUGGEST_FAILURE, payload: error}),
+            (result) =>
+                dispatch({
+                    type: POPULATE_TV_AUTOSUGGEST_SUCCESS,
+                    payload: result,
+                }),
+            (error) =>
+                dispatch({
+                    type: POPULATE_TV_AUTOSUGGEST_FAILURE,
+                    payload: error,
+                })
         );
     };
 }
@@ -98,7 +114,11 @@ export function addDetailedMovieRecord(id, userId) {
 
         try {
             const results = await Promise.all([getMovieDetailsById(id), getMovieCreditsById(id)]);
-            const newRecord = new Record({userId, type: "movie", data: {details: results[0].data, credits: results[1].data}});
+            const newRecord = new Record({
+                userId,
+                type: "movie",
+                data: {details: results[0].data, credits: results[1].data},
+            });
             const result = await tryCreateRecord(newRecord);
             dispatch({type: ADD_RECORD_SUCCESS, payload: result.data});
             return results;
@@ -121,7 +141,11 @@ export function addDetailedTvSeriesRecord(id, userId) {
 
         try {
             const results = await getTvSeriesDetailsById(id);
-            const newRecord = new Record({userId, type: "tvseries", data: {details: results.data}});
+            const newRecord = new Record({
+                userId,
+                type: "tvseries",
+                data: {details: results.data},
+            });
             const result = await tryCreateRecord(newRecord);
             dispatch({type: ADD_RECORD_SUCCESS, payload: result.data});
             return results;
@@ -246,10 +270,13 @@ export function login({email, password}) {
             /**
              * Складываем данные пользователя в локал сторедж.
              */
-            localStorage.setItem(TRACKED_USER_DATA, JSON.stringify({
-                userId: response.data.userId,
-                token: response.data.token
-            }));
+            localStorage.setItem(
+                TRACKED_USER_DATA,
+                JSON.stringify({
+                    userId: response.data.userId,
+                    token: response.data.token,
+                })
+            );
 
             return response;
         } catch (error) {
@@ -269,7 +296,7 @@ export function logout() {
     localStorage.removeItem(TRACKED_USER_DATA);
 
     return {
-        type: AUTHENTICATION_CLEAR
+        type: AUTHENTICATION_CLEAR,
     };
 }
 
@@ -287,10 +314,13 @@ export function register({email, password, username}) {
             /**
              * Складываем данные пользователя в локал сторедж.
              */
-            localStorage.setItem(TRACKED_USER_DATA, JSON.stringify({
-                userId: response.data.userId,
-                token: response.data.token
-            }));
+            localStorage.setItem(
+                TRACKED_USER_DATA,
+                JSON.stringify({
+                    userId: response.data.userId,
+                    token: response.data.token,
+                })
+            );
 
             return response;
         } catch (error) {

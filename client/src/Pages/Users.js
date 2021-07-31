@@ -11,7 +11,9 @@ import {Page} from "./../Components/Common/Page";
  */
 export const Users = () => {
     const dispatch = useDispatch();
-    const {users: {data: usersData}} = useSelector(state => state);
+    const {
+        users: {data: usersData},
+    } = useSelector((state) => state);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -32,7 +34,9 @@ export const Users = () => {
     return (
         <Page asyncDataKeys={["users"]}>
             <Container className="users">
-                <Header as="h2" size='large'>Пользователи</Header>
+                <Header as="h2" size="large">
+                    Пользователи
+                </Header>
                 <Table singleLine>
                     <Table.Header>
                         <Table.Row>
@@ -44,7 +48,9 @@ export const Users = () => {
                         {usersData?.items.map((user) => (
                             <Table.Row>
                                 <Table.Cell>
-                                    <Link to={`/profile/${user._id}`} key="profile">{user.username}</Link>
+                                    <Link to={`/profile/${user._id}`} key="profile">
+                                        {user.username}
+                                    </Link>
                                 </Table.Cell>
                             </Table.Row>
                         ))}

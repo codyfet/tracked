@@ -41,18 +41,25 @@ const getFilteredRecords = (records, isMoviesSelected) => {
 export const Results = ({match}) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
-    const {records: {data: records}, user: {data: {userId}}} = useSelector(state => state);
+    const {
+        records: {data: records},
+        user: {
+            data: {userId},
+        },
+    } = useSelector((state) => state);
     const [isMoviesSelected, setMoviesSelected] = useState(true);
     const [enrichedRecords, setEnrichedRecords] = useState(null);
     const [isEditModeClicked, setEditModeClicked] = useState(false);
     const [year, setYear] = useState(CURRENT_YEAR);
     const isRecordsEmpty = isEmpty(enrichedRecords);
-    const isResultsExist = !isRecordsEmpty && records?.some((r) => r.position && r.type === (isMoviesSelected ? "movie" : "tvseries"));
+    const isResultsExist =
+        !isRecordsEmpty &&
+        records?.some((r) => r.position && r.type === (isMoviesSelected ? "movie" : "tvseries"));
 
     useEffect(() => {
         const filter = {
             ...DEFAULT_RECORDS_FILTER,
-            year
+            year,
         };
         dispatch(getRecords(profileUserId, filter));
         return () => {
@@ -73,7 +80,7 @@ export const Results = ({match}) => {
         const recordId = event.target.closest("tr").dataset.id;
         const updatedRecord = enrichedRecords.find((r) => r._id === recordId);
         updatedRecord.isSelected = !updatedRecord.isSelected;
-        const updatedRecords = enrichedRecords.map((r) => r._id === recordId ? updatedRecord : r);
+        const updatedRecords = enrichedRecords.map((r) => (r._id === recordId ? updatedRecord : r));
         setEnrichedRecords(updatedRecords);
     };
 
@@ -83,7 +90,9 @@ export const Results = ({match}) => {
     const handeCreateResultsClick = (event) => {
         event.preventDefault();
         const recordsToUpdate = [];
-        const positionElements = event.target.closest(".results").getElementsByClassName("position");
+        const positionElements = event.target
+            .closest(".results")
+            .getElementsByClassName("position");
         const positionMap = {};
 
         for (let i = 0; i < positionElements.length; i++) {
@@ -101,7 +110,7 @@ export const Results = ({match}) => {
                     id,
                     position: positionMap[id],
                     viewdate: new Date().setYear(year),
-                    userId
+                    userId,
                 });
             }
         });
@@ -134,14 +143,11 @@ export const Results = ({match}) => {
                         .filter((record) => record.position)
                         .sort(compareRecordsByPosition)
                         .map((record) => (
-                            <Record
-                                isReadonly
-                                key={record._id}
-                                {...record}
-                            />
-                        ))
-                    }
-                    <a href="#" onClick={handleEditResultsClick}>Редактировать</a>
+                            <Record isReadonly key={record._id} {...record} />
+                        ))}
+                    <a href="#" onClick={handleEditResultsClick}>
+                        Редактировать
+                    </a>
                 </>
             );
             /**
@@ -157,7 +163,9 @@ export const Results = ({match}) => {
                         <Message info>
                             <p>В вашем журнале нет ни одной записи за текущий год.</p>
                         </Message>
-                        <Link to={`/diary/${userId}`} key="diary">Перейти к журналу</Link>
+                        <Link to={`/diary/${userId}`} key="diary">
+                            Перейти к журналу
+                        </Link>
                     </>
                 );
                 /**
@@ -167,7 +175,10 @@ export const Results = ({match}) => {
                 return (
                     <>
                         <Message info>
-                            <p>Расcтавьте позиции в таблице ниже и нажмите кнопку &#34;Сохранить&#34;</p>
+                            <p>
+                                Расcтавьте позиции в таблице ниже и нажмите кнопку
+                                &#34;Сохранить&#34;
+                            </p>
                         </Message>
                         {!isEmpty(enrichedRecords) && (
                             <Table className="results-table" celled>
@@ -180,43 +191,66 @@ export const Results = ({match}) => {
                                 </Table.Header>
 
                                 <Table.Body>
-                                    {getFilteredRecords(enrichedRecords, isMoviesSelected).map((record) => {
-                                        return (
-                                            <Table.Row
-                                                data-id={record._id}
-                                                key={record._id}
-                                                onClick={handleRowClick}
-                                                className={`${record.isSelected ? "selected" : ""}`
-                                                }>
-                                                <Table.Cell collapsing>
-                                                    <Input
-                                                        data-id={record._id}
-                                                        className="position"
-                                                        maxLength="2"
-                                                        onClick={(e) => e.stopPropagation()}
-                                                        onChange={(e) => {
-                                                            setEditModeClicked(true);
-                                                            const newRecords = [...enrichedRecords];
-                                                            const newRecordIndex = newRecords.findIndex((nr) => nr._id === record._id);
-                                                            const newRecord = {
-                                                                ...newRecords.find((enrichedRecord) => enrichedRecord._id === record._id),
-                                                                position: e.target.value
-                                                            };
-                                                            newRecords[newRecordIndex] = newRecord;
-                                                            setEnrichedRecords(newRecords);
-                                                        }}
-                                                        value={record.position}
-                                                    />
-                                                </Table.Cell>
-                                                <Table.Cell>{record.title}</Table.Cell>
-                                                <Table.Cell className={record.rating === "0" ? "red" : ""}>{record.rating}</Table.Cell>
-                                            </Table.Row>
-                                        );
-                                    })}
+                                    {getFilteredRecords(enrichedRecords, isMoviesSelected).map(
+                                        (record) => {
+                                            return (
+                                                <Table.Row
+                                                    data-id={record._id}
+                                                    key={record._id}
+                                                    onClick={handleRowClick}
+                                                    className={`${
+                                                        record.isSelected ? "selected" : ""
+                                                    }`}
+                                                >
+                                                    <Table.Cell collapsing>
+                                                        <Input
+                                                            data-id={record._id}
+                                                            className="position"
+                                                            maxLength="2"
+                                                            onClick={(e) => e.stopPropagation()}
+                                                            onChange={(e) => {
+                                                                setEditModeClicked(true);
+                                                                const newRecords = [
+                                                                    ...enrichedRecords,
+                                                                ];
+                                                                const newRecordIndex =
+                                                                    newRecords.findIndex(
+                                                                        (nr) =>
+                                                                            nr._id === record._id
+                                                                    );
+                                                                const newRecord = {
+                                                                    ...newRecords.find(
+                                                                        (enrichedRecord) =>
+                                                                            enrichedRecord._id ===
+                                                                            record._id
+                                                                    ),
+                                                                    position: e.target.value,
+                                                                };
+                                                                newRecords[newRecordIndex] =
+                                                                    newRecord;
+                                                                setEnrichedRecords(newRecords);
+                                                            }}
+                                                            value={record.position}
+                                                        />
+                                                    </Table.Cell>
+                                                    <Table.Cell>{record.title}</Table.Cell>
+                                                    <Table.Cell
+                                                        className={
+                                                            record.rating === "0" ? "red" : ""
+                                                        }
+                                                    >
+                                                        {record.rating}
+                                                    </Table.Cell>
+                                                </Table.Row>
+                                            );
+                                        }
+                                    )}
                                 </Table.Body>
                             </Table>
                         )}
-                        <a href="#" onClick={handeCreateResultsClick}>Сохранить</a>
+                        <a href="#" onClick={handeCreateResultsClick}>
+                            Сохранить
+                        </a>
                     </>
                 );
             }
@@ -226,22 +260,27 @@ export const Results = ({match}) => {
     return (
         <Page asyncDataKeys={["records"]}>
             <Container className="results">
-                <Header as="h2" size='large'>Итоги</Header>
-                <YearsSelect selectedYear={year} onSelect={(event, data) => setYear(data.value)}/>&nbsp;&nbsp;&nbsp;
+                <Header as="h2" size="large">
+                    Итоги
+                </Header>
+                <YearsSelect selectedYear={year} onSelect={(event, data) => setYear(data.value)} />
+                &nbsp;&nbsp;&nbsp;
                 <span
                     className={`record-filter ${isMoviesSelected ? "" : "not-selected"}`}
                     onClick={() => setMoviesSelected(true)}
                     title={"Показать фильмы"}
                 >
                     Фильмы
-                </span>&nbsp;&nbsp;&nbsp;
+                </span>
+                &nbsp;&nbsp;&nbsp;
                 <span
                     className={`record-filter ${!isMoviesSelected ? "" : "not-selected"}`}
                     onClick={() => setMoviesSelected(false)}
                     title={"Показать сериалы"}
                 >
                     Сериалы
-                </span>&nbsp;&nbsp;&nbsp;
+                </span>
+                &nbsp;&nbsp;&nbsp;
                 {renderContent()}
             </Container>
         </Page>

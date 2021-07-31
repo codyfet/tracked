@@ -47,16 +47,10 @@ export const Profile = ({match}) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
     const {
-        users: {
-            data: usersData,
-        },
-        stat: {
-            data: statData,
-        },
-        user: {
-            data: loggedInUser
-        }
-    } = useSelector(state => state);
+        users: {data: usersData},
+        stat: {data: statData},
+        user: {data: loggedInUser},
+    } = useSelector((state) => state);
     const profileUser = usersData ? usersData.items[0] : null;
     const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
@@ -91,7 +85,11 @@ export const Profile = ({match}) => {
                             return item;
                         }
                     );
-                    dispatch(updateUser(profileUserId, {favouriteMovies: updatedFavouriteMovies}));
+                    dispatch(
+                        updateUser(profileUserId, {
+                            favouriteMovies: updatedFavouriteMovies,
+                        })
+                    );
                 }}
                 disabled={profileUserId !== loggedInUser.userId}
             />
@@ -101,16 +99,25 @@ export const Profile = ({match}) => {
     return (
         <Page asyncDataKeys={["users", "stat"]}>
             <Container className="profile">
-                <Header as="h2" size='large'>Профиль пользователя</Header>
-                <Segment >
+                <Header as="h2" size="large">
+                    Профиль пользователя
+                </Header>
+                <Segment>
                     <Grid className="profile-data">
                         <Grid.Column width={4}>
-                            <Image className="profile-data-image" src='../src/Assets/matthew.png' circular />
+                            <Image
+                                className="profile-data-image"
+                                src="../src/Assets/matthew.png"
+                                circular
+                            />
                             <div className="title">{`${profileUser?.username}`}</div>
                             <div className="additional">Russia, Tver</div>
                             <div className="label">В этом году</div>
                             <div className="counter">
-                                <div className="total">{statData?.recordsCurrentYearCount.movies + statData?.recordsCurrentYearCount.tvseries}</div>
+                                <div className="total">
+                                    {statData?.recordsCurrentYearCount.movies +
+                                        statData?.recordsCurrentYearCount.tvseries}
+                                </div>
                                 <div className="divided">
                                     <div>{statData?.recordsCurrentYearCount.movies} фильмов</div>
                                     <div>{statData?.recordsCurrentYearCount.tvseries} сериалов</div>
@@ -118,7 +125,10 @@ export const Profile = ({match}) => {
                             </div>
                             <div className="label">За всё время</div>
                             <div className="counter">
-                                <div className="total">{statData?.recordsTotalCount.movies + statData?.recordsTotalCount.tvseries}</div>
+                                <div className="total">
+                                    {statData?.recordsTotalCount.movies +
+                                        statData?.recordsTotalCount.tvseries}
+                                </div>
                                 <div className="divided">
                                     <div>{statData?.recordsTotalCount.movies} фильмов</div>
                                     <div>{statData?.recordsTotalCount.tvseries} сериалов</div>
@@ -130,9 +140,7 @@ export const Profile = ({match}) => {
                         </Grid.Column>
                         <Grid.Column width={12}>
                             <div>Любимые фильмы</div>
-                            <div className="grid-panel">
-                                {favs}
-                            </div>
+                            <div className="grid-panel">{favs}</div>
                         </Grid.Column>
                     </Grid>
                 </Segment>
@@ -142,12 +150,19 @@ export const Profile = ({match}) => {
                         <Grid.Column width={4}></Grid.Column>
                         <Grid.Column width={8} textAlign="center">
                             <h1>
-                                <YearsSelect showAllOption selectedYear={year} onSelect={(event, data) => setYear(data.value)} />
+                                <YearsSelect
+                                    showAllOption
+                                    selectedYear={year}
+                                    onSelect={(event, data) => setYear(data.value)}
+                                />
                             </h1>
-                            <h3>{`${marksData.reduce((acc, cur) => acc += cur.markCount, 0)}`} оценок</h3>
+                            <h3>
+                                {`${marksData.reduce((acc, cur) => (acc += cur.markCount), 0)}`}{" "}
+                                оценок
+                            </h3>
                             <ResponsiveContainer width="100%" height={200}>
                                 <BarChart margin={{top: 30}} data={marksData}>
-                                    <Bar dataKey="markCount" fill="#5CE0E6" >
+                                    <Bar dataKey="markCount" fill="#5CE0E6">
                                         <LabelList dataKey="markCount" position="top" />
                                     </Bar>
                                     <XAxis dataKey="mark" />
@@ -169,14 +184,16 @@ export const Profile = ({match}) => {
                                     margin={{top: 5, bottom: 5}}
                                 >
                                     <XAxis type="number" />
-                                    <YAxis type="category" dataKey="name" interval={0} width={150} />
-                                    <Tooltip
-                                        content={<CustomGenreTooltip />}
+                                    <YAxis
+                                        type="category"
+                                        dataKey="name"
+                                        interval={0}
+                                        width={150}
                                     />
+                                    <Tooltip content={<CustomGenreTooltip />} />
                                     <Bar dataKey="value" fill="#19C2FA" />
                                 </BarChart>
                             </ResponsiveContainer>
-
                         </Grid.Column>
                         <Grid.Column width={8} textAlign="center">
                             <h3>Страны</h3>
@@ -189,10 +206,13 @@ export const Profile = ({match}) => {
                                     margin={{top: 5, bottom: 5}}
                                 >
                                     <XAxis type="number" />
-                                    <YAxis type="category" dataKey="countryName" interval={0} width={150} />
-                                    <Tooltip
-                                        content={<CustomCountryTooltip />}
+                                    <YAxis
+                                        type="category"
+                                        dataKey="countryName"
+                                        interval={0}
+                                        width={150}
                                     />
+                                    <Tooltip content={<CustomCountryTooltip />} />
                                     <Bar dataKey="countryCount" fill="#FA1955" />
                                 </BarChart>
                             </ResponsiveContainer>
@@ -203,37 +223,31 @@ export const Profile = ({match}) => {
                         <Grid.Column>
                             <h3>Режиссёры</h3>
                             <List ordered>
-                                {
-                                    statData?.directorsData.map((item) => {
-                                        return (
-                                            <List.Item>{`${item.director} (${item.directorCount})`}</List.Item>
-                                        );
-                                    })
-                                }
+                                {statData?.directorsData.map((item) => {
+                                    return (
+                                        <List.Item>{`${item.director} (${item.directorCount})`}</List.Item>
+                                    );
+                                })}
                             </List>
                         </Grid.Column>
                         <Grid.Column>
                             <h3>Актёры</h3>
                             <List ordered>
-                                {
-                                    statData?.actorsData.map((item) => {
-                                        return (
-                                            <List.Item>{`${item.actor} (${item.actorCount})`}</List.Item>
-                                        );
-                                    })
-                                }
+                                {statData?.actorsData.map((item) => {
+                                    return (
+                                        <List.Item>{`${item.actor} (${item.actorCount})`}</List.Item>
+                                    );
+                                })}
                             </List>
                         </Grid.Column>
                         <Grid.Column>
                             <h3>Актрисы</h3>
                             <List ordered>
-                                {
-                                    statData?.actressesData.map((item) => {
-                                        return (
-                                            <List.Item>{`${item.actress} (${item.actressCount})`}</List.Item>
-                                        );
-                                    })
-                                }
+                                {statData?.actressesData.map((item) => {
+                                    return (
+                                        <List.Item>{`${item.actress} (${item.actressCount})`}</List.Item>
+                                    );
+                                })}
                             </List>
                         </Grid.Column>
                     </Grid.Row>
@@ -243,10 +257,15 @@ export const Profile = ({match}) => {
                             <h3>Год выпуска</h3>
                             <ResponsiveContainer width="100%" height={200}>
                                 <BarChart margin={{top: 30}} data={statData?.yearsData}>
-                                    <Bar dataKey="yearCount" fill="#5CE0E6" >
+                                    <Bar dataKey="yearCount" fill="#5CE0E6">
                                         <LabelList dataKey="yearCount" position="top" />
                                     </Bar>
-                                    <XAxis dataKey="year" interval={0} height={100} tick={<CustomizedAxisTick />} />
+                                    <XAxis
+                                        dataKey="year"
+                                        interval={0}
+                                        height={100}
+                                        tick={<CustomizedAxisTick />}
+                                    />
                                 </BarChart>
                             </ResponsiveContainer>
                         </Grid.Column>

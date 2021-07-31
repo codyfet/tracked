@@ -8,25 +8,25 @@ import {CURRENT_YEAR} from "./../Consts";
  * @param {boolean} showAllOption Признак отрисовки опции "Все года".
  */
 const getBasicYearsOptions = (showAllOption) => {
-  const options = showAllOption
-    ? [
-        {
-          key: "total",
-          value: 0,
-          text: "За всё время",
-        },
-      ]
-    : [];
+    const options = showAllOption
+        ? [
+              {
+                  key: "total",
+                  value: 0,
+                  text: "За всё время",
+              },
+          ]
+        : [];
 
-  for (let year = CURRENT_YEAR; year >= 2010; year--) {
-    options.push({
-      key: year,
-      value: year,
-      text: year,
-    });
-  }
+    for (let year = CURRENT_YEAR; year >= 2010; year--) {
+        options.push({
+            key: year,
+            value: year,
+            text: year,
+        });
+    }
 
-  return options;
+    return options;
 };
 
 /**
@@ -38,18 +38,17 @@ const getBasicYearsOptions = (showAllOption) => {
  * @prop {boolean} showAllOption Признак отрисовки опции "Все".
  */
 export const YearsSelect = ({selectedYear, onSelect, showAllOption}) => {
-  const yearsOptions = getBasicYearsOptions(showAllOption);
-  const selectedOption =
-    yearsOptions.find((option) => option.value === selectedYear) ||
-    yearsOptions[0];
+    const yearsOptions = getBasicYearsOptions(showAllOption);
+    const selectedOption =
+        yearsOptions.find((option) => option.value === selectedYear) || yearsOptions[0];
 
-  return (
-    <Dropdown
-      inline
-      options={yearsOptions}
-      defaultValue={yearsOptions[yearsOptions.length - 1].value}
-      value={selectedOption.value}
-      onChange={onSelect}
-    />
-  );
+    return (
+        <Dropdown
+            inline
+            options={yearsOptions}
+            defaultValue={yearsOptions[yearsOptions.length - 1].value}
+            value={selectedOption.value}
+            onChange={onSelect}
+        />
+    );
 };

@@ -12,7 +12,9 @@ import {IMAGE_URL} from "./../Consts";
  */
 export const FavouriteMovieModal = ({onClose, index}) => {
     const [suggestion, setSuggestion] = useState(null);
-    const {users: {data: usersData}} = useSelector(state => state);
+    const {
+        users: {data: usersData},
+    } = useSelector((state) => state);
     const user = usersData ? usersData.items[0] : null;
     const dispatch = useDispatch();
 
@@ -20,7 +22,9 @@ export const FavouriteMovieModal = ({onClose, index}) => {
         <Fragment>
             <div className="falvourite-movie-search">
                 <TMDbSelect
-                    searchAction={debounceAction(searchMovies, 300, {leading: false})}
+                    searchAction={debounceAction(searchMovies, 300, {
+                        leading: false,
+                    })}
                     onSuggestionSelected={(selectedSuggestion) => setSuggestion(selectedSuggestion)}
                     titlePropName="title"
                     releasePropName="release_date"
@@ -30,7 +34,7 @@ export const FavouriteMovieModal = ({onClose, index}) => {
 
             {suggestion && (
                 <div className="movie-info">
-                    <Image src={`${IMAGE_URL}/${suggestion.poster_path}`} size='tiny' />
+                    <Image src={`${IMAGE_URL}/${suggestion.poster_path}`} size="tiny" />
                     <div className="title">
                         {`${suggestion.title} (${new Date(suggestion.release_date).getFullYear()})`}
                     </div>
@@ -47,7 +51,7 @@ export const FavouriteMovieModal = ({onClose, index}) => {
             id: suggestion.id,
             title: suggestion.title,
             poster_path: suggestion.poster_path,
-            release_date: suggestion.release_date
+            release_date: suggestion.release_date,
         };
 
         const updatedFavouriteMovies = [...user?.favouriteMovies];

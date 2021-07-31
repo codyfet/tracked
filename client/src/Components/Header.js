@@ -9,7 +9,7 @@ import {logout} from "../Actions/Actions";
  */
 export const Header = () => {
     const [isResponsive, setResponsive] = useState(false);
-    const {user} = useSelector(state => state);
+    const {user} = useSelector((state) => state);
     const dispatch = useDispatch();
     const isAutheticated = !!user.data;
 
@@ -21,15 +21,24 @@ export const Header = () => {
             return (
                 <Fragment>
                     <span className={`menu ${isResponsive ? "responsive" : ""}`}>
-                        <Link to="/users" key="users">пользователи</Link>
-                        <Link to={`/results/${user.data.userId}`} key="results">итоги</Link>
-                        <Link to={`/diary/${user.data.userId}`} key="diary">журнал просмотров</Link>
-                        <Link to={`/profile/${user.data.userId}`} key="profile">{`${user.data.username}`}</Link>
+                        <Link to="/users" key="users">
+                            пользователи
+                        </Link>
+                        <Link to={`/results/${user.data.userId}`} key="results">
+                            итоги
+                        </Link>
+                        <Link to={`/diary/${user.data.userId}`} key="diary">
+                            журнал просмотров
+                        </Link>
+                        <Link
+                            to={`/profile/${user.data.userId}`}
+                            key="profile"
+                        >{`${user.data.username}`}</Link>
                         <a onClick={() => dispatch(logout())}>выйти</a>
                     </span>
 
                     <Icon
-                        name='bars'
+                        name="bars"
                         onClick={() => setResponsive(!isResponsive)}
                         title="меню"
                         className="burger"
@@ -40,7 +49,9 @@ export const Header = () => {
 
         return (
             <span className="menu">
-                <Link to="/login" key="login">войти</Link>
+                <Link to="/login" key="login">
+                    войти
+                </Link>
             </span>
         );
     };

@@ -27,39 +27,40 @@ export default function records(state = getInitialAsyncContainer(), action) {
         case ADD_EMPTY_MOVIE_RECORD:
             return {
                 ...state,
-                data: [{...createEmptyRecord(), type: "movie"}, ...state.data]
-
+                data: [{...createEmptyRecord(), type: "movie"}, ...state.data],
             };
         case ADD_EMPTY_TVSERIES_RECORD:
             return {
                 ...state,
-                data: [{...createEmptyRecord(), type: "tvseries"}, ...state.data]
+                data: [{...createEmptyRecord(), type: "tvseries"}, ...state.data],
             };
         case ADD_RECORD_SUCCESS:
-            const newRecords = [{
-                ...action.payload,
-                viewdate: new Date(action.payload.viewdate)
-            }];
+            const newRecords = [
+                {
+                    ...action.payload,
+                    viewdate: new Date(action.payload.viewdate),
+                },
+            ];
 
-            for (let i = 1; i < (state.data.length); i++) {
+            for (let i = 1; i < state.data.length; i++) {
                 newRecords.push(state.data[i]);
             }
 
             return {
                 data: newRecords,
                 isLoading: false,
-                error: null
+                error: null,
             };
         case ADD_RECORD_FAILURE:
             return {
                 data: {
-                    ...state.data
+                    ...state.data,
                 },
                 isLoading: false,
                 error: {
                     status: action.payload.response.status,
-                    message: action.payload.response.data.message
-                }
+                    message: action.payload.response.data.message,
+                },
             };
         case ORDER_RECORDS_BY:
             // TODO: Исправить когда будет обновление через сервис
@@ -78,36 +79,38 @@ export default function records(state = getInitialAsyncContainer(), action) {
         case UPDATE_RECORD_START:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
             };
         case UPDATE_RECORD_SUCCESS: {
-            const updatedRecords = state.data.map((record) => {
-                if (record._id === action.payload.data._id) {
-                    return {
-                        ...action.payload.data,
-                        viewdate: new Date(action.payload.data.viewdate)
-                    };
-                }
+            const updatedRecords = state.data
+                .map((record) => {
+                    if (record._id === action.payload.data._id) {
+                        return {
+                            ...action.payload.data,
+                            viewdate: new Date(action.payload.data.viewdate),
+                        };
+                    }
 
-                return record;
-            }).sort((a, b) => b.viewdate - a.viewdate) ;
+                    return record;
+                })
+                .sort((a, b) => b.viewdate - a.viewdate);
 
             return {
                 isLoading: false,
                 data: updatedRecords,
-                error: null
+                error: null,
             };
         }
         case UPDATE_RECORD_FAILURE:
             return {
                 error: null,
                 isLoading: false,
-                data: null
+                data: null,
             };
         case DELETE_RECORD_START:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
             };
         case DELETE_RECORD_SUCCESS: {
             const updatedRecords = filter(state.data, (record) => record._id !== action.payload);
@@ -115,39 +118,42 @@ export default function records(state = getInitialAsyncContainer(), action) {
             return {
                 isLoading: false,
                 data: updatedRecords,
-                error: null
+                error: null,
             };
         }
         case DELETE_RECORD_FAILURE:
             return {
                 error: null,
                 isLoading: false,
-                data: null
+                data: null,
             };
         case DELETE_EMPTY_RECORD:
             return {
                 ...state,
-                data: filter(state.data, (record) => record._id !== "0")
+                data: filter(state.data, (record) => record._id !== "0"),
             };
         case GET_RECORDS_START:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
             };
         case GET_RECORDS_SUCCESS: {
-            const records = map(action.payload.data, (item) => ({...item, viewdate: new Date(item.viewdate)}));
+            const records = map(action.payload.data, (item) => ({
+                ...item,
+                viewdate: new Date(item.viewdate),
+            }));
 
             return {
                 isLoading: false,
                 data: records,
-                error: null
+                error: null,
             };
         }
         case GET_RECORDS_FAILURE:
             return {
                 error: null,
                 isLoading: false,
-                data: null
+                data: null,
             };
         case CLEAR_RECORDS:
             return getInitialAsyncContainer();

@@ -24,5 +24,5 @@ export const CURRENT_YEAR = new Date().getFullYear();
 export const DEFAULT_RECORDS_FILTER = {
     sortBy: "-viewdate",
     year: CURRENT_YEAR,
-    types: TYPES
+    types: TYPES,
 };

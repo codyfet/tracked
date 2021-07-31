@@ -10,7 +10,9 @@ const REST_URL = "https://api.themoviedb.org/3";
  * @param {string} searchInput Значение для поиска.
  */
 export function searchMoviesByTitle(searchInput) {
-    return axios.get(`${REST_URL}/search/movie?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`);
+    return axios.get(
+        `${REST_URL}/search/movie?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
+    );
 }
 
 /**
@@ -37,7 +39,9 @@ export function getMovieCreditsById(movie_id) {
  * @param {string} searchInput Значение для поиска.
  */
 export function searchTvSeriesByTitle(searchInput) {
-    return axios.get(`${REST_URL}/search/tv?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`);
+    return axios.get(
+        `${REST_URL}/search/tv?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
+    );
 }
 
 /**

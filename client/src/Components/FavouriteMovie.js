@@ -18,26 +18,39 @@ export const FavouriteMovie = ({movie, index, onRemove, disabled}) => {
         card = (
             <div className="favourite-movie-poster">
                 <Icon
-                    name='remove circle'
+                    name="remove circle"
                     onClick={toggleRemoveDialog}
                     title="удалить"
                     className="remove-icon"
                 />
                 <Image
-                    onError={(e) => {e.target.onerror = null; e.target.src="../src/Assets/empty.png";}}
+                    onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "../src/Assets/empty.png";
+                    }}
                     src={`${IMAGE_URL}/${movie.poster_path}`}
                     title={`${movie.title} (${new Date(movie.release_date).getFullYear()})`}
                 />
             </div>
         );
     } else {
-        card = <EmptyCard onClick={() => {if (!disabled) {setModalVisible(true);}}} />;
+        card = (
+            <EmptyCard
+                onClick={() => {
+                    if (!disabled) {
+                        setModalVisible(true);
+                    }
+                }}
+            />
+        );
     }
 
     return (
         <Fragment>
             {card}
-            {isModalVisible && <FavouriteMovieModal onClose={() => setModalVisible(false)} index={index} />}
+            {isModalVisible && (
+                <FavouriteMovieModal onClose={() => setModalVisible(false)} index={index} />
+            )}
             {isRemoveDialogVisible && (
                 <SimpleDialog
                     header="Удаление записи"

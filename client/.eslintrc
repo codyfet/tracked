@@ -1,22 +1,23 @@
 {
     "parser": "babel-eslint",
-    "plugins": [
-        "react",
-        "react-hooks"
-    ],
+    "plugins": ["react", "react-hooks", "prettier"],
     "rules": {
         "no-unused-vars": "warn",
         "object-curly-spacing": [2, "never"],
         "react/prop-types": 0,
         "no-case-declarations": 0,
-        "sort-imports": ["warn", {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": true,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-        }],
+        "sort-imports": [
+            "warn",
+            {
+                "ignoreCase": false,
+                "ignoreDeclarationSort": true,
+                "ignoreMemberSort": false,
+                "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+            }
+        ],
         "semi": [2, "always"],
-        "quotes": ["error", "double"]
+        "quotes": ["error", "double"],
+        "prettier/prettier": [2]
     },
     "env": {
         "es6": true,

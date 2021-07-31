@@ -7,10 +7,16 @@ import {noop} from "lodash";
  * Компонент выпадающий список для поиска фильмов/сериалов в TMDb.
  * Единовременно может существовать только один на странице.
  */
-export const TMDbSelect = ({searchAction, onSuggestionSelected, titlePropName, releasePropName, placeholder}) => {
+export const TMDbSelect = ({
+    searchAction,
+    onSuggestionSelected,
+    titlePropName,
+    releasePropName,
+    placeholder,
+}) => {
     const dispatch = useDispatch();
-    const records = useSelector(state => state.emptyRecordTMDbItems);
-    const user = useSelector(state => state.user);
+    const records = useSelector((state) => state.emptyRecordTMDbItems);
+    const user = useSelector((state) => state.user);
     const userId = user.data?.userId;
     const [emptyRecordInputValue, setEmptyRecordInputValue] = useState("");
 
@@ -27,7 +33,9 @@ export const TMDbSelect = ({searchAction, onSuggestionSelected, titlePropName, r
      * @param {Object} suggestion Предложение.
      */
     const renderSuggestion = (suggestion) => {
-        const year = suggestion[releasePropName] ? `(${suggestion[releasePropName]?.substring(0, 4)})` : "";
+        const year = suggestion[releasePropName]
+            ? `(${suggestion[releasePropName]?.substring(0, 4)})`
+            : "";
 
         return (
             <div className="suggestion-item" id={suggestion.id}>
@@ -68,7 +76,7 @@ export const TMDbSelect = ({searchAction, onSuggestionSelected, titlePropName, r
         placeholder,
         value: emptyRecordInputValue,
         onChange: handleChangeInput,
-        autoFocus: true
+        autoFocus: true,
     };
 
     return (

@@ -8,7 +8,14 @@ import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
 import {getFormattedDate} from "../Utils/DateUtils";
 import {IMAGE_URL} from "../Consts";
-import {addDetailedMovieRecord, addDetailedTvSeriesRecord, deleteRecord, searchMovies, searchTvSeries, updateRecord} from "../Actions/Actions";
+import {
+    addDetailedMovieRecord,
+    addDetailedTvSeriesRecord,
+    deleteRecord,
+    searchMovies,
+    searchTvSeries,
+    updateRecord,
+} from "../Actions/Actions";
 import {useToggle} from "../Hooks/Toggle.hook";
 import {useUpdate} from "../Hooks/Update.hook";
 import {DELETE_EMPTY_RECORD} from "../Actions/ActionTypes";
@@ -33,9 +40,9 @@ export const Record = ({
     production_countries,
     season,
     position,
-    isReadonly
+    isReadonly,
 }) => {
-    const isEmptyRecord = (_id === "0");
+    const isEmptyRecord = _id === "0";
     const isMovie = type === "movie";
     const isTvSeries = !isMovie;
     const dispatch = useDispatch();
@@ -45,9 +52,15 @@ export const Record = ({
     const [isEditModeRatingEnabled, toggleRatingEditMode] = useToggle(false);
     const [isEditModeSeasonInfoEnabled, toggleSeasonInfoEditMode] = useToggle(false);
 
-    const [viewdateValue, setViewdateValue] = useUpdate(viewdate, (newValue) => dispatch(updateRecord(_id, {viewdate: newValue})));
-    const [ratingValue, setRatingValue] = useUpdate(rating, (newValue) => dispatch(updateRecord(_id, {rating: newValue})));
-    const [seasonValue, setSeasonValue] = useUpdate(season, (newValue) => dispatch(updateRecord(_id, {season: newValue})));
+    const [viewdateValue, setViewdateValue] = useUpdate(viewdate, (newValue) =>
+        dispatch(updateRecord(_id, {viewdate: newValue}))
+    );
+    const [ratingValue, setRatingValue] = useUpdate(rating, (newValue) =>
+        dispatch(updateRecord(_id, {rating: newValue}))
+    );
+    const [seasonValue, setSeasonValue] = useUpdate(season, (newValue) =>
+        dispatch(updateRecord(_id, {season: newValue}))
+    );
 
     /**
      * Удаляет пустую запись.
@@ -64,7 +77,13 @@ export const Record = ({
 
         if (isEditModeViewdateEnabled) {
             const CustomInput = ({value, onClick, onChange, onBlur}) => (
-                <Input className="datepicker-input" value={value} onClick={onClick} onChange={onChange} onBlur={onBlur} />
+                <Input
+                    className="datepicker-input"
+                    value={value}
+                    onClick={onClick}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                />
             );
 
             return (
@@ -78,13 +97,17 @@ export const Record = ({
                             toggleViewdateEditMode();
                         }
                     }}
-                    customInput={<CustomInput  />}
+                    customInput={<CustomInput />}
                     onBlur={toggleViewdateEditMode}
                 />
             );
         }
 
-        return <span title="Нажите дважды, чтобы изменить" onClick={toggleViewdateEditMode}>{getFormattedDate(viewdate)}</span>;
+        return (
+            <span title="Нажите дважды, чтобы изменить" onClick={toggleViewdateEditMode}>
+                {getFormattedDate(viewdate)}
+            </span>
+        );
     };
 
     /**
@@ -95,7 +118,7 @@ export const Record = ({
             return null;
         }
 
-        return <Image src={`${IMAGE_URL}/${posterpath}`} size='tiny' />;
+        return <Image src={`${IMAGE_URL}/${posterpath}`} size="tiny" />;
     };
 
     /**
@@ -122,19 +145,27 @@ export const Record = ({
      */
     const renderMainInfo = () => {
         if (isEmptyRecord) {
-            const configProps = isMovie ? {
-                searchAction: debounceAction(searchMovies, 300, {leading: false}),
-                onSuggestionSelected: (suggestion, userId) => dispatch(addDetailedMovieRecord(suggestion.id, userId)),
-                titlePropName: "title",
-                releasePropName: "release_date",
-                placeholder: "Найти фильм..."
-            } : {
-                searchAction: debounceAction(searchTvSeries, 300, {leading: false}),
-                onSuggestionSelected: (suggestion, userId) => dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
-                titlePropName: "name",
-                releasePropName: "first_air_date",
-                placeholder: "Найти сериал..."
-            };
+            const configProps = isMovie
+                ? {
+                      searchAction: debounceAction(searchMovies, 300, {
+                          leading: false,
+                      }),
+                      onSuggestionSelected: (suggestion, userId) =>
+                          dispatch(addDetailedMovieRecord(suggestion.id, userId)),
+                      titlePropName: "title",
+                      releasePropName: "release_date",
+                      placeholder: "Найти фильм...",
+                  }
+                : {
+                      searchAction: debounceAction(searchTvSeries, 300, {
+                          leading: false,
+                      }),
+                      onSuggestionSelected: (suggestion, userId) =>
+                          dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
+                      titlePropName: "name",
+                      releasePropName: "first_air_date",
+                      placeholder: "Найти сериал...",
+                  };
 
             return <TMDbSelect {...configProps} />;
         }
@@ -142,14 +173,20 @@ export const Record = ({
         return (
             <Fragment>
                 <div className="title">
-                    {`${title} (${releaseYear})`}{isTvSeries ? renderSeasonInfo() : null}
+                    {`${title} (${releaseYear})`}
+                    {isTvSeries ? renderSeasonInfo() : null}
                 </div>
                 <div className="additional-info">
-                    {<span>{originalTitle} <span className="director">{`${isMovie ? "реж." : "создатели"}`} {director.join(", ")}</span></span>}
+                    {
+                        <span>
+                            {originalTitle}{" "}
+                            <span className="director">
+                                {`${isMovie ? "реж." : "создатели"}`} {director.join(", ")}
+                            </span>
+                        </span>
+                    }
                 </div>
-                <div className="genre">
-                    {genres.map((genre) => genre.name).join(", ")}
-                </div>
+                <div className="genre">{genres.map((genre) => genre.name).join(", ")}</div>
             </Fragment>
         );
     };
@@ -162,9 +199,9 @@ export const Record = ({
             return null;
         }
 
-        return production_countries.map(
-            (country) => <Flag key={country} name={country.toLowerCase()} />
-        );
+        return production_countries.map((country) => (
+            <Flag key={country} name={country.toLowerCase()} />
+        ));
     };
 
     /**
@@ -184,7 +221,15 @@ export const Record = ({
             );
         }
 
-        return <span title="Нажите, чтобы изменить" className={`rating ${rating === "0" ? "red" : ""}`} onClick={toggleRatingEditMode}>{rating}</span>;
+        return (
+            <span
+                title="Нажите, чтобы изменить"
+                className={`rating ${rating === "0" ? "red" : ""}`}
+                onClick={toggleRatingEditMode}
+            >
+                {rating}
+            </span>
+        );
     };
 
     /**
@@ -244,7 +289,11 @@ export const Record = ({
                     </Grid.Column>
                 </Grid>
                 {!isReadonly && renderIconsPanel()}
-                {isReadonly && <Label circular className="position" color="orange">{position}</Label>}
+                {isReadonly && (
+                    <Label circular className="position" color="orange">
+                        {position}
+                    </Label>
+                )}
             </Segment>
 
             {isRemoveDialogVisible && (

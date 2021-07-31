@@ -9,7 +9,7 @@ import {LoadingOverlay} from "./LoadingOverlay";
  * @prop {Array<string>} asyncDataKeys Массив ключей контейнеров данных из редакс дерева, для которых нужно проверить статус загрузки.
  */
 export const Page = (props) => {
-    const state = useSelector(state => state);
+    const state = useSelector((state) => state);
     const keys = props.asyncDataKeys;
 
     for (let i = 0; i < keys.length; i++) {

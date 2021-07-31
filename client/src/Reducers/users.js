@@ -3,7 +3,7 @@ import {
     GET_USERS_FAILURE,
     GET_USERS_START,
     GET_USERS_SUCCESS,
-    UPDATE_USER_SUCCESS
+    UPDATE_USER_SUCCESS,
 } from "../Actions/ActionTypes";
 import {getInitialAsyncContainer} from "../Utils/Utils";
 import {cloneDeep} from "lodash";
@@ -19,7 +19,7 @@ export default function users(state = getInitialAsyncContainer(), action) {
             return {
                 data: null,
                 isLoading: true,
-                error: null
+                error: null,
             };
         case GET_USERS_SUCCESS:
             return {
@@ -31,7 +31,7 @@ export default function users(state = getInitialAsyncContainer(), action) {
             return {
                 data: null,
                 isLoading: false,
-                error: action.payload.response
+                error: action.payload.response,
             };
         case UPDATE_USER_SUCCESS:
             const newUsersData = cloneDeep(state.data);

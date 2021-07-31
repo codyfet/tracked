@@ -1,7 +1,7 @@
 /**
  * Возвращает пустую запись.
  */
-export function createEmptyRecord (type) {
+export function createEmptyRecord(type) {
     return {
         _id: "0",
         viewdate: null,
@@ -13,7 +13,7 @@ export function createEmptyRecord (type) {
         flag: null,
         rating: null,
         type,
-        isEmptyRecord: true
+        isEmptyRecord: true,
     };
 }
 
@@ -23,7 +23,7 @@ export function createEmptyRecord (type) {
 export const getInitialAsyncContainer = () => ({
     data: null,
     isLoading: false,
-    error: null
+    error: null,
 });
 
 /**

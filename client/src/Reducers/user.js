@@ -19,13 +19,16 @@ export default function user(state = getInitialAsyncContainer(), action) {
             return {
                 data: null,
                 isLoading: true,
-                error: null
+                error: null,
             };
         case AUTHENTICATION_SUCCESS:
             return {
                 data: {
                     ...action.payload,
-                    years: action.payload.years.length > 0 ? action.payload.years : [new Date().getFullYear().toString()]
+                    years:
+                        action.payload.years.length > 0
+                            ? action.payload.years
+                            : [new Date().getFullYear().toString()],
                 },
                 isLoading: false,
                 error: null,
@@ -34,7 +37,7 @@ export default function user(state = getInitialAsyncContainer(), action) {
             return {
                 data: null,
                 isLoading: false,
-                error: action.payload.response
+                error: action.payload.response,
             };
         // case UPDATE_USER_START:
         //     return {
@@ -54,13 +57,13 @@ export default function user(state = getInitialAsyncContainer(), action) {
         case UPDATE_USER_FAILURE:
             return {
                 data: {
-                    ...state.data
+                    ...state.data,
                 },
                 isLoading: false,
                 error: {
                     status: action.payload.response.status,
-                    message: action.payload.response.data.message
-                }
+                    message: action.payload.response.data.message,
+                },
             };
         default:
             return state;

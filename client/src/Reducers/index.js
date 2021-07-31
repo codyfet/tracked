@@ -10,5 +10,5 @@ export default combineReducers({
     users,
     records,
     emptyRecordTMDbItems,
-    stat
+    stat,
 });

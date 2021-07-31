@@ -14,7 +14,7 @@ import {Profile} from "../Pages/Profile";
  * @param {boolean} isAutheticated Признак авторизации пользователя.
  */
 export const Routes = () => {
-    const {user} = useSelector(state => state);
+    const {user} = useSelector((state) => state);
     const isAutheticated = user?.data;
 
     if (isAutheticated) {
