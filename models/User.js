@@ -18,13 +18,13 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     username: {type: String, required: true},
     favouriteMovies: [FavouriteMovie],
-    records : [{type: Schema.Types.ObjectId, ref: 'Record'}]
+    records: [{type: Schema.Types.ObjectId, ref: "Record"}],
 });
 
 /**
  * Добавляем виртуальное поле years (которого нет в БД).
  */
-userSchema.virtual('years').get(function() {
+userSchema.virtual("years").get(function () {
     const years = this.records.map((record) => record.viewdate.getFullYear());
     const uniqueYears = [...new Set(years)];
     return uniqueYears;
@@ -35,8 +35,8 @@ userSchema.virtual('years').get(function() {
  *
  * Отключено за ненадобностью. При необходимости перевести в true.
  */
-userSchema.set('toJSON', {
-    virtuals: false
+userSchema.set("toJSON", {
+    virtuals: false,
 });
 
 /**

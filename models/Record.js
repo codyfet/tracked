@@ -11,7 +11,7 @@ const CastItem = new Schema({
     id: {type: Number},
     name: {type: String},
     order: {type: Number},
-    profile_path: {type: String}
+    profile_path: {type: String},
 });
 
 /**
@@ -35,12 +35,11 @@ const Genre = new Schema({
     name: {type: String},
 });
 
-
 /**
  * Модель Запись (Фильм/Сериал).
  */
 const Record = new Schema({
-    userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    userId: {type: Schema.Types.ObjectId, ref: "User", required: true},
     id: {type: Number, required: true},
     viewdate: {type: Date},
     posterpath: {type: String},
@@ -62,7 +61,7 @@ const Record = new Schema({
 
     season: {type: String},
     inProduction: {type: Boolean},
-    numberOfSeasons: {type: Number}
+    numberOfSeasons: {type: Number},
 });
 
 module.exports = model("Record", Record);

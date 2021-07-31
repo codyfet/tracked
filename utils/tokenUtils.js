@@ -7,11 +7,9 @@ const config = require("config");
  * @param {string} userId Идентификатор пользователя.
  */
 function createToken(userId) {
-    const token = jwt.sign(
-        {userId},
-        config.get("jwtSecret"),
-        {expiresIn: config.get("sessionExpiresIn")}
-    );
+    const token = jwt.sign({userId}, config.get("jwtSecret"), {
+        expiresIn: config.get("sessionExpiresIn"),
+    });
 
     return token;
 }
@@ -34,5 +32,5 @@ function verifyToken(req, res, next) {
 
 module.exports = {
     createToken,
-    verifyToken
-}
+    verifyToken,
+};
