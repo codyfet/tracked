@@ -1,12 +1,13 @@
-const jwt = require("jsonwebtoken");
-const config = require("config");
+import jwt from "jsonwebtoken";
+import config from "config";
+import {NextFunction, Request, Response} from "express";
 
 /**
  * Создаёт jwt-токен для пользователя.
  *
  * @param {string} userId Идентификатор пользователя.
  */
-function createToken(userId) {
+function createToken(userId: string) {
     const token = jwt.sign({userId}, config.get("jwtSecret"), {
         expiresIn: config.get("sessionExpiresIn"),
     });
@@ -17,7 +18,7 @@ function createToken(userId) {
 /**
  * Middleware функция, которая поверяет есть ли jwt-токен пользователя и прокидывает его дальше.
  */
-function verifyToken(req, res, next) {
+function verifyToken(req: Request, res: Response, next: NextFunction) {
     const bearerHeader = req.headers["authorization"];
 
     if (typeof bearerHeader !== "undefined") {
@@ -30,7 +31,4 @@ function verifyToken(req, res, next) {
     }
 }
 
-module.exports = {
-    createToken,
-    verifyToken,
-};
+export {createToken, verifyToken};

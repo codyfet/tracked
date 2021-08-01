@@ -1,7 +1,7 @@
 /**
  * Мапа Код страны на имя страны.
  */
-const COUNTRIES_MAP = {
+export const COUNTRIES_MAP: {[countryCode: string]: string} = {
     af: "Afghanistan",
     ax: "Aland Islands",
     al: "Albania",
@@ -248,8 +248,4 @@ const COUNTRIES_MAP = {
     ye: "Yemen",
     zm: "Zambia",
     zw: "Zimbabwe",
-};
-
-module.exports = {
-    COUNTRIES_MAP,
 };

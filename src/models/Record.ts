@@ -1,9 +1,10 @@
-const {Schema, model} = require("mongoose");
+import {IRecord} from "../interfaces/Record";
+import {Schema, model} from "mongoose";
 
 /**
  * Модель участника Cast.
  */
-const CastItem = new Schema({
+const CastItemSchema: Schema = new Schema({
     cast_id: {type: Number},
     character: {type: String},
     credit_id: {type: String},
@@ -17,7 +18,7 @@ const CastItem = new Schema({
 /**
  * Модель участника Crew.
  */
-const CrewItem = new Schema({
+const CrewItemSchema: Schema = new Schema({
     credit_id: {type: String},
     department: {type: String},
     gender: {type: Number},
@@ -30,7 +31,7 @@ const CrewItem = new Schema({
 /**
  * Модель Жанр.
  */
-const Genre = new Schema({
+const GenreSchema: Schema = new Schema({
     id: {type: Number},
     name: {type: String},
 });
@@ -38,7 +39,7 @@ const Genre = new Schema({
 /**
  * Модель Запись (Фильм/Сериал).
  */
-const Record = new Schema({
+const RecordSchema: Schema = new Schema({
     userId: {type: Schema.Types.ObjectId, ref: "User", required: true},
     id: {type: Number, required: true},
     viewdate: {type: Date},
@@ -49,14 +50,14 @@ const Record = new Schema({
     rating: {type: String},
     type: {type: String, required: true},
     backdrop_path: {type: String},
-    genres: [Genre],
+    genres: [GenreSchema],
     overview: {type: String},
     production_countries: [String],
     director: [String],
     reViewed: {type: Boolean},
     notFinished: {type: Boolean},
-    cast: [CastItem],
-    crew: [CrewItem],
+    cast: [CastItemSchema],
+    crew: [CrewItemSchema],
     position: {type: String},
 
     season: {type: String},
@@ -64,4 +65,4 @@ const Record = new Schema({
     numberOfSeasons: {type: Number},
 });
 
-module.exports = model("Record", Record);
+export default model<IRecord>("Record", RecordSchema);
