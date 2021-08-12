@@ -5,11 +5,10 @@
     "main": "app.js",
     "private": true,
     "scripts": {
-        "start": "node dist/app.js",
+        "start": "tsc -p . && node dist/app.js",
         "server": "nodemon src/app.ts",
-        "build-server": "tsc -p .",
-        "client": "npm run start --prefix client",
-        "build": "npm run build --prefix client",
+        "client": "npm run start --prefix ../client",
+        "build": "npm run build --prefix ../client",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "eslint": "eslint . ",
         "eslint:fix": "eslint . --fix"
