@@ -1,6 +1,5 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssestsWebpackPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserWebpackPlugin = require("terser-webpack-plugin");
@@ -57,11 +56,6 @@ const getCssLoaders = (extraLoaders) => {
         "css-loader",
         {
             loader: "postcss-loader",
-            options: {
-                postcssOptions: {
-                    plugins: () => [require("autoprefixer")],
-                },
-            },
         },
     ];
 
@@ -87,6 +81,7 @@ module.exports = {
     output: {
         filename: getDistFilename("js"),
         path: path.resolve(__dirname, "dist"),
+        clean: true,
         publicPath: "/",
     },
     devServer: {
@@ -100,7 +95,7 @@ module.exports = {
             },
         },
     },
-    devtool: isDev ? "source-map" : "",
+    devtool: isDev ? "source-map" : false,
     module: {
         rules: [
             {
@@ -137,7 +132,6 @@ module.exports = {
                 collapseWhitespace: isProd,
             },
         }),
-        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: getDistFilename("css"),
         }),
