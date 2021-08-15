@@ -7,10 +7,10 @@ import {ICastItem} from "./../interfaces/CastItem";
 import {IGenre} from "./../interfaces/Genre";
 import express, {Request, Response, Router} from "express";
 import _ from "lodash";
-import Record from "../models/Record";
+import {RecordModel} from "../models/Record";
 import {FilterQuery} from "mongoose";
 import {COUNTRIES_MAP} from "../consts";
-import {IRecord} from "../interfaces/Record";
+import {IRecordModel} from "../interfaces/Record";
 import {ICrewItem} from "../interfaces/CrewItem";
 import {
     IActorsDataItem,
@@ -21,6 +21,7 @@ import {
     IMarksDataItem,
     IYearsDataItem,
 } from "../interfaces/Stat";
+import {ERecordType} from "../enums";
 
 const router: Router = express.Router();
 
@@ -31,9 +32,9 @@ class StatCalculator {
     /**
      * Вычисляем статистику по количеству оценок.
      */
-    static getMarksData(movies: IRecord[]): IMarksDataItem[] {
+    static getMarksData(movies: IRecordModel[]): IMarksDataItem[] {
         const marksData: IMarksDataItem[] = [];
-        const markGroupedMovies = _.groupBy(movies, (item: IRecord) => item.rating);
+        const markGroupedMovies = _.groupBy(movies, (item: IRecordModel) => item.rating);
 
         for (let i = 1; i < 11; i++) {
             const mark = "" + i;
@@ -50,10 +51,10 @@ class StatCalculator {
     /**
      * Вычисляем статистику по жанрам.
      */
-    static genresData(movies: IRecord[]): IGenresDataItem[] {
+    static genresData(movies: IRecordModel[]): IGenresDataItem[] {
         const genresData: IGenresDataItem[] = [];
         const genres: IGenre[] = movies.reduce(
-            (acc: IGenre[], item: IRecord) => acc.concat(item.genres),
+            (acc: IGenre[], item: IRecordModel) => acc.concat(item.genres),
             []
         );
         const genresGrouped = _.groupBy(genres, "name");
@@ -81,11 +82,11 @@ class StatCalculator {
     /**
      * Вычисляем статистику по странам.
      */
-    static getCountriesData(movies: IRecord[]): ICountryDataItem[] {
+    static getCountriesData(movies: IRecordModel[]): ICountryDataItem[] {
         const countriesData: ICountryDataItem[] = [];
         const countryResult: {[country: string]: number} = {};
         const countries: string[] = movies.reduce(
-            (acc: string[], item: IRecord) => acc.concat(item.production_countries),
+            (acc: string[], item: IRecordModel) => acc.concat(item.production_countries),
             []
         );
 
@@ -128,7 +129,7 @@ class StatCalculator {
     /**
      * Вычисляем статистику по годам.
      */
-    static getYearsData(movies: IRecord[]): IYearsDataItem[] {
+    static getYearsData(movies: IRecordModel[]): IYearsDataItem[] {
         const yearsData: IYearsDataItem[] = [];
         const yearsGroupedMovies = _.groupBy(movies, "releaseYear");
 
@@ -147,10 +148,10 @@ class StatCalculator {
     /**
      * Вычисляем статистику по персонам.
      */
-    static getDirectorsData(movies: IRecord[]): IDirectorsDataItem[] {
+    static getDirectorsData(movies: IRecordModel[]): IDirectorsDataItem[] {
         const directorsData: IDirectorsDataItem[] = [];
         const directorsResult: {[country: string]: number} = {};
-        const directors: string[] = movies.reduce((acc: string[], movie: IRecord) => {
+        const directors: string[] = movies.reduce((acc: string[], movie: IRecordModel) => {
             const foundPersons = movie.crew.filter(
                 (crewItem: ICrewItem) => crewItem.job === "Director"
             );
@@ -184,20 +185,20 @@ class StatCalculator {
     /**
      * Вычисляем статистику по актёрам и актрисам.
      */
-    static getActorsActressesData(movies: IRecord[]): IActorsActressesData {
+    static getActorsActressesData(movies: IRecordModel[]): IActorsActressesData {
         const actorsData: IActorsDataItem[] = [];
         const actressesData: IActressesDataItem[] = [];
         const actorsResult: {[actor: string]: number} = {};
         const actressesResult: {[actress: string]: number} = {};
 
-        const actors: string[] = movies.reduce((acc: string[], movie: IRecord) => {
+        const actors: string[] = movies.reduce((acc: string[], movie: IRecordModel) => {
             const men: ICastItem[] = movie.cast.filter(
                 (castItem: ICastItem) => castItem.gender === 1
             );
             return acc.concat(men.map((p: ICastItem) => p.name));
         }, []);
 
-        const actresses: string[] = movies.reduce((acc: string[], movie: IRecord) => {
+        const actresses: string[] = movies.reduce((acc: string[], movie: IRecordModel) => {
             const women: ICastItem[] = movie.cast.filter(
                 (castItem: ICastItem) => castItem.gender === 0
             );
@@ -253,15 +254,15 @@ class StatCalculator {
     /**
      * Возвращает количество просмотренных фильмов в текущем году.
      */
-    static getRecordsCurrentYearCount(records: IRecord[]): IRecordsCurrentYearCount {
+    static getRecordsCurrentYearCount(records: IRecordModel[]): IRecordsCurrentYearCount {
         const [moviesRecords, tvseriesRecords] = _.partition(
             records,
-            (record: IRecord) => record.type === "movie"
+            (record: IRecordModel) => record.type === ERecordType.MOVIE
         );
-        const groupedMoviesByYears = _.groupBy(moviesRecords, (record: IRecord) =>
+        const groupedMoviesByYears = _.groupBy(moviesRecords, (record: IRecordModel) =>
             new Date(record.viewdate).getFullYear()
         );
-        const groupedTvseriesByYears = _.groupBy(tvseriesRecords, (record: IRecord) =>
+        const groupedTvseriesByYears = _.groupBy(tvseriesRecords, (record: IRecordModel) =>
             new Date(record.viewdate).getFullYear()
         );
         const currentYear = new Date().getFullYear();
@@ -281,10 +282,10 @@ class StatCalculator {
     /**
      * Возвращает количество просмотренных фильмов за все года.
      */
-    static getRecordsTotalCount(records: IRecord[]): IRecordsTotalCount {
+    static getRecordsTotalCount(records: IRecordModel[]): IRecordsTotalCount {
         const [moviesRecords, tvseriesRecords] = _.partition(
             records,
-            (record: IRecord) => record.type === "movie"
+            (record: IRecordModel) => record.type === ERecordType.MOVIE
         );
 
         return {
@@ -297,7 +298,7 @@ class StatCalculator {
 // /api/stat
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const filter: FilterQuery<IRecord> = {
+        const filter: FilterQuery<IRecordModel> = {
             userId: req.query.userId as string,
         };
 
@@ -311,8 +312,8 @@ router.get("/", async (req: Request, res: Response) => {
             };
         }
 
-        const records: IRecord[] = await Record.find(filter).exec();
-        const movies: IRecord[] = _.filter(records, (item: IRecord) => item.type === "movie");
+        const records = await RecordModel.find(filter).exec();
+        const movies = _.filter(records, (item: IRecordModel) => item.type === ERecordType.MOVIE);
         const actStat = StatCalculator.getActorsActressesData(movies);
 
         /**

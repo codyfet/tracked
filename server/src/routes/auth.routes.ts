@@ -6,8 +6,8 @@ import {createToken} from "../utils/tokenUtils";
 import {check, validationResult} from "express-validator";
 
 import User from "../models/User";
-import Record from "../models/Record";
-import {IRecord} from "../interfaces/Record";
+import {RecordModel} from "../models/Record";
+import {IRecordModel} from "../interfaces/Record";
 
 const router = express.Router();
 
@@ -88,10 +88,10 @@ router.post(
                 return res.status(400).json({message: "Неверный пароль, попробуйте снова"});
             }
 
-            const filter: FilterQuery<IRecord> = {
+            const filter: FilterQuery<IRecordModel> = {
                 userId: user.id,
             };
-            const records = await Record.find(filter).exec();
+            const records = await RecordModel.find(filter).exec();
             const groupedRecordsByYears = _.groupBy(records, (r) =>
                 new Date(r.viewdate).getFullYear()
             );
@@ -118,11 +118,11 @@ router.get("/user", async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req.query.userId).exec();
 
-        const filter: FilterQuery<IRecord> = {
+        const filter: FilterQuery<IRecordModel> = {
             userId: user?.id,
         };
-        const records: IRecord[] = await Record.find(filter).exec();
-        const groupedRecordsByYears = _.groupBy(records, (record: IRecord) =>
+        const records = await RecordModel.find(filter).exec();
+        const groupedRecordsByYears = _.groupBy(records, (record: IRecordModel) =>
             new Date(record.viewdate).getFullYear()
         );
         const years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>

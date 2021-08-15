@@ -1,4 +1,4 @@
-import {IUser} from "../interfaces/User";
+import {IUser, IUserModel} from "../interfaces/User";
 import {Schema, model} from "mongoose";
 import {IRecord} from "../interfaces/Record";
 
@@ -53,4 +53,4 @@ userSchema.set("toJSON", {
     virtuals: false,
 });
 
-export default model<IUser>("User", userSchema);
+export default model<IUserModel>("User", userSchema);
