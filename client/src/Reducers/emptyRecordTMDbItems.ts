@@ -1,3 +1,4 @@
+import {Reducer} from "redux";
 import {
     ADD_RECORD_SUCCESS,
     POPULATE_MOVIES_AUTOSUGGEST_FAILURE,
@@ -7,11 +8,19 @@ import {
     POPULATE_TV_AUTOSUGGEST_START,
     POPULATE_TV_AUTOSUGGEST_SUCCESS,
 } from "../Actions/ActionTypes";
+import {IFSAAction} from "../Interfaces/Common";
+import {IEmptyRecordTMDbItemsReduxState} from "./emptyRecordTMDbItems.types";
 
+type EmptyRecordTMDbItemsAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
+
+const initialState: IEmptyRecordTMDbItemsReduxState = [];
 /**
  * Редюсер для узла "emptyRecordTMDbItems".
  */
-export default function emptyRecordTMDbItems(state = [], action) {
+const emptyRecordTMDbItemsReducer: Reducer<IEmptyRecordTMDbItemsReduxState> = (
+    state = initialState,
+    action: EmptyRecordTMDbItemsAction
+) => {
     switch (action.type) {
         case POPULATE_MOVIES_AUTOSUGGEST_START:
             return state;
@@ -30,4 +39,6 @@ export default function emptyRecordTMDbItems(state = [], action) {
         default:
             return state;
     }
-}
+};
+
+export default emptyRecordTMDbItemsReducer;

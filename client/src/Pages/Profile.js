@@ -4,10 +4,10 @@ import {Container, Grid, Header, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
-import {FavouriteMovie} from "./../Components/FavouriteMovie";
-import {CLEAR_USERS} from "./../Actions/ActionTypes";
+import {FavouriteMovie} from "../Components/FavouriteMovie";
+import {CLEAR_USERS} from "../Actions/ActionTypes";
 import {Link} from "react-router-dom";
-import {Page} from "./../Components/Common/Page";
+import {Page} from "../Components/Common/Page";
 import {YearsSelect} from "../Components/YearsSelect";
 
 /**

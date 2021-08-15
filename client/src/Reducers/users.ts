@@ -1,3 +1,5 @@
+import {IClientUser} from "./../Interfaces/User";
+import {IUsersReduxState} from "./users.types";
 import {
     CLEAR_USERS,
     GET_USERS_FAILURE,
@@ -7,14 +9,21 @@ import {
 } from "../Actions/ActionTypes";
 import {getInitialAsyncContainer} from "../Utils/Utils";
 import {cloneDeep} from "lodash";
+import {IFSAAction} from "../Interfaces/Common";
+import {IClientUsers} from "../Interfaces/IUsers";
+import {Reducer} from "redux";
+
+type UsersAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
+
+const initialState: IUsersReduxState = getInitialAsyncContainer<IClientUsers>();
 
 /**
  * Редюсер для узла "users".
  */
-export default function users(state = getInitialAsyncContainer(), action) {
+const usersReducer: Reducer<IUsersReduxState> = (state = initialState, action: UsersAction) => {
     switch (action.type) {
         case CLEAR_USERS:
-            return getInitialAsyncContainer();
+            return initialState;
         case GET_USERS_START:
             return {
                 data: null,
@@ -54,4 +63,6 @@ export default function users(state = getInitialAsyncContainer(), action) {
         default:
             return state;
     }
-}
+};
+
+export default usersReducer;

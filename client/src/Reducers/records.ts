@@ -1,4 +1,5 @@
 import {filter, map} from "lodash";
+import {Reducer} from "redux";
 import {
     ADD_EMPTY_MOVIE_RECORD,
     ADD_EMPTY_TVSERIES_RECORD,
@@ -17,12 +18,22 @@ import {
     UPDATE_RECORD_START,
     UPDATE_RECORD_SUCCESS,
 } from "../Actions/ActionTypes";
+import {IFSAAction} from "../Interfaces/Common";
+import {IClientRecord} from "../Interfaces/Record";
 import {createEmptyRecord, getInitialAsyncContainer} from "../Utils/Utils";
+import {IRecordsReduxState} from "./records.types";
+
+type RecordsAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
+
+const initialState: IRecordsReduxState = getInitialAsyncContainer<IClientRecord[]>();
 
 /**
  * Редюсер для узла "records".
  */
-export default function records(state = getInitialAsyncContainer(), action) {
+const recordsReducer: Reducer<IRecordsReduxState> = (
+    state = initialState,
+    action: RecordsAction
+) => {
     switch (action.type) {
         case ADD_EMPTY_MOVIE_RECORD:
             return {
@@ -160,4 +171,6 @@ export default function records(state = getInitialAsyncContainer(), action) {
         default:
             return state;
     }
-}
+};
+
+export default recordsReducer;

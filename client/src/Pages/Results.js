@@ -2,13 +2,13 @@ import {getRecords, updateRecords} from "../Actions/Actions";
 import {Container, Header, Input, Message, Table} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Page} from "./../Components/Common/Page";
+import {Page} from "../Components/Common/Page";
 import {YearsSelect} from "../Components/YearsSelect";
-import {CLEAR_RECORDS} from "./../Actions/ActionTypes";
-import {CURRENT_YEAR, DEFAULT_RECORDS_FILTER} from "./../Consts";
+import {CLEAR_RECORDS} from "../Actions/ActionTypes";
+import {CURRENT_YEAR, DEFAULT_RECORDS_FILTER} from "../Consts";
 import {isEmpty} from "lodash";
 import {Link} from "react-router-dom";
-import {Record} from "./../Components/Record";
+import {Record} from "../Components/Record";
 
 /**
  * Сравнивает объекты записи по значению Position.

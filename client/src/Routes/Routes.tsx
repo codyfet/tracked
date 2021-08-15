@@ -7,6 +7,7 @@ import {Users} from "../Pages/Users";
 import {Results} from "../Pages/Results";
 import {Diary} from "../Pages/Diary";
 import {Profile} from "../Pages/Profile";
+import {IApplicationReduxState} from "../Reducers";
 
 /**
  * Возвращает набор доступных роутов приложения.
@@ -14,7 +15,7 @@ import {Profile} from "../Pages/Profile";
  * @param {boolean} isAutheticated Признак авторизации пользователя.
  */
 export const Routes = () => {
-    const {user} = useSelector((state) => state);
+    const {user} = useSelector((state: IApplicationReduxState) => state);
     const isAutheticated = user?.data;
 
     if (isAutheticated) {

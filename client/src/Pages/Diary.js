@@ -9,8 +9,8 @@ import React, {useEffect, useState} from "react";
 import {filter, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import {Record} from "../Components/Record";
-import {Page} from "./../Components/Common/Page";
-import {DEFAULT_RECORDS_FILTER} from "./../Consts";
+import {Page} from "../Components/Common/Page";
+import {DEFAULT_RECORDS_FILTER} from "../Consts";
 import {YearsSelect} from "../Components/YearsSelect";
 
 /**

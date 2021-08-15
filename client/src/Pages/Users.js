@@ -4,7 +4,7 @@ import {Container, Header, Pagination, Table} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import {Page} from "./../Components/Common/Page";
+import {Page} from "../Components/Common/Page";
 
 /**
  * Страница журнал просмотров.

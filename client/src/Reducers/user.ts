@@ -1,3 +1,5 @@
+import {IUserReduxState} from "./user.types";
+import {Reducer} from "redux";
 import {
     AUTHENTICATION_CLEAR,
     AUTHENTICATION_FAILURE,
@@ -6,15 +8,21 @@ import {
     UPDATE_USER_FAILURE,
     UPDATE_USER_SUCCESS,
 } from "../Actions/ActionTypes";
+import {IFSAAction} from "../Interfaces/Common";
+import {IClientUser} from "../Interfaces/User";
 import {getInitialAsyncContainer} from "../Utils/Utils";
+
+type UserAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
+
+const initialState: IUserReduxState = getInitialAsyncContainer<IClientUser>();
 
 /**
  * Редюсер для узла "user".
  */
-export default function user(state = getInitialAsyncContainer(), action) {
+const userReducer: Reducer<IUserReduxState> = (state = initialState, action: UserAction) => {
     switch (action.type) {
         case AUTHENTICATION_CLEAR:
-            return getInitialAsyncContainer();
+            return initialState;
         case AUTHENTICATION_START:
             return {
                 data: null,
@@ -68,4 +76,6 @@ export default function user(state = getInitialAsyncContainer(), action) {
         default:
             return state;
     }
-}
+};
+
+export default userReducer;

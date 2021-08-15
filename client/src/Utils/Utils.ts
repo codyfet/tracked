@@ -1,7 +1,10 @@
+import {ERecordType} from "../Enums";
+import {IClientRecord} from "../Interfaces/Record";
+import {IAsyncData} from "../Interfaces/Common";
 /**
  * Возвращает пустую запись.
  */
-export function createEmptyRecord(type) {
+export function createEmptyRecord(type: ERecordType = null): IClientRecord {
     return {
         _id: "0",
         viewdate: null,
@@ -10,7 +13,7 @@ export function createEmptyRecord(type) {
         releaseYear: null,
         originalTitle: null,
         director: null,
-        flag: null,
+        // flag: null, TODO: Убедиться что это не нужно поле.
         rating: null,
         type,
         isEmptyRecord: true,
@@ -20,7 +23,7 @@ export function createEmptyRecord(type) {
 /**
  * Возвращает пустой контейнер для работы с асинхронными запросами.
  */
-export const getInitialAsyncContainer = () => ({
+export const getInitialAsyncContainer = <T>(): IAsyncData<T> => ({
     data: null,
     isLoading: false,
     error: null,
@@ -33,7 +36,7 @@ export const getInitialAsyncContainer = () => ({
  * lower than max if max isn't an integer).
  * Using Math.round() will give you a non-uniform distribution!
  */
-export function getRandomInt(min, max) {
+export function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min);
     max = Math.floor(max);
 
