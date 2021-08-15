@@ -1,4 +1,4 @@
 import {IAsyncData} from "../Interfaces/Common";
-import {IClientUser} from "./../Interfaces/User";
+import {IClientUser, IUserErrorObject} from "./../Interfaces/User";
 
-export type IUserReduxState = IAsyncData<IClientUser>;
+export type IUserReduxState = IAsyncData<IClientUser, IUserErrorObject>;

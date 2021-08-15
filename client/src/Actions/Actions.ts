@@ -365,7 +365,7 @@ export function getUserInfo(userId: string) {
  * @param {string} userId ObjectId идентификатор записи (если не передать, вернутся все записи).
  * @param {number} page Номер запрашиваемой страницы.
  */
-export function getUsers({userId, page}: {userId: string; page?: number}) {
+export function getUsers({userId, page}: {userId?: string; page?: number}) {
     return async function (dispatch: Dispatch) {
         dispatch({type: GET_USERS_START});
 

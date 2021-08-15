@@ -279,7 +279,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
                 <YearsSelect
                     selectedYear={year}
                     onSelect={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) =>
-                        setYear(data.value)
+                        setYear(data.value as number)
                     }
                 />
                 &nbsp;&nbsp;&nbsp;
