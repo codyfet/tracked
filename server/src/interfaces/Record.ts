@@ -1,9 +1,8 @@
 import {ICastItem} from "./CastItem";
-import {Document} from "mongoose";
 import {IGenre} from "./Genre";
 import {ICrewItem} from "./CrewItem";
 
-export interface IRecord extends Document {
+export interface IRecord {
     userId: string;
     id: number;
     viewdate: Date;

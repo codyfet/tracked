@@ -1,8 +1,10 @@
 import {IRecord} from "./Record";
-import {Document} from "mongoose";
 import {IFavouriteMovie} from "./FavouriteMovie";
 
-export interface IUser extends Document {
+/**
+ * TODO: Подумать над использованием extends Document.
+ */
+export interface IUser {
     email: string;
     password: string;
     username: string;

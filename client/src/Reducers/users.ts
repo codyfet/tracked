@@ -1,4 +1,3 @@
-import {IClientUser} from "./../Interfaces/User";
 import {IUsersReduxState} from "./users.types";
 import {
     CLEAR_USERS,
@@ -10,7 +9,7 @@ import {
 import {getInitialAsyncContainer} from "../Utils/Utils";
 import {cloneDeep} from "lodash";
 import {IFSAAction} from "../Interfaces/Common";
-import {IClientUsers} from "../Interfaces/IUsers";
+import {IClientUsers} from "../Interfaces/Users";
 import {Reducer} from "redux";
 
 type UsersAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
