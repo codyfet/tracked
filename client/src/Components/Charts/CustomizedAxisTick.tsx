@@ -1,9 +1,15 @@
 import React from "react";
 
+interface IProps {
+    x: number;
+    y: number;
+    payload: {value: string};
+}
+
 /**
  * Рисует координатную ось x для графика "Годы выпуска".
  */
-export class CustomizedAxisTick extends React.PureComponent {
+export class CustomizedAxisTick extends React.PureComponent<IProps> {
     render() {
         const {x, y, payload} = this.props;
 

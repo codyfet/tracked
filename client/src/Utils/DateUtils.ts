@@ -18,7 +18,7 @@ const MONTH_NAMES = [
  *
  * @param {Date} dateObject Дата в формате Date.
  */
-export function getFormattedDate(dateObject) {
+export function getFormattedDate(dateObject: Date): string {
     const month = MONTH_NAMES[dateObject.getMonth()];
     const day = String(dateObject.getDate()).padStart(2, "0").replace(/^0+/, "");
 

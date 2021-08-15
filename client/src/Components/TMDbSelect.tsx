@@ -1,7 +1,17 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import Autosuggest from "react-autosuggest";
+import Autosuggest, {ChangeEvent, SuggestionSelectedEventData} from "react-autosuggest";
 import {noop} from "lodash";
+import {IApplicationReduxState} from "../Reducers";
+import {Result} from "../Interfaces/TMDBInterfaces";
+
+export interface ITMDbSelectProps {
+    searchAction: (inputValue: string) => void;
+    onSuggestionSelected: (suggestion: Result, userId: string) => void;
+    titlePropName: "title" | "name";
+    releasePropName: "release_date" | "first_air_date";
+    placeholder: string;
+}
 
 /**
  * Компонент выпадающий список для поиска фильмов/сериалов в TMDb.
@@ -13,10 +23,10 @@ export const TMDbSelect = ({
     titlePropName,
     releasePropName,
     placeholder,
-}) => {
+}: ITMDbSelectProps) => {
     const dispatch = useDispatch();
-    const records = useSelector((state) => state.emptyRecordTMDbItems);
-    const user = useSelector((state) => state.user);
+    const records = useSelector((state: IApplicationReduxState) => state.emptyRecordTMDbItems);
+    const user = useSelector((state: IApplicationReduxState) => state.user);
     const userId = user.data?.userId;
     const [emptyRecordInputValue, setEmptyRecordInputValue] = useState("");
 
@@ -25,20 +35,20 @@ export const TMDbSelect = ({
      *
      * @param {Object} suggestion Предложение.
      */
-    const getSuggestionValue = (suggestion) => suggestion[titlePropName];
+    const getSuggestionValue = (suggestion: Result) => suggestion[titlePropName];
 
     /**
      * Рисует опцию с предложением.
      *
      * @param {Object} suggestion Предложение.
      */
-    const renderSuggestion = (suggestion) => {
+    const renderSuggestion = (suggestion: Result) => {
         const year = suggestion[releasePropName]
             ? `(${suggestion[releasePropName]?.substring(0, 4)})`
             : "";
 
         return (
-            <div className="suggestion-item" id={suggestion.id}>
+            <div className="suggestion-item" id={suggestion.id.toString()}>
                 {suggestion[titlePropName] + " " + year}
             </div>
         );
@@ -47,7 +57,7 @@ export const TMDbSelect = ({
     /**
      * Обработчик изменения в инпут-поле.
      */
-    const handleChangeInput = (event, options) => {
+    const handleChangeInput = (event: React.FormEvent<HTMLElement>, options: ChangeEvent) => {
         // Если обработчик вызван из-за ввода значения руками.
         if (options.method === "type") {
             const inputValue = event.target.value;
@@ -64,7 +74,10 @@ export const TMDbSelect = ({
      * @param {Event} _event Событие.
      * @param {{suggestion}} param Выбранное значение.
      */
-    const handleSuggestionSelected = (_event, {suggestion}) => {
+    const handleSuggestionSelected = (
+        _event: React.FormEvent,
+        {suggestion}: SuggestionSelectedEventData<Result>
+    ) => {
         setEmptyRecordInputValue(suggestion[titlePropName]);
         onSuggestionSelected(suggestion, userId);
     };

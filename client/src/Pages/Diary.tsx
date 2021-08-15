@@ -82,7 +82,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
                             ) =>
                                 setRecordsFilter({
                                     ...recordsFilter,
-                                    year: data.value,
+                                    year: Number(data.value),
                                 })
                             }
                         />

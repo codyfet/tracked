@@ -2,14 +2,22 @@ import React, {Fragment, useState} from "react";
 import {EmptyCard} from "./EmptyCard";
 import {FavouriteMovieModal} from "./FavouriteMovieModal";
 import {Icon, Image} from "semantic-ui-react";
-import {IMAGE_URL} from "./../Consts";
-import {useToggle} from "./../Hooks/Toggle.hook";
+import {IMAGE_URL} from "../Consts";
+import {useToggle} from "../Hooks/Toggle.hook";
 import {SimpleDialog} from "./Common/SimpleDialog";
+import {IFavouriteMovie} from "../../../server/src/interfaces/FavouriteMovie";
+
+interface IProps {
+    movie: IFavouriteMovie;
+    index: number;
+    onRemove: () => void;
+    disabled: boolean;
+}
 
 /**
  * Компонент-карточка "Любимый фильм".
  */
-export const FavouriteMovie = ({movie, index, onRemove, disabled}) => {
+export const FavouriteMovie = ({movie, index, onRemove, disabled}: IProps) => {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isRemoveDialogVisible, toggleRemoveDialog] = useToggle(false);
     let card;

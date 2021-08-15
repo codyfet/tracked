@@ -1,9 +1,13 @@
 import React from "react";
 
+interface IProps {
+    className?: string;
+}
+
 /**
  * Икнока Чарта (https://feathericons.com/).
  */
-export const ChartItem = (props) => {
+export const ChartItem = (props: IProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

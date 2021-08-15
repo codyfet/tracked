@@ -1,6 +1,12 @@
-import React from "react";
+import React, {ReactElement} from "react";
 import {useSelector} from "react-redux";
+import {IApplicationReduxState} from "../../Reducers";
 import {LoadingOverlay} from "./LoadingOverlay";
+
+interface IProps {
+    asyncDataKeys: string[];
+    children: ReactElement;
+}
 
 /**
  * Компонент-обёртка для страниц приложения.
@@ -8,8 +14,8 @@ import {LoadingOverlay} from "./LoadingOverlay";
  *
  * @prop {Array<string>} asyncDataKeys Массив ключей контейнеров данных из редакс дерева, для которых нужно проверить статус загрузки.
  */
-export const Page = (props) => {
-    const state = useSelector((state) => state);
+export const Page: React.FunctionComponent<IProps> = (props: IProps) => {
+    const state = useSelector((state: IApplicationReduxState) => state);
     const keys = props.asyncDataKeys;
 
     for (let i = 0; i < keys.length; i++) {

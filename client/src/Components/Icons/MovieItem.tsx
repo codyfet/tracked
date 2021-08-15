@@ -1,9 +1,13 @@
 import React from "react";
 
+interface IProps {
+    className?: string;
+}
+
 /**
  * Икнока Киноплёнка (https://feathericons.com/).
  */
-export const MovieItem = (props) => {
+export const MovieItem = (props: IProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

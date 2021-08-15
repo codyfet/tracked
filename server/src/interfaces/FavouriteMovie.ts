@@ -1,6 +1,4 @@
-import {Document} from "mongoose";
-
-export interface IFavouriteMovie extends Document {
+export interface IFavouriteMovie {
     id: number;
     title: string;
     release_date: string;

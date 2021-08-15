@@ -1,6 +1,16 @@
 import React from "react";
 import {Button, Modal} from "semantic-ui-react";
 
+interface IProps {
+    header: string;
+    content: React.ReactNode;
+    onClose: () => void;
+    onSuccess: () => void;
+    successText: string;
+    successDisabled: boolean;
+    hideCancel?: boolean;
+}
+
 /**
  * Компонент стандартное модальное окно с кнопками Отмена/Ок.
  */
@@ -12,7 +22,7 @@ export const SimpleModal = ({
     successText,
     successDisabled,
     hideCancel,
-}) => (
+}: IProps) => (
     <Modal onClose={onClose} open closeOnDimmerClick={false}>
         <Modal.Header>{header}</Modal.Header>
         <Modal.Content>{content}</Modal.Content>

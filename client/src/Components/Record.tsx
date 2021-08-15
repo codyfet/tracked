@@ -1,8 +1,8 @@
 import React, {Fragment} from "react";
 import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
-import {TMDbSelect} from "./TMDbSelect";
-import {Flag, Grid, Image, Input, Label, Segment} from "semantic-ui-react";
+import {ITMDbSelectProps, TMDbSelect} from "./TMDbSelect";
+import {Flag, Grid, Image, Input, InputOnChangeData, Label, Segment} from "semantic-ui-react";
 import {SimpleDialog} from "./Common/SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
@@ -22,7 +22,13 @@ import {DELETE_EMPTY_RECORD} from "../Actions/ActionTypes";
 import {IconRemove} from "./Icons/IconRemove";
 
 import "react-datepicker/dist/react-datepicker.css";
+import {IClientRecord} from "../Interfaces/Record";
+import {ERecordType} from "../Enums";
+import {Result} from "../Interfaces/TMDBInterfaces";
 
+interface IProps extends IClientRecord {
+    isReadonly?: boolean;
+}
 /**
  * Компонент карточка фильма.
  */
@@ -41,9 +47,9 @@ export const Record = ({
     season,
     position,
     isReadonly,
-}) => {
+}: IProps) => {
     const isEmptyRecord = _id === "0";
-    const isMovie = type === "movie";
+    const isMovie = type === ERecordType.MOVIE;
     const isTvSeries = !isMovie;
     const dispatch = useDispatch();
 
@@ -52,13 +58,13 @@ export const Record = ({
     const [isEditModeRatingEnabled, toggleRatingEditMode] = useToggle(false);
     const [isEditModeSeasonInfoEnabled, toggleSeasonInfoEditMode] = useToggle(false);
 
-    const [viewdateValue, setViewdateValue] = useUpdate(viewdate, (newValue) =>
+    const [viewdateValue, setViewdateValue] = useUpdate<Date>(viewdate, (newValue) =>
         dispatch(updateRecord(_id, {viewdate: newValue}))
     );
-    const [ratingValue, setRatingValue] = useUpdate(rating, (newValue) =>
+    const [ratingValue, setRatingValue] = useUpdate<string>(rating, (newValue) =>
         dispatch(updateRecord(_id, {rating: newValue}))
     );
-    const [seasonValue, setSeasonValue] = useUpdate(season, (newValue) =>
+    const [seasonValue, setSeasonValue] = useUpdate<string>(season, (newValue) =>
         dispatch(updateRecord(_id, {season: newValue}))
     );
 
@@ -76,7 +82,20 @@ export const Record = ({
         }
 
         if (isEditModeViewdateEnabled) {
-            const CustomInput = ({value, onClick, onChange, onBlur}) => (
+            const CustomInput = ({
+                value,
+                onClick,
+                onChange,
+                onBlur,
+            }: {
+                value: string;
+                onClick: () => void;
+                onChange: (
+                    event: React.ChangeEvent<HTMLInputElement>,
+                    data: InputOnChangeData
+                ) => void;
+                onBlur: () => void;
+            }) => (
                 <Input
                     className="datepicker-input"
                     value={value}
@@ -91,7 +110,7 @@ export const Record = ({
                     dateFormat="d MMMM"
                     locale={ru}
                     selected={viewdateValue}
-                    onChange={(viewdate) => {
+                    onChange={(viewdate: Date) => {
                         if (!isReadonly) {
                             setViewdateValue(viewdate);
                             toggleViewdateEditMode();
@@ -130,8 +149,10 @@ export const Record = ({
                 className="edit-mode-season-info"
                 value={seasonValue}
                 autoFocus
-                onChange={(e) => setSeasonValue(e.target.value)}
-                onFocus={(e) => e.currentTarget.select()}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setSeasonValue(e.target.value)
+                }
+                onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.currentTarget.select()}
                 onBlur={toggleSeasonInfoEditMode}
                 size="mini"
             />
@@ -145,12 +166,12 @@ export const Record = ({
      */
     const renderMainInfo = () => {
         if (isEmptyRecord) {
-            const configProps = isMovie
+            const configProps: ITMDbSelectProps = isMovie
                 ? {
                       searchAction: debounceAction(searchMovies, 300, {
                           leading: false,
                       }),
-                      onSuggestionSelected: (suggestion, userId) =>
+                      onSuggestionSelected: (suggestion: Result, userId: string) =>
                           dispatch(addDetailedMovieRecord(suggestion.id, userId)),
                       titlePropName: "title",
                       releasePropName: "release_date",
@@ -160,7 +181,7 @@ export const Record = ({
                       searchAction: debounceAction(searchTvSeries, 300, {
                           leading: false,
                       }),
-                      onSuggestionSelected: (suggestion, userId) =>
+                      onSuggestionSelected: (suggestion: Result, userId: string) =>
                           dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
                       titlePropName: "name",
                       releasePropName: "first_air_date",
@@ -215,7 +236,7 @@ export const Record = ({
                     value={ratingValue}
                     autoFocus
                     onChange={(e) => !isReadonly && setRatingValue(e.target.value)}
-                    onFocus={(e) => e.currentTarget.select()}
+                    onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.currentTarget.select()}
                     onBlur={toggleRatingEditMode}
                 />
             );

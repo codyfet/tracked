@@ -1,9 +1,12 @@
 import React from "react";
 
+interface IProps {
+    className?: string;
+}
 /**
  * Икнока Звезда (https://feathericons.com/).
  */
-export const StarItem = (props) => {
+export const StarItem = (props: IProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

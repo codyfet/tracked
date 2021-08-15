@@ -3,18 +3,26 @@ import {useDispatch, useSelector} from "react-redux";
 import {SimpleModal} from "./Common/SimpleModal";
 import {TMDbSelect} from "./TMDbSelect";
 import debounceAction from "debounce-action";
-import {searchMovies, updateUser} from "./../Actions/Actions";
+import {searchMovies, updateUser} from "../Actions/Actions";
 import {Image} from "semantic-ui-react";
-import {IMAGE_URL} from "./../Consts";
+import {IMAGE_URL} from "../Consts";
+import {IApplicationReduxState} from "../Reducers";
+import {Result} from "../Interfaces/TMDBInterfaces";
+import {IFavouriteMovie} from "../../../server/src/interfaces/FavouriteMovie";
+
+interface IProps {
+    onClose: () => void;
+    index: number;
+}
 
 /**
  * Модальное окно добавления любимого фильма.
  */
-export const FavouriteMovieModal = ({onClose, index}) => {
+export const FavouriteMovieModal = ({onClose, index}: IProps) => {
     const [suggestion, setSuggestion] = useState(null);
     const {
         users: {data: usersData},
-    } = useSelector((state) => state);
+    } = useSelector((state: IApplicationReduxState) => state);
     const user = usersData ? usersData.items[0] : null;
     const dispatch = useDispatch();
 
@@ -25,7 +33,9 @@ export const FavouriteMovieModal = ({onClose, index}) => {
                     searchAction={debounceAction(searchMovies, 300, {
                         leading: false,
                     })}
-                    onSuggestionSelected={(selectedSuggestion) => setSuggestion(selectedSuggestion)}
+                    onSuggestionSelected={(selectedSuggestion: Result) =>
+                        setSuggestion(selectedSuggestion)
+                    }
                     titlePropName="title"
                     releasePropName="release_date"
                     placeholder="Найти фильм..."
@@ -54,7 +64,7 @@ export const FavouriteMovieModal = ({onClose, index}) => {
             release_date: suggestion.release_date,
         };
 
-        const updatedFavouriteMovies = [...user?.favouriteMovies];
+        const updatedFavouriteMovies: IFavouriteMovie[] = [...user?.favouriteMovies];
         updatedFavouriteMovies[index] = movie;
 
         dispatch(updateUser(user?._id, {favouriteMovies: updatedFavouriteMovies}));

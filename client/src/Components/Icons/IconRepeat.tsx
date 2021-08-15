@@ -1,9 +1,13 @@
 import React from "react";
 
+interface IProps {
+    className?: string;
+}
+
 /**
  * Икнока стрелки (https://feathericons.com/).
  */
-export const IconRepeat = (props) => {
+export const IconRepeat = (props: IProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

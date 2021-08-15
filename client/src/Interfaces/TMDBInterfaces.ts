@@ -49,12 +49,15 @@ export interface Result {
     original_title: string;
     overview: string;
     poster_path: string;
-    release_date: string;
-    title: string;
+    release_date?: string;
+    title?: string;
     video: boolean;
     vote_average: number;
     vote_count: number;
     popularity: number;
+
+    name?: string;
+    first_air_date?: string;
 }
 
 export enum OriginalLanguage {

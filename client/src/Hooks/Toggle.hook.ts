@@ -5,7 +5,9 @@ import {useState} from "react";
  *
  * @param {boolean} initialValue Стартовое значение переключателя.
  */
-export const useToggle = (initialValue) => {
+export const useToggle: (initialValue: boolean) => [boolean, () => void] = (
+    initialValue: boolean
+) => {
     const [value, setValue] = useState(initialValue);
     const toggle = () => setValue(!value);
 

@@ -1,9 +1,15 @@
 import React from "react";
 
+interface IProps {
+    className?: string;
+    title?: string;
+    onClick?: () => void;
+}
+
 /**
  * Икнока крестик (https://feathericons.com/).
  */
-export const IconRemove = (props) => {
+export const IconRemove = (props: IProps) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

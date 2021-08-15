@@ -1,3 +1,4 @@
+import {ERecordType} from "./Enums";
 /**
  * Адрес для загрузки изобдражений с TMDb.
  */
@@ -11,7 +12,7 @@ export const TRACKED_USER_DATA = "TRACKED_USER_DATA";
 /**
  * Возможные типы записей.
  */
-const TYPES = ["movie", "tvseries"];
+const TYPES = [ERecordType.MOVIE, ERecordType.TV_SERIES];
 
 /**
  * Текущий год.
