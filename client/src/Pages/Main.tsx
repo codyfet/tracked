@@ -5,12 +5,13 @@ import {Link} from "react-router-dom";
 import {MovieItem} from "../Components/Icons/MovieItem";
 import {StarItem} from "../Components/Icons/StarItem";
 import {ChartItem} from "../Components/Icons/ChartItem";
+import {IApplicationReduxState} from "../Reducers";
 
 /**
  * Главная страница приложения.
  */
 export const Main = () => {
-    const {user} = useSelector((state) => state);
+    const {user} = useSelector((state: IApplicationReduxState) => state);
     const isAutheticated = user?.data;
 
     /**

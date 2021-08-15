@@ -3,6 +3,7 @@ import {IGenre} from "./Genre";
 import {ICrewItem} from "./CrewItem";
 
 export interface IRecord {
+    _id: string;
     userId: string;
     id: number;
     viewdate: Date;

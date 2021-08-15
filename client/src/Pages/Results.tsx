@@ -1,5 +1,5 @@
 import {getRecords, updateRecords} from "../Actions/Actions";
-import {Container, Header, Input, Message, Table} from "semantic-ui-react";
+import {Container, DropdownProps, Header, Input, Message, Table} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Page} from "../Components/Common/Page";
@@ -9,6 +9,9 @@ import {CURRENT_YEAR, DEFAULT_RECORDS_FILTER} from "../Consts";
 import {isEmpty} from "lodash";
 import {Link} from "react-router-dom";
 import {Record} from "../Components/Record";
+import {IClientRecord} from "../Interfaces/Record";
+import {IApplicationReduxState} from "../Reducers";
+import {ERecordType} from "../Enums";
 
 /**
  * Сравнивает объекты записи по значению Position.
@@ -26,10 +29,10 @@ function compareRecordsByPosition(a, b) {
 /**
  * Возвращает отфильтрованные записи (фильмы или сериалы).
  *
- * @param {Object[]} records Массив записей.
+ * @param {IClientRecord[]} records Массив записей.
  * @param {boolean} isMoviesSelected Признак того, чтоб выбрано представление для фильмов.
  */
-const getFilteredRecords = (records, isMoviesSelected) => {
+const getFilteredRecords = (records: IClientRecord[], isMoviesSelected: boolean) => {
     const type = isMoviesSelected ? "movie" : "tvseries";
 
     return records.filter((record) => record.type === type);
@@ -46,7 +49,7 @@ export const Results = ({match}) => {
         user: {
             data: {userId},
         },
-    } = useSelector((state) => state);
+    } = useSelector((state: IApplicationReduxState) => state);
     const [isMoviesSelected, setMoviesSelected] = useState(true);
     const [enrichedRecords, setEnrichedRecords] = useState(null);
     const [isEditModeClicked, setEditModeClicked] = useState(false);
@@ -54,7 +57,11 @@ export const Results = ({match}) => {
     const isRecordsEmpty = isEmpty(enrichedRecords);
     const isResultsExist =
         !isRecordsEmpty &&
-        records?.some((r) => r.position && r.type === (isMoviesSelected ? "movie" : "tvseries"));
+        records?.some(
+            (r) =>
+                r.position &&
+                r.type === (isMoviesSelected ? ERecordType.MOVIE : ERecordType.TV_SERIES)
+        );
 
     useEffect(() => {
         const filter = {
@@ -76,24 +83,26 @@ export const Results = ({match}) => {
      * При нажатии на строку, она становится выделенной.
      * Для этого обогащаем модль хаписи атрибутом isSelected, который сохраняется только в локальном стейте компонента.
      */
-    const handleRowClick = (event) => {
-        const recordId = event.target.closest("tr").dataset.id;
-        const updatedRecord = enrichedRecords.find((r) => r._id === recordId);
+    const handleRowClick = (event: React.MouseEvent<HTMLElement>) => {
+        const recordId = event.currentTarget.closest("tr").dataset.id;
+        const updatedRecord = enrichedRecords.find((r: IClientRecord) => r._id === recordId);
         updatedRecord.isSelected = !updatedRecord.isSelected;
-        const updatedRecords = enrichedRecords.map((r) => (r._id === recordId ? updatedRecord : r));
+        const updatedRecords = enrichedRecords.map((r: IClientRecord) =>
+            r._id === recordId ? updatedRecord : r
+        );
         setEnrichedRecords(updatedRecords);
     };
 
     /**
      * Обработчик нажатия на кнопку "Сохранить".
      */
-    const handeCreateResultsClick = (event) => {
+    const handeCreateResultsClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
-        const recordsToUpdate = [];
-        const positionElements = event.target
+        const recordsToUpdate: IClientRecord[] = [];
+        const positionElements = event.currentTarget
             .closest(".results")
             .getElementsByClassName("position");
-        const positionMap = {};
+        const positionMap: {[id: string]: string} = {};
 
         for (let i = 0; i < positionElements.length; i++) {
             const positionValue = positionElements[i].getElementsByTagName("input")[0].value;
@@ -107,7 +116,7 @@ export const Results = ({match}) => {
 
             if (oldValue !== newValue) {
                 recordsToUpdate.push({
-                    id,
+                    id: Number(id),
                     position: positionMap[id],
                     viewdate: new Date().setYear(year),
                     userId,
@@ -207,7 +216,9 @@ export const Results = ({match}) => {
                                                             data-id={record._id}
                                                             className="position"
                                                             maxLength="2"
-                                                            onClick={(e) => e.stopPropagation()}
+                                                            onClick={(
+                                                                e: React.MouseEvent<HTMLElement>
+                                                            ) => e.stopPropagation()}
                                                             onChange={(e) => {
                                                                 setEditModeClicked(true);
                                                                 const newRecords = [
@@ -263,7 +274,12 @@ export const Results = ({match}) => {
                 <Header as="h2" size="large">
                     Итоги
                 </Header>
-                <YearsSelect selectedYear={year} onSelect={(event, data) => setYear(data.value)} />
+                <YearsSelect
+                    selectedYear={year}
+                    onSelect={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) =>
+                        setYear(data.value)
+                    }
+                />
                 &nbsp;&nbsp;&nbsp;
                 <span
                     className={`record-filter ${isMoviesSelected ? "" : "not-selected"}`}

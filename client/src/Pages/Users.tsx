@@ -5,6 +5,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import {Page} from "../Components/Common/Page";
+import {IApplicationReduxState} from "../Reducers";
 
 /**
  * Страница журнал просмотров.
@@ -13,7 +14,7 @@ export const Users = () => {
     const dispatch = useDispatch();
     const {
         users: {data: usersData},
-    } = useSelector((state) => state);
+    } = useSelector((state: IApplicationReduxState) => state);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
@@ -60,7 +61,7 @@ export const Users = () => {
                     defaultActivePage={currentPage + 1}
                     totalPages={totalPages}
                     onPageChange={(_event, data) => {
-                        setCurrentPage(data.activePage - 1);
+                        setCurrentPage(Number(data.activePage) - 1);
                     }}
                 />
             </Container>

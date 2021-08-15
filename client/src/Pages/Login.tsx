@@ -4,6 +4,7 @@ import {login, register} from "../Actions/Actions";
 import {useToggle} from "../Hooks/Toggle.hook";
 import {Button, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
 import {AUTHENTICATION_CLEAR} from "../Actions/ActionTypes";
+import {IApplicationReduxState} from "../Reducers";
 
 /**
  * Страница логин/регистрация.
@@ -12,7 +13,7 @@ export const Login = () => {
     const [form, setForm] = useState({email: "", password: "", username: ""});
     const [isLoginMode, toggleMode] = useToggle(true);
     const dispatch = useDispatch();
-    const {user} = useSelector((state) => state);
+    const {user} = useSelector((state: IApplicationReduxState) => state);
     let headerTitle, buttonText, messageQuestion, messageLink;
 
     if (isLoginMode) {
@@ -30,14 +31,14 @@ export const Login = () => {
     /**
      * Обработчик измения значения в инпуте.
      */
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({...form, [e.target.name]: e.target.value});
     };
 
     /**
      * Обработчик изменения смены режима формы логин/регистрация.
      */
-    const handleModeLink = (e) => {
+    const handleModeLink = (e: React.MouseEvent<HTMLElement>) => {
         e.preventDefault();
         toggleMode();
         dispatch({type: AUTHENTICATION_CLEAR});
@@ -58,7 +59,7 @@ export const Login = () => {
         return (
             <Message
                 error
-                list={user.error.data?.errors?.map((e, index) => (
+                list={user.error.data?.errors?.map((e, index: number) => (
                     <p key={index}>{e.msg}</p>
                 ))}
             />

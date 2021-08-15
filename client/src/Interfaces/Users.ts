@@ -2,8 +2,8 @@ import {IUser} from "../../../server/src/interfaces/User";
 
 export interface IClientUsers {
     items: IUser[];
-    total: boolean;
-    page: boolean;
+    total: number;
+    page: number;
     limit: number;
     hasNext: boolean;
 }
