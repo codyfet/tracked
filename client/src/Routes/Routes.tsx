@@ -9,6 +9,22 @@ import {Diary} from "../Pages/Diary";
 import {Profile} from "../Pages/Profile";
 import {IApplicationReduxState} from "../Reducers";
 
+// import * as H from "history";
+
+// export interface RouteComponentProps<P> {
+//     match: match<P>;
+//     location: H.Location;
+//     history: H.History;
+//     staticContext?: any;
+// }
+
+// export interface match<P> {
+//     params: P;
+//     isExact: boolean;
+//     path: string;
+//     url: string;
+// }
+
 /**
  * Возвращает набор доступных роутов приложения.
  *

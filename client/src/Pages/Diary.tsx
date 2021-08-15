@@ -4,7 +4,7 @@ import {
     CLEAR_RECORDS,
 } from "../Actions/ActionTypes";
 import {getRecords} from "../Actions/Actions";
-import {Button, Container, Grid, Header, Message} from "semantic-ui-react";
+import {Button, Container, DropdownProps, Grid, Header, Message} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
 import {filter, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,11 +12,15 @@ import {Record} from "../Components/Record";
 import {Page} from "../Components/Common/Page";
 import {DEFAULT_RECORDS_FILTER} from "../Consts";
 import {YearsSelect} from "../Components/YearsSelect";
+import {RouteComponentProps} from "react-router-dom";
+import {IApplicationReduxState} from "../Reducers";
+
+type TParams = {id: string};
 
 /**
  * Страница журнал просмотров.
  */
-export const Diary = ({match}) => {
+export const Diary = ({match}: RouteComponentProps<TParams>) => {
     const dispatch = useDispatch();
     const userId = match.params.id;
     const {
@@ -24,7 +28,7 @@ export const Diary = ({match}) => {
         user: {
             data: {userId: loggedInUser},
         },
-    } = useSelector((state) => state);
+    } = useSelector((state: IApplicationReduxState) => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
@@ -72,7 +76,10 @@ export const Diary = ({match}) => {
                     <Grid.Column>
                         <YearsSelect
                             selectedYear={recordsFilter.year}
-                            onSelect={(event, data) =>
+                            onSelect={(
+                                event: React.SyntheticEvent<HTMLElement>,
+                                data: DropdownProps
+                            ) =>
                                 setRecordsFilter({
                                     ...recordsFilter,
                                     year: data.value,

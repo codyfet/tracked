@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, Grid, Header, Image, List, Segment} from "semantic-ui-react";
+import {Container, DropdownProps, Grid, Header, Image, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
 import {FavouriteMovie} from "../Components/FavouriteMovie";
 import {CLEAR_USERS} from "../Actions/ActionTypes";
-import {Link} from "react-router-dom";
+import {Link, RouteComponentProps} from "react-router-dom";
 import {Page} from "../Components/Common/Page";
 import {YearsSelect} from "../Components/YearsSelect";
+import {IApplicationReduxState} from "../Reducers";
+import {IDirectorsDataItem} from "../../../server/src/interfaces/Stat";
 
 /**
  * Всплывающий тултип, при наведении на график "Жанры".
@@ -40,17 +42,19 @@ const CustomCountryTooltip = ({active, payload, label}) => {
     return null;
 };
 
+type TParams = {id: string};
+
 /**
  * Страница профиль пользователя.
  */
-export const Profile = ({match}) => {
+export const Profile = ({match}: RouteComponentProps<TParams>) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
     const {
         users: {data: usersData},
         stat: {data: statData},
         user: {data: loggedInUser},
-    } = useSelector((state) => state);
+    } = useSelector((state: IApplicationReduxState) => state);
     const profileUser = usersData ? usersData.items[0] : null;
     const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
@@ -153,7 +157,10 @@ export const Profile = ({match}) => {
                                 <YearsSelect
                                     showAllOption
                                     selectedYear={year}
-                                    onSelect={(event, data) => setYear(data.value)}
+                                    onSelect={(
+                                        event: React.SyntheticEvent<HTMLElement>,
+                                        data: DropdownProps
+                                    ) => setYear(Number(data.value))}
                                 />
                             </h1>
                             <h3>
@@ -223,10 +230,10 @@ export const Profile = ({match}) => {
                         <Grid.Column>
                             <h3>Режиссёры</h3>
                             <List ordered>
-                                {statData?.directorsData.map((item) => {
+                                {statData?.directorsData.map((item: IDirectorsDataItem) => {
                                     return (
                                         <List.Item
-                                            key={item.id}
+                                            key={`${item.director}${item.directorCount}`}
                                         >{`${item.director} (${item.directorCount})`}</List.Item>
                                     );
                                 })}

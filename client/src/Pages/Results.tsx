@@ -7,7 +7,7 @@ import {YearsSelect} from "../Components/YearsSelect";
 import {CLEAR_RECORDS} from "../Actions/ActionTypes";
 import {CURRENT_YEAR, DEFAULT_RECORDS_FILTER} from "../Consts";
 import {isEmpty} from "lodash";
-import {Link} from "react-router-dom";
+import {Link, RouteComponentProps} from "react-router-dom";
 import {Record} from "../Components/Record";
 import {IClientRecord} from "../Interfaces/Record";
 import {IApplicationReduxState} from "../Reducers";
@@ -16,7 +16,7 @@ import {ERecordType} from "../Enums";
 /**
  * Сравнивает объекты записи по значению Position.
  */
-function compareRecordsByPosition(a, b) {
+function compareRecordsByPosition(a: IClientRecord, b: IClientRecord) {
     if (parseInt(a.position) < parseInt(b.position)) {
         return -1;
     }
@@ -38,10 +38,12 @@ const getFilteredRecords = (records: IClientRecord[], isMoviesSelected: boolean)
     return records.filter((record) => record.type === type);
 };
 
+type TParams = {id: string};
+
 /**
  * Страница Итоги.
  */
-export const Results = ({match}) => {
+export const Results = ({match}: RouteComponentProps<TParams>) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
     const {
