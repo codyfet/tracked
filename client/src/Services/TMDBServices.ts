@@ -9,7 +9,7 @@ const REST_URL = "https://api.themoviedb.org/3";
  *
  * @param {string} searchInput Значение для поиска.
  */
-export function searchMoviesByTitle(searchInput) {
+export function searchMoviesByTitle(searchInput: string) {
     return axios.get(
         `${REST_URL}/search/movie?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
     );
@@ -20,7 +20,7 @@ export function searchMoviesByTitle(searchInput) {
  *
  * @param {string} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieDetailsById(movie_id) {
+export function getMovieDetailsById(movie_id: string) {
     return axios.get(`${REST_URL}/movie/${movie_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
@@ -29,7 +29,7 @@ export function getMovieDetailsById(movie_id) {
  *
  * @param {string} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieCreditsById(movie_id) {
+export function getMovieCreditsById(movie_id: string) {
     return axios.get(`${REST_URL}/movie/${movie_id}/credits?api_key=${API_KEY}`);
 }
 
@@ -38,7 +38,7 @@ export function getMovieCreditsById(movie_id) {
  *
  * @param {string} searchInput Значение для поиска.
  */
-export function searchTvSeriesByTitle(searchInput) {
+export function searchTvSeriesByTitle(searchInput: string) {
     return axios.get(
         `${REST_URL}/search/tv?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
     );
@@ -49,7 +49,7 @@ export function searchTvSeriesByTitle(searchInput) {
  *
  * @param {string} tv_id Идентификатор запрашиваемого сериала.
  */
-export function getTvSeriesDetailsById(tv_id) {
+export function getTvSeriesDetailsById(tv_id: string) {
     return axios.get(`${REST_URL}/tv/${tv_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 

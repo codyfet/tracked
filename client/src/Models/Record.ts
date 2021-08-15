@@ -1,3 +1,5 @@
+// @ts-nocheck
+// TODO: Убрать ts-nocheck.
 import {map} from "lodash";
 
 /**

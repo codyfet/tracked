@@ -6,8 +6,8 @@ interface IProps {
     content: React.ReactNode;
     onClose: () => void;
     onSuccess: () => void;
-    successText: string;
-    successDisabled: boolean;
+    successText?: string;
+    successDisabled?: boolean;
     hideCancel?: boolean;
 }
 

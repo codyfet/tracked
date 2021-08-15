@@ -3,13 +3,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "semantic-ui-react";
 import {Link} from "react-router-dom";
 import {logout} from "../Actions/Actions";
+import {IApplicationReduxState} from "../Reducers";
 
 /**
  * Компонент шапка-приложения.
  */
 export const Header = () => {
     const [isResponsive, setResponsive] = useState(false);
-    const {user} = useSelector((state) => state);
+    const {user} = useSelector((state: IApplicationReduxState) => state);
     const dispatch = useDispatch();
     const isAutheticated = !!user.data;
 

@@ -4,3 +4,5 @@ export interface IClientUser extends IUser {
     userId: string;
     years: string[];
 }
+
+export type IPartialClientUser = Partial<IClientUser>;

@@ -1,3 +1,4 @@
+import {IClientRecord, IClientRecordsFilter, IPartialClientRecord} from "./../Interfaces/Record";
 import {
     ADD_RECORD_FAILURE,
     ADD_RECORD_START,
@@ -53,14 +54,16 @@ import {
 } from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
 import {Record} from "../Models/Record";
+import {Dispatch} from "redux";
+import {IPartialClientUser} from "../Interfaces/User";
 
 /**
  * Thunk функция для выполнения ajax запроса для поиска фильмов.
  *
  * @param {string} searchInput Значение, по которому будет осуществляться поиск.
  */
-export function searchMovies(searchInput) {
-    return function (dispatch) {
+export function searchMovies(searchInput: string) {
+    return function (dispatch: Dispatch) {
         dispatch({type: POPULATE_MOVIES_AUTOSUGGEST_START});
 
         return searchMoviesByTitle(searchInput).then(
@@ -83,8 +86,8 @@ export function searchMovies(searchInput) {
  *
  * @param {string} searchInput Значение, по которому будет осуществляться поиск.
  */
-export function searchTvSeries(searchInput) {
-    return function (dispatch) {
+export function searchTvSeries(searchInput: string) {
+    return function (dispatch: Dispatch) {
         dispatch({type: POPULATE_TV_AUTOSUGGEST_START});
 
         return searchTvSeriesByTitle(searchInput).then(
@@ -108,8 +111,8 @@ export function searchTvSeries(searchInput) {
  * @param {number} id TMDb идентификатор фильма.
  * @param {ObjectId} userId Идентификатор пользователя.
  */
-export function addDetailedMovieRecord(id, userId) {
-    return async function (dispatch) {
+export function addDetailedMovieRecord(id: number, userId: string) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: ADD_RECORD_START});
 
         try {
@@ -135,8 +138,8 @@ export function addDetailedMovieRecord(id, userId) {
  * @param {number} id TMDb идентификатор сериала.
  * @param {ObjectId} userId Идентификатор пользователя.
  */
-export function addDetailedTvSeriesRecord(id, userId) {
-    return async function (dispatch) {
+export function addDetailedTvSeriesRecord(id: number, userId: string) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: ADD_RECORD_START});
 
         try {
@@ -160,10 +163,10 @@ export function addDetailedTvSeriesRecord(id, userId) {
  * Thunk функция для выполнения ajax запроса для получения полной информации о фильме.
  *
  * @param {string} recordId ObjectId идентификатор записи.
- * @param {object} fields Объект с измеёнными полями.
+ * @param {IPartialClientRecord} fields Объект с изменёнными полями.
  */
-export function updateRecord(recordId, fields) {
-    return async function (dispatch) {
+export function updateRecord(recordId: string, fields: IPartialClientRecord) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: UPDATE_RECORD_START});
 
         try {
@@ -180,10 +183,10 @@ export function updateRecord(recordId, fields) {
 /**
  * Thunk функция для выполнения ajax запроса для обновления массива записей.
  *
- * @param {Object[]} records Массив записей.
+ * @param {IClientRecord[]} records Массив записей.
  */
-export function updateRecords(records) {
-    return async function (dispatch) {
+export function updateRecords(records: IClientRecord[]) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: GET_RECORDS_START});
 
         try {
@@ -202,8 +205,8 @@ export function updateRecords(records) {
  *
  * @param {string} recordId ObjectId идентификатор записи.
  */
-export function deleteRecord(recordId) {
-    return async function (dispatch) {
+export function deleteRecord(recordId: string) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: DELETE_RECORD_START});
 
         try {
@@ -221,8 +224,8 @@ export function deleteRecord(recordId) {
  *
  * @param {ObjectId} userId Идентификатор пользователя.
  */
-export function getRecords(userId, options) {
-    return async function (dispatch) {
+export function getRecords(userId: string, options: IClientRecordsFilter) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: GET_RECORDS_START});
 
         try {
@@ -242,8 +245,8 @@ export function getRecords(userId, options) {
  * @param {ObjectId} userId Идентификатор пользователя.
  * @param {number} year Выбраннй год.
  */
-export function getStat(userId, year) {
-    return async function (dispatch) {
+export function getStat(userId: string, year: number) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: GET_STAT_START});
 
         try {
@@ -260,8 +263,8 @@ export function getStat(userId, year) {
 /**
  * Thunk функция для выполнения ajax запроса для логина пользователя.
  */
-export function login({email, password}) {
-    return async function (dispatch) {
+export function login({email, password}: {email: string; password: string}) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: AUTHENTICATION_START});
 
         try {
@@ -303,8 +306,16 @@ export function logout() {
 /**
  * Thunk функция для выполнения ajax запроса для регистрации пользователя.
  */
-export function register({email, password, username}) {
-    return async function (dispatch) {
+export function register({
+    email,
+    password,
+    username,
+}: {
+    email: string;
+    password: string;
+    username: string;
+}) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: AUTHENTICATION_START});
 
         try {
@@ -333,8 +344,8 @@ export function register({email, password, username}) {
 /**
  * Thunk функция для выполнения ajax запроса для получения информации о пользователе.
  */
-export function getUserInfo(userId) {
-    return async function (dispatch) {
+export function getUserInfo(userId: string) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: AUTHENTICATION_START});
 
         try {
@@ -354,8 +365,8 @@ export function getUserInfo(userId) {
  * @param {string} userId ObjectId идентификатор записи (если не передать, вернутся все записи).
  * @param {number} page Номер запрашиваемой страницы.
  */
-export function getUsers({userId, page}) {
-    return async function (dispatch) {
+export function getUsers({userId, page}: {userId: string; page?: number}) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: GET_USERS_START});
 
         try {
@@ -373,10 +384,10 @@ export function getUsers({userId, page}) {
  * Thunk функция для выполнения ajax запроса для изменения данных о пользователе.
  *
  * @param {string} userId ObjectId идентификатор пользователя.
- * @param {object} fields Объект с измеёнными полями.
+ * @param {IPartialClientUser} fields Объект с изменёнными полями.
  */
-export function updateUser(userId, fields) {
-    return async function (dispatch) {
+export function updateUser(userId: string, fields: IPartialClientUser) {
+    return async function (dispatch: Dispatch) {
         dispatch({type: UPDATE_USER_START});
 
         try {

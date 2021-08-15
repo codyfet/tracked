@@ -1,5 +1,8 @@
+import {ERecordType} from "./../Enums";
+import {IClientRecord, IClientRecordsFilter, IPartialClientRecord} from "./../Interfaces/Record";
 import axios from "axios";
 import {TRACKED_USER_DATA} from "../Consts";
+import {IPartialClientUser} from "../Interfaces/User";
 
 /**
  * Добавляет токен в каждый запрос.
@@ -19,7 +22,7 @@ axios.interceptors.request.use(function (config) {
  *
  * @param {object} data Данные, введённые пользователем (логин/пароль).
  */
-export function login(data) {
+export function login(data: {email: string; password: string}) {
     return axios.post("/api/auth/login", data);
 }
 
@@ -28,7 +31,7 @@ export function login(data) {
  *
  * @param {object} data Данные, введённые пользователем (логин/пароль).
  */
-export function register(data) {
+export function register(data: {email: string; password: string; username: string}) {
     return axios.post("/api/auth/register", data);
 }
 
@@ -37,7 +40,7 @@ export function register(data) {
  *
  * @param {object} data Данные, введённые пользователем (логин/пароль).
  */
-export function getUserInfo(userId) {
+export function getUserInfo(userId: string) {
     const params = {userId};
 
     return axios.get("/api/auth/user", {params});
@@ -46,9 +49,9 @@ export function getUserInfo(userId) {
 /**
  * Создаёт новую запись.
  *
- * @param {object} record Данные новой записи.
+ * @param {IClientRecord} record Данные новой записи.
  */
-export function createRecord(record) {
+export function createRecord(record: IClientRecord) {
     return axios.post("/api/record/create", record);
 }
 
@@ -56,9 +59,9 @@ export function createRecord(record) {
  * Изменяет запись.
  *
  * @param {string} recordId ObjectId идентификатор записи.
- * @param {object} fields Объект с измеёнными полями.
+ * @param {IPartialClientRecord} fields Объект с измеёнными полями.
  */
-export function updateRecord(recordId, fields) {
+export function updateRecord(recordId: string, fields: IPartialClientRecord) {
     return axios.put(`/api/record/${recordId}/update`, fields);
 }
 
@@ -67,7 +70,7 @@ export function updateRecord(recordId, fields) {
  *
  * @param {[{id, ...fieldsToUpdate}]} records Массив записей для изменения.
  */
-export function updateRecords(records) {
+export function updateRecords(records: IClientRecord[]) {
     return axios.put("/api/record/update", records);
 }
 
@@ -76,7 +79,7 @@ export function updateRecords(records) {
  *
  * @param {string} recordId ObjectId идентификатор записи.
  */
-export function deleteRecord(recordId) {
+export function deleteRecord(recordId: string) {
     return axios.delete(`/api/record/${recordId}/delete`);
 }
 
@@ -85,8 +88,8 @@ export function deleteRecord(recordId) {
  *
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
  */
-export function getRecords(userId, options) {
-    let params = {userId};
+export function getRecords(userId: string, options: IClientRecordsFilter) {
+    let params: {userId: string; sortBy?: string; year?: number; types?: ERecordType[]} = {userId};
 
     if (options.sortBy) {
         params.sortBy = options.sortBy;
@@ -106,10 +109,10 @@ export function getRecords(userId, options) {
 /**
  * Возвращает объект со статистикой.
  *
- * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
+ * @param {string} userId ObjectId пользователя, чьи записи извлекаем.
  * @param {number} year Выбранный год.
  */
-export function getStat(userId, year) {
+export function getStat(userId: string, year: number) {
     const params = {userId, year};
 
     return axios.get("/api/stat", {params});
@@ -122,7 +125,15 @@ export function getStat(userId, year) {
  * @param {number} limit Количество записей в одной пачке данных (по умолчанию 10).
  * @param {number} page Номер текущей пачки (по умолчанию 0).
  */
-export function getUsers({userId, limit = 10, page = 0}) {
+export function getUsers({
+    userId,
+    limit = 10,
+    page = 0,
+}: {
+    userId: string;
+    limit?: number;
+    page?: number;
+}) {
     const params = {userId, limit, page};
 
     return axios.get("/api/users", {params});
@@ -134,6 +145,6 @@ export function getUsers({userId, limit = 10, page = 0}) {
  * @param {string} userId ObjectId идентификатор записи.
  * @param {object} fields Объект с изменёнными полями.
  */
-export function updateUser(userId, fields) {
+export function updateUser(userId: string, fields: IPartialClientUser) {
     return axios.put(`/api/users/${userId}/update`, fields);
 }

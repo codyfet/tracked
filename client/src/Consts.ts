@@ -1,4 +1,5 @@
 import {ERecordType} from "./Enums";
+import {IClientRecordsFilter} from "./Interfaces/Record";
 /**
  * Адрес для загрузки изобдражений с TMDb.
  */
@@ -22,7 +23,7 @@ export const CURRENT_YEAR = new Date().getFullYear();
 /**
  * Дефолтный фильтр для сервиса, возвращающего записи пользователя.
  */
-export const DEFAULT_RECORDS_FILTER = {
+export const DEFAULT_RECORDS_FILTER: IClientRecordsFilter = {
     sortBy: "-viewdate",
     year: CURRENT_YEAR,
     types: TYPES,

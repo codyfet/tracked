@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../Actions/Actions";
+import {IApplicationReduxState} from "../Reducers";
 import {SimpleModal} from "./Common/SimpleModal";
 
 /**
@@ -11,7 +12,7 @@ export const ErrorChecker = ({children}) => {
     const {
         user: {error: userError},
         records: {error: recordsError},
-    } = useSelector((state) => state);
+    } = useSelector((state: IApplicationReduxState) => state);
     const errors = [userError, recordsError];
     const hasError = errors.some((e) => e);
     const [showError, setShowError] = useState(hasError);
