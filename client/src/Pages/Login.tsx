@@ -53,13 +53,13 @@ export const Login = () => {
         }
 
         if (isLoginMode) {
-            return <Message negative content={<p>{user.error?.data.message}</p>} />;
+            return <Message negative content={<p>{user.error?.data?.message}</p>} />;
         }
 
         return (
             <Message
                 error
-                list={user.error?.errors?.map((e, index: number) => (
+                list={user.error?.data?.errors?.map((e, index: number) => (
                     <p key={index}>{e.msg}</p>
                 ))}
             />

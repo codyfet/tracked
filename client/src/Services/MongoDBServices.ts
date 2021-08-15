@@ -1,5 +1,9 @@
 import {ERecordType} from "./../Enums";
-import {IClientRecord, IClientRecordsFilter, IPartialClientRecord} from "./../Interfaces/Record";
+import {
+    IClientRecord,
+    IClientRecordsFilter,
+    IPartialClientRecord,
+} from "../Interfaces/ClientRecord";
 import axios from "axios";
 import {TRACKED_USER_DATA} from "../Consts";
 import {IPartialClientUser} from "../Interfaces/User";

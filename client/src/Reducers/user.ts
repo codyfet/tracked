@@ -9,12 +9,12 @@ import {
     UPDATE_USER_SUCCESS,
 } from "../Actions/ActionTypes";
 import {IFSAAction} from "../Interfaces/Common";
-import {IClientUser} from "../Interfaces/User";
+import {IClientUser, IUserErrorDataObject} from "../Interfaces/User";
 import {getInitialAsyncContainer} from "../Utils/Utils";
 
 type UserAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
 
-const initialState: IUserReduxState = getInitialAsyncContainer<IClientUser>();
+const initialState: IUserReduxState = getInitialAsyncContainer<IClientUser, IUserErrorDataObject>();
 
 /**
  * Редюсер для узла "user".
@@ -45,7 +45,11 @@ const userReducer: Reducer<IUserReduxState> = (state = initialState, action: Use
             return {
                 data: null,
                 isLoading: false,
-                error: action.payload.response,
+                // error: action.payload.response,
+                error: {
+                    errors: action.payload.response.data.errors,
+                    message: action.payload.response.data.message,
+                },
             };
         // case UPDATE_USER_START:
         //     return {
@@ -68,8 +72,9 @@ const userReducer: Reducer<IUserReduxState> = (state = initialState, action: Use
                     ...state.data,
                 },
                 isLoading: false,
+                // error: action.payload.response,
                 error: {
-                    status: action.payload.response.status,
+                    errors: action.payload.response.data.errors,
                     message: action.payload.response.data.message,
                 },
             };

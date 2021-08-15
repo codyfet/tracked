@@ -1,5 +1,5 @@
 import {ERecordType} from "./Enums";
-import {IClientRecordsFilter} from "./Interfaces/Record";
+import {IClientRecordsFilter} from "./Interfaces/ClientRecord";
 /**
  * Адрес для загрузки изобдражений с TMDb.
  */

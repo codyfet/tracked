@@ -1,4 +1,8 @@
-import {IClientRecord, IClientRecordsFilter, IPartialClientRecord} from "./../Interfaces/Record";
+import {
+    IClientRecord,
+    IClientRecordsFilter,
+    IPartialClientRecord,
+} from "../Interfaces/ClientRecord";
 import {
     ADD_RECORD_FAILURE,
     ADD_RECORD_START,

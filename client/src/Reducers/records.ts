@@ -19,7 +19,7 @@ import {
     UPDATE_RECORD_SUCCESS,
 } from "../Actions/ActionTypes";
 import {IFSAAction} from "../Interfaces/Common";
-import {IClientRecord} from "../Interfaces/Record";
+import {IClientRecord} from "../Interfaces/ClientRecord";
 import {createEmptyRecord, getInitialAsyncContainer} from "../Utils/Utils";
 import {IRecordsReduxState} from "./records.types";
 

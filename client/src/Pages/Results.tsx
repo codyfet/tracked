@@ -9,7 +9,7 @@ import {CURRENT_YEAR, DEFAULT_RECORDS_FILTER} from "../Consts";
 import {isEmpty} from "lodash";
 import {Link, RouteComponentProps} from "react-router-dom";
 import {Record} from "../Components/Record";
-import {IClientRecord} from "../Interfaces/Record";
+import {IClientRecord} from "../Interfaces/ClientRecord";
 import {IApplicationReduxState} from "../Reducers";
 import {ERecordType} from "../Enums";
 

@@ -1,5 +1,5 @@
 import {ERecordType} from "../Enums";
-import {IClientRecord} from "../Interfaces/Record";
+import {IClientRecord} from "../Interfaces/ClientRecord";
 import {IAsyncData} from "../Interfaces/Common";
 /**
  * Возвращает пустую запись.
@@ -23,7 +23,7 @@ export function createEmptyRecord(type: ERecordType = null): IClientRecord {
 /**
  * Возвращает пустой контейнер для работы с асинхронными запросами.
  */
-export const getInitialAsyncContainer = <T>(): IAsyncData<T> => ({
+export const getInitialAsyncContainer = <T, E = Object>(): IAsyncData<T, E> => ({
     data: null,
     isLoading: false,
     error: null,

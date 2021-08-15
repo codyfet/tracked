@@ -22,7 +22,7 @@ import {DELETE_EMPTY_RECORD} from "../Actions/ActionTypes";
 import {IconRemove} from "./Icons/IconRemove";
 
 import "react-datepicker/dist/react-datepicker.css";
-import {IClientRecord} from "../Interfaces/Record";
+import {IClientRecord} from "../Interfaces/ClientRecord";
 import {ERecordType} from "../Enums";
 import {Result} from "../Interfaces/TMDBInterfaces";
 
