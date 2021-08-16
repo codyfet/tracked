@@ -1,3 +1,4 @@
+import {ERecordType} from "./../Enums";
 import {
     IClientRecord,
     IClientRecordsFilter,
@@ -123,7 +124,7 @@ export function addDetailedMovieRecord(id: number, userId: string) {
             const results = await Promise.all([getMovieDetailsById(id), getMovieCreditsById(id)]);
             const newRecord = new Record({
                 userId,
-                type: "movie",
+                type: ERecordType.MOVIE,
                 data: {details: results[0].data, credits: results[1].data},
             });
             const result = await tryCreateRecord(newRecord);
@@ -150,7 +151,7 @@ export function addDetailedTvSeriesRecord(id: number, userId: string) {
             const results = await getTvSeriesDetailsById(id);
             const newRecord = new Record({
                 userId,
-                type: "tvseries",
+                type: ERecordType.TV_SERIES,
                 data: {details: results.data},
             });
             const result = await tryCreateRecord(newRecord);

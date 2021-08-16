@@ -14,6 +14,7 @@ import {DEFAULT_RECORDS_FILTER} from "../Consts";
 import {YearsSelect} from "../Components/YearsSelect";
 import {RouteComponentProps} from "react-router-dom";
 import {IApplicationReduxState} from "../Reducers";
+import {ERecordType} from "../Enums";
 
 type TParams = {id: string};
 
@@ -39,11 +40,11 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
 
     const moviesCount = filter(
         records,
-        ({type, isEmptyRecord}) => !isEmptyRecord && type === "movie"
+        ({type, isEmptyRecord}) => !isEmptyRecord && type === ERecordType.MOVIE
     ).length;
     const tvseriesCount = filter(
         records,
-        ({type, isEmptyRecord}) => !isEmptyRecord && type === "tvseries"
+        ({type, isEmptyRecord}) => !isEmptyRecord && type === ERecordType.TV_SERIES
     ).length;
 
     useEffect(() => {
@@ -57,9 +58,9 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
      * Фильтруем записи.
      */
     const filtered = filter(records, (record) => {
-        if (isMoviesFilterApplied && record.type === "movie") {
+        if (isMoviesFilterApplied && record.type === ERecordType.MOVIE) {
             return true;
-        } else if (isTvSeriesFilterApplied && record.type === "tvseries") {
+        } else if (isTvSeriesFilterApplied && record.type === ERecordType.TV_SERIES) {
             return true;
         }
 

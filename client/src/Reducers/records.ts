@@ -22,6 +22,7 @@ import {IFSAAction} from "../Interfaces/Common";
 import {IClientRecord} from "../Interfaces/ClientRecord";
 import {createEmptyRecord, getInitialAsyncContainer} from "../Utils/Utils";
 import {IRecordsReduxState} from "./records.types";
+import {ERecordType} from "../Enums";
 
 type RecordsAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
 
@@ -38,12 +39,12 @@ const recordsReducer: Reducer<IRecordsReduxState> = (
         case ADD_EMPTY_MOVIE_RECORD:
             return {
                 ...state,
-                data: [{...createEmptyRecord(), type: "movie"}, ...state.data],
+                data: [{...createEmptyRecord(), type: ERecordType.MOVIE}, ...state.data],
             };
         case ADD_EMPTY_TVSERIES_RECORD:
             return {
                 ...state,
-                data: [{...createEmptyRecord(), type: "tvseries"}, ...state.data],
+                data: [{...createEmptyRecord(), type: ERecordType.TV_SERIES}, ...state.data],
             };
         case ADD_RECORD_SUCCESS:
             const newRecords = [

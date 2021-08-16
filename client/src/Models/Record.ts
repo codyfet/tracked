@@ -1,6 +1,7 @@
 // @ts-nocheck
 // TODO: Убрать ts-nocheck.
 import {map} from "lodash";
+import {ERecordType} from "../Enums";
 
 /**
  * Класс Record (Запись).
@@ -9,7 +10,7 @@ export class Record {
     constructor({userId, type, data}) {
         this.userId = userId;
 
-        if (type === "movie") {
+        if (type === ERecordType.MOVIE) {
             const {details, credits} = data;
 
             this.id = details.id;
@@ -19,7 +20,7 @@ export class Record {
             this.releaseYear = details.release_date.substring(0, 4);
             this.originalTitle = details.original_title;
             this.rating = "0";
-            this.type = "movie";
+            this.type = ERecordType.MOVIE;
             this.backdrop_path = details.backdrop_path;
             this.genres = details.genres;
             this.overview = details.overview;
@@ -32,7 +33,7 @@ export class Record {
             this.notFinished = false;
             this.cast = credits.cast;
             this.crew = credits.crew;
-        } else if (type === "tvseries") {
+        } else if (type === ERecordType.TV_SERIES) {
             const {details} = data;
 
             this.id = details.id;
@@ -42,7 +43,7 @@ export class Record {
             this.releaseYear = details.first_air_date.substring(0, 4);
             this.originalTitle = details.original_name;
             this.rating = "0";
-            this.type = "tvseries";
+            this.type = ERecordType.TV_SERIES;
             this.backdrop_path = details.backdrop_path;
             this.genres = details.genres;
             this.overview = details.overview;

@@ -33,7 +33,7 @@ function compareRecordsByPosition(a: IClientRecord, b: IClientRecord) {
  * @param {boolean} isMoviesSelected Признак того, чтоб выбрано представление для фильмов.
  */
 const getFilteredRecords = (records: IClientRecord[], isMoviesSelected: boolean) => {
-    const type = isMoviesSelected ? "movie" : "tvseries";
+    const type = isMoviesSelected ? ERecordType.MOVIE : ERecordType.TV_SERIES;
 
     return records.filter((record) => record.type === type);
 };
