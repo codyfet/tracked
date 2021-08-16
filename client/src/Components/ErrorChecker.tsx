@@ -1,13 +1,17 @@
-import React, {useState} from "react";
+import React, {ReactElement, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../Actions/Actions";
 import {IApplicationReduxState} from "../Reducers";
 import {SimpleModal} from "./Common/SimpleModal";
 
+interface IProps {
+    children: ReactElement;
+}
+
 /**
  * Обёртка, ответственная за отрисовку ошибок.
  */
-export const ErrorChecker = ({children}) => {
+export const ErrorChecker = ({children}: IProps) => {
     const dispatch = useDispatch();
     const {
         user: {error: userError},
