@@ -6,7 +6,10 @@ import {useState} from "react";
  * @param {boolean} initialValue Стартовое значение поля.
  * @param {Function} updateAction Коллбэк (редакс экшн, обновляющий значение).
  */
-export const useUpdate = <T>(initialValue: T, updateAction: (newValue: T) => void) => {
+export const useUpdate = <T>(
+    initialValue: T,
+    updateAction: (newValue: T) => void
+): [T, (newValue: T) => void] => {
     const [value, setValue] = useState(initialValue);
 
     const update = (newValue: T) => {

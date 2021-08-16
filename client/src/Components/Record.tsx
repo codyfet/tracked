@@ -2,7 +2,16 @@ import React, {Fragment} from "react";
 import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
 import {ITMDbSelectProps, TMDbSelect} from "./TMDbSelect";
-import {Flag, Grid, Image, Input, InputOnChangeData, Label, Segment} from "semantic-ui-react";
+import {
+    Flag,
+    FlagNameValues,
+    Grid,
+    Image,
+    Input,
+    InputOnChangeData,
+    Label,
+    Segment,
+} from "semantic-ui-react";
 import {SimpleDialog} from "./Common/SimpleDialog";
 import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
@@ -220,9 +229,9 @@ export const Record = ({
             return null;
         }
 
-        return production_countries.map((country) => (
-            <Flag key={country} name={country.toLowerCase()} />
-        ));
+        return production_countries.map((country) => {
+            return <Flag key={country} name={country as FlagNameValues} />;
+        });
     };
 
     /**
@@ -235,7 +244,11 @@ export const Record = ({
                     className="edit-mode-rating"
                     value={ratingValue}
                     autoFocus
-                    onChange={(e) => !isReadonly && setRatingValue(e.target.value)}
+                    onChange={(e) => {
+                        if (!isReadonly) {
+                            setRatingValue(e.target.value);
+                        }
+                    }}
                     onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.currentTarget.select()}
                     onBlur={toggleRatingEditMode}
                 />

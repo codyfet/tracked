@@ -60,7 +60,7 @@ export const TMDbSelect = ({
     const handleChangeInput = (event: React.FormEvent<HTMLElement>, options: ChangeEvent) => {
         // Если обработчик вызван из-за ввода значения руками.
         if (options.method === "type") {
-            const inputValue = event.target.value;
+            const inputValue = (event.target as HTMLInputElement).value;
             setEmptyRecordInputValue(inputValue);
             // Ищем фильмы в БД для наполнения ими выпадающего списка.
             if (inputValue.length > 2) {
