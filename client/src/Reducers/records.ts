@@ -18,7 +18,7 @@ import {
     UPDATE_RECORD_START,
     UPDATE_RECORD_SUCCESS,
 } from "../Actions/ActionTypes";
-import {IFSAAction} from "../Interfaces/Common";
+import {IErrorDataObject, IFSAAction} from "../Interfaces/Common";
 import {IClientRecord} from "../Interfaces/ClientRecord";
 import {createEmptyRecord, getInitialAsyncContainer} from "../Utils/Utils";
 import {IRecordsReduxState} from "./records.types";
@@ -26,7 +26,10 @@ import {ERecordType} from "../Enums";
 
 type RecordsAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
 
-const initialState: IRecordsReduxState = getInitialAsyncContainer<IClientRecord[]>();
+const initialState: IRecordsReduxState = getInitialAsyncContainer<
+    IClientRecord[],
+    IErrorDataObject
+>();
 
 /**
  * Редюсер для узла "records".

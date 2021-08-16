@@ -8,13 +8,13 @@ import {
     UPDATE_USER_FAILURE,
     UPDATE_USER_SUCCESS,
 } from "../Actions/ActionTypes";
-import {IFSAAction} from "../Interfaces/Common";
-import {IClientUser, IUserErrorDataObject} from "../Interfaces/User";
+import {IErrorDataObject, IFSAAction} from "../Interfaces/Common";
+import {IClientUser} from "../Interfaces/User";
 import {getInitialAsyncContainer} from "../Utils/Utils";
 
 type UserAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
 
-const initialState: IUserReduxState = getInitialAsyncContainer<IClientUser, IUserErrorDataObject>();
+const initialState: IUserReduxState = getInitialAsyncContainer<IClientUser, IErrorDataObject>();
 
 /**
  * Редюсер для узла "user".

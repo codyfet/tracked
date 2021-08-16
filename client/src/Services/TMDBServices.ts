@@ -18,18 +18,18 @@ export function searchMoviesByTitle(searchInput: string) {
 /**
  * Осуществляет обращение к TMDb для получения детальной информации о фильме.
  *
- * @param {string} movie_id Идентификатор запрашиваемого фильма.
+ * @param {number} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieDetailsById(movie_id: string) {
+export function getMovieDetailsById(movie_id: number) {
     return axios.get(`${REST_URL}/movie/${movie_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
 /**
  * Осуществляет обращение к TMDb для получения информации о персонах, участвующих в создании (cast).
  *
- * @param {string} movie_id Идентификатор запрашиваемого фильма.
+ * @param {number} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieCreditsById(movie_id: string) {
+export function getMovieCreditsById(movie_id: number) {
     return axios.get(`${REST_URL}/movie/${movie_id}/credits?api_key=${API_KEY}`);
 }
 
@@ -47,9 +47,9 @@ export function searchTvSeriesByTitle(searchInput: string) {
 /**
  * Осуществляет обращение к TMDb для получения детальной информации о сериале.
  *
- * @param {string} tv_id Идентификатор запрашиваемого сериала.
+ * @param {number} tv_id Идентификатор запрашиваемого сериала.
  */
-export function getTvSeriesDetailsById(tv_id: string) {
+export function getTvSeriesDetailsById(tv_id: number) {
     return axios.get(`${REST_URL}/tv/${tv_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
