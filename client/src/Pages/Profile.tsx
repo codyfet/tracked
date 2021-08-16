@@ -73,7 +73,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [year]);
 
-    let favs = [];
+    const favs = [];
 
     for (let i = 0; i < 10; i++) {
         favs.push(

@@ -1,6 +1,6 @@
 {
-    "parser": "babel-eslint",
-    "plugins": ["react", "react-hooks", "prettier"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "react-hooks", "prettier"],
     "rules": {
         "no-unused-vars": "warn",
         "object-curly-spacing": [2, "never"],
@@ -27,7 +27,8 @@
     "extends": [
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:@typescript-eslint/eslint-recommended"
     ],
     "settings": {
         "react": {

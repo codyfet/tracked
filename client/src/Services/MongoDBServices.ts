@@ -93,7 +93,9 @@ export function deleteRecord(recordId: string) {
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
  */
 export function getRecords(userId: string, options: IClientRecordsFilter) {
-    let params: {userId: string; sortBy?: string; year?: number; types?: ERecordType[]} = {userId};
+    const params: {userId: string; sortBy?: string; year?: number; types?: ERecordType[]} = {
+        userId,
+    };
 
     if (options.sortBy) {
         params.sortBy = options.sortBy;

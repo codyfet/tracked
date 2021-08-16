@@ -270,7 +270,7 @@ export const Record = ({
      * Рисует панель с иконками-действиями.
      */
     const renderIconsPanel = () => {
-        let icons = [];
+        const icons = [];
 
         // if (!isEmptyRecord) {
         //     icons.push(
