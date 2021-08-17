@@ -125,7 +125,27 @@ export const Record = ({
                             toggleViewdateEditMode();
                         }
                     }}
-                    customInput={<CustomInput />}
+                    customInput={({
+                        value,
+                        onClick,
+                        onChange,
+                        onBlur,
+                    }: {
+                        value: string;
+                        onClick: () => void;
+                        onChange: (
+                            event: React.ChangeEvent<HTMLInputElement>,
+                            data: InputOnChangeData
+                        ) => void;
+                        onBlur: () => void;
+                    }) => (
+                        <CustomInput
+                            value={value}
+                            onClick={onClick}
+                            onChange={onChange}
+                            onBlur={onBlur}
+                        />
+                    )}
                     onBlur={toggleViewdateEditMode}
                 />
             );
