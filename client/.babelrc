@@ -2,7 +2,6 @@
     "presets": ["@babel/preset-env", "@babel/preset-react", "@babel/preset-typescript"],
     "plugins": [
         "transform-class-properties",
-        "recharts",
         [
             "@babel/plugin-transform-runtime",
             {
