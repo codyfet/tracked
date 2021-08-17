@@ -11,11 +11,18 @@ import {Page} from "../Components/Common/Page";
 import {YearsSelect} from "../Components/YearsSelect";
 import {IApplicationReduxState} from "../Reducers";
 import {IDirectorsDataItem} from "../../../server/src/interfaces/Stat";
+import {NameType, Payload, ValueType} from "recharts/types/component/DefaultTooltipContent";
+
+interface ITooltipProps {
+    active: boolean;
+    payload: Payload<ValueType, NameType>[];
+    label: string;
+}
 
 /**
  * Всплывающий тултип, при наведении на график "Жанры".
  */
-const CustomGenreTooltip = ({active, payload, label}) => {
+const CustomGenreTooltip = ({active, payload, label}: ITooltipProps) => {
     if (active) {
         return (
             <div className="custom-tooltip">
@@ -30,7 +37,7 @@ const CustomGenreTooltip = ({active, payload, label}) => {
 /**
  * Всплывающий тултип, при наведении на график "Страны".
  */
-const CustomCountryTooltip = ({active, payload, label}) => {
+const CustomCountryTooltip = ({active, payload, label}: ITooltipProps) => {
     if (active) {
         return (
             <div className="custom-tooltip">
@@ -197,7 +204,15 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                                         interval={0}
                                         width={150}
                                     />
-                                    <Tooltip content={<CustomGenreTooltip />} />
+                                    <Tooltip
+                                        content={({active, payload, label}) => (
+                                            <CustomGenreTooltip
+                                                active={active}
+                                                payload={payload}
+                                                label={label}
+                                            />
+                                        )}
+                                    />
                                     <Bar dataKey="value" fill="#19C2FA" />
                                 </BarChart>
                             </ResponsiveContainer>
@@ -219,7 +234,15 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                                         interval={0}
                                         width={150}
                                     />
-                                    <Tooltip content={<CustomCountryTooltip />} />
+                                    <Tooltip
+                                        content={({active, payload, label}) => (
+                                            <CustomCountryTooltip
+                                                active={active}
+                                                payload={payload}
+                                                label={label}
+                                            />
+                                        )}
+                                    />
                                     <Bar dataKey="countryCount" fill="#FA1955" />
                                 </BarChart>
                             </ResponsiveContainer>
@@ -277,7 +300,9 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                                         dataKey="year"
                                         interval={0}
                                         height={100}
-                                        tick={<CustomizedAxisTick />}
+                                        tick={({x, y, payload}) => (
+                                            <CustomizedAxisTick x={x} y={y} payload={payload} />
+                                        )}
                                     />
                                 </BarChart>
                             </ResponsiveContainer>
