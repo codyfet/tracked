@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 const API_KEY = "37662c76ffc19e5cd1b95f37d77155fc";
 
@@ -9,7 +9,7 @@ const REST_URL = "https://api.themoviedb.org/3";
  *
  * @param {string} searchInput Значение для поиска.
  */
-export function searchMoviesByTitle(searchInput: string) {
+export function searchMoviesByTitle(searchInput: string): Promise<AxiosResponse> {
     return axios.get(
         `${REST_URL}/search/movie?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
     );
@@ -20,7 +20,7 @@ export function searchMoviesByTitle(searchInput: string) {
  *
  * @param {number} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieDetailsById(movie_id: number) {
+export function getMovieDetailsById(movie_id: number): Promise<AxiosResponse> {
     return axios.get(`${REST_URL}/movie/${movie_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
@@ -29,7 +29,7 @@ export function getMovieDetailsById(movie_id: number) {
  *
  * @param {number} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieCreditsById(movie_id: number) {
+export function getMovieCreditsById(movie_id: number): Promise<AxiosResponse> {
     return axios.get(`${REST_URL}/movie/${movie_id}/credits?api_key=${API_KEY}`);
 }
 
@@ -38,7 +38,7 @@ export function getMovieCreditsById(movie_id: number) {
  *
  * @param {string} searchInput Значение для поиска.
  */
-export function searchTvSeriesByTitle(searchInput: string) {
+export function searchTvSeriesByTitle(searchInput: string): Promise<AxiosResponse> {
     return axios.get(
         `${REST_URL}/search/tv?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
     );
@@ -49,13 +49,13 @@ export function searchTvSeriesByTitle(searchInput: string) {
  *
  * @param {number} tv_id Идентификатор запрашиваемого сериала.
  */
-export function getTvSeriesDetailsById(tv_id: number) {
+export function getTvSeriesDetailsById(tv_id: number): Promise<AxiosResponse> {
     return axios.get(`${REST_URL}/tv/${tv_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
 /**
  * Возвращает справочник жанров.
  */
-export function getGenresFromTMDb() {
+export function getGenresFromTMDb(): Promise<AxiosResponse> {
     return axios.get(`${REST_URL}/genre/movie/list?api_key=${API_KEY}&language=ru-RU`);
 }

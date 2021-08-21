@@ -76,6 +76,12 @@ export function searchMovies(searchInput: string) {
                 dispatch({
                     type: POPULATE_MOVIES_AUTOSUGGEST_SUCCESS,
                     payload: result,
+                    meta: {
+                        debounce: {
+                            time: 300,
+                            leading: false,
+                        },
+                    },
                 }),
             (error) =>
                 dispatch({
@@ -100,6 +106,12 @@ export function searchTvSeries(searchInput: string) {
                 dispatch({
                     type: POPULATE_TV_AUTOSUGGEST_SUCCESS,
                     payload: result,
+                    meta: {
+                        debounce: {
+                            time: 300,
+                            leading: false,
+                        },
+                    },
                 }),
             (error) =>
                 dispatch({

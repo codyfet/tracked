@@ -2,7 +2,6 @@ import React, {Fragment, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {SimpleModal} from "./Common/SimpleModal";
 import {TMDbSelect} from "./TMDbSelect";
-import debounceAction from "debounce-action";
 import {searchMovies, updateUser} from "../Actions/Actions";
 import {Image} from "semantic-ui-react";
 import {IMAGE_URL} from "../Consts";
@@ -30,9 +29,7 @@ export const FavouriteMovieModal = ({onClose, index}: IProps) => {
         <Fragment>
             <div className="falvourite-movie-search">
                 <TMDbSelect
-                    searchAction={debounceAction(searchMovies, 300, {
-                        leading: false,
-                    })}
+                    searchAction={searchMovies}
                     onSuggestionSelected={(selectedSuggestion: Result) =>
                         setSuggestion(selectedSuggestion)
                     }

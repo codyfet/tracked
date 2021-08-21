@@ -1,5 +1,4 @@
 import React, {Fragment} from "react";
-import debounceAction from "debounce-action";
 import {useDispatch} from "react-redux";
 import {ITMDbSelectProps, TMDbSelect} from "./TMDbSelect";
 import {
@@ -197,9 +196,7 @@ export const Record = ({
         if (isEmptyRecord) {
             const configProps: ITMDbSelectProps = isMovie
                 ? {
-                      searchAction: debounceAction(searchMovies, 300, {
-                          leading: false,
-                      }),
+                      searchAction: searchMovies,
                       onSuggestionSelected: (suggestion: Result, userId: string) =>
                           dispatch(addDetailedMovieRecord(suggestion.id, userId)),
                       titlePropName: "title",
@@ -207,9 +204,7 @@ export const Record = ({
                       placeholder: "Найти фильм...",
                   }
                 : {
-                      searchAction: debounceAction(searchTvSeries, 300, {
-                          leading: false,
-                      }),
+                      searchAction: searchTvSeries,
                       onSuggestionSelected: (suggestion: Result, userId: string) =>
                           dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
                       titlePropName: "name",
