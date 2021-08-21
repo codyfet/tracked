@@ -108,7 +108,8 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
 
         for (let i = 0; i < positionElements.length; i++) {
             const positionValue = positionElements[i].getElementsByTagName("input")[0].value;
-            positionMap[positionElements[i].dataset.id] = positionValue;
+            const htmlElement: HTMLElement = positionElements[i] as HTMLElement;
+            positionMap[htmlElement.dataset.id] = positionValue;
         }
 
         getFilteredRecords(records, isMoviesSelected).forEach((record) => {

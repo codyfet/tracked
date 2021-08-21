@@ -1,12 +1,12 @@
 import {GET_STAT_FAILURE, GET_STAT_START, GET_STAT_SUCCESS} from "../Actions/ActionTypes";
-import {IFSAAction} from "../Interfaces/Common";
+import {IErrorDataObject, IFSAAction} from "../Interfaces/Common";
 import {IStat} from "../Interfaces/Stat";
 import {getInitialAsyncContainer} from "../Utils/Utils";
 import {IStatReduxState} from "./stat.types";
 
 type StatAction = IFSAAction<any>; // TODO: Расписать все возможные экшены.
 
-const initialState: IStatReduxState = getInitialAsyncContainer<IStat>();
+const initialState: IStatReduxState = getInitialAsyncContainer<IStat, IErrorDataObject>();
 
 /**
  * Редюсер для узла "stat".
@@ -20,9 +20,9 @@ export default function stat(state = initialState, action: StatAction) {
             };
         case GET_STAT_SUCCESS: {
             return {
-                isLoading: false,
                 data: action.payload.data,
-                error: null,
+                isLoading: false,
+                error: null as IErrorDataObject,
             };
         }
         case GET_STAT_FAILURE:

@@ -32,7 +32,7 @@ export const FavouriteMovie = ({movie, index, onRemove, disabled}: IProps) => {
                     className="remove-icon"
                 />
                 <Image
-                    onError={(e) => {
+                    onError={(e: any) => {
                         e.target.onerror = null;
                         e.target.src = "../src/Assets/empty.png";
                     }}

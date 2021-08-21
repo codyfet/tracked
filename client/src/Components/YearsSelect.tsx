@@ -49,12 +49,6 @@ export const YearsSelect = ({selectedYear, onSelect, showAllOption}: IProps) => 
         yearsOptions.find((option) => option.value === selectedYear) || yearsOptions[0];
 
     return (
-        <Dropdown
-            inline
-            options={yearsOptions}
-            defaultValue={yearsOptions[yearsOptions.length - 1].value}
-            value={selectedOption.value}
-            onChange={onSelect}
-        />
+        <Dropdown inline options={yearsOptions} value={selectedOption.value} onChange={onSelect} />
     );
 };
