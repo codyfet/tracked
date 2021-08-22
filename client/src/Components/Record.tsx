@@ -33,6 +33,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {IClientRecord} from "../Interfaces/ClientRecord";
 import {ERecordType} from "../Enums";
 import {Result} from "../Interfaces/TMDBInterfaces";
+import debounceAction from "debounce-action";
 
 interface ICustomInputProps {
     value: string;
@@ -170,7 +171,9 @@ export const Record = ({
         if (isEmptyRecord) {
             const configProps: ITMDbSelectProps = isMovie
                 ? {
-                      searchAction: searchMovies,
+                      searchAction: debounceAction(searchMovies, 300, {
+                          leading: false,
+                      }),
                       onSuggestionSelected: (suggestion: Result, userId: string) =>
                           dispatch(addDetailedMovieRecord(suggestion.id, userId)),
                       titlePropName: "title",
@@ -178,7 +181,9 @@ export const Record = ({
                       placeholder: "Найти фильм...",
                   }
                 : {
-                      searchAction: searchTvSeries,
+                      searchAction: debounceAction(searchTvSeries, 300, {
+                          leading: false,
+                      }),
                       onSuggestionSelected: (suggestion: Result, userId: string) =>
                           dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
                       titlePropName: "name",

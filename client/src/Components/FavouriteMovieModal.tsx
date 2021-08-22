@@ -8,6 +8,7 @@ import {IMAGE_URL} from "../Consts";
 import {IApplicationReduxState} from "../Reducers";
 import {Result} from "../Interfaces/TMDBInterfaces";
 import {IFavouriteMovie} from "../../../server/src/interfaces/FavouriteMovie";
+import debounceAction from "debounce-action";
 
 interface IProps {
     onClose: () => void;
@@ -29,7 +30,9 @@ export const FavouriteMovieModal = ({onClose, index}: IProps) => {
         <Fragment>
             <div className="falvourite-movie-search">
                 <TMDbSelect
-                    searchAction={searchMovies}
+                    searchAction={debounceAction(searchMovies, 300, {
+                        leading: false,
+                    })}
                     onSuggestionSelected={(selectedSuggestion: Result) =>
                         setSuggestion(selectedSuggestion)
                     }
