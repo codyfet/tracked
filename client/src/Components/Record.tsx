@@ -34,6 +34,13 @@ import {IClientRecord} from "../Interfaces/ClientRecord";
 import {ERecordType} from "../Enums";
 import {Result} from "../Interfaces/TMDBInterfaces";
 
+interface ICustomInputProps {
+    value: string;
+    onClick: () => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => void;
+    onBlur: () => void;
+}
+
 interface IProps extends IClientRecord {
     isReadonly?: boolean;
 }
@@ -90,20 +97,7 @@ export const Record = ({
         }
 
         if (isEditModeViewdateEnabled) {
-            const CustomInput = ({
-                value,
-                onClick,
-                onChange,
-                onBlur,
-            }: {
-                value: string;
-                onClick: () => void;
-                onChange: (
-                    event: React.ChangeEvent<HTMLInputElement>,
-                    data: InputOnChangeData
-                ) => void;
-                onBlur: () => void;
-            }) => (
+            const CustomInput = ({value, onClick, onChange, onBlur}: ICustomInputProps) => (
                 <Input
                     className="datepicker-input"
                     value={value}
@@ -124,27 +118,7 @@ export const Record = ({
                             toggleViewdateEditMode();
                         }
                     }}
-                    customInput={({
-                        value,
-                        onClick,
-                        onChange,
-                        onBlur,
-                    }: {
-                        value: string;
-                        onClick: () => void;
-                        onChange: (
-                            event: React.ChangeEvent<HTMLInputElement>,
-                            data: InputOnChangeData
-                        ) => void;
-                        onBlur: () => void;
-                    }) => (
-                        <CustomInput
-                            value={value}
-                            onClick={onClick}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                        />
-                    )}
+                    customInput={React.createElement(CustomInput)}
                     onBlur={toggleViewdateEditMode}
                 />
             );
