@@ -13,10 +13,18 @@ export function createEmptyRecord(type: ERecordType = null): IClientRecord {
         releaseYear: null,
         originalTitle: null,
         director: null,
-        // flag: null, TODO: Убедиться что это не нужно поле.
         rating: null,
         type,
         isEmptyRecord: true,
+        userId: null,
+        id: null,
+        backdrop_path: null,
+        genres: null,
+        overview: null,
+        production_countries: null,
+        reViewed: false,
+        notFinished: false,
+        position: null,
     };
 }
 

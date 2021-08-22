@@ -1,10 +1,18 @@
 import React, {ReactElement} from "react";
 import {useSelector} from "react-redux";
 import {IApplicationReduxState} from "../../Reducers";
+import {IRecordsReduxState} from "../../Reducers/records.types";
+import {IStatReduxState} from "../../Reducers/stat.types";
+import {IUsersReduxState} from "../../Reducers/users.types";
 import {LoadingOverlay} from "./LoadingOverlay";
 
+/**
+ * Тип, описывающий ветки редакс дереваа, которые являются асинхронными контейнерами для хранения данных.
+ */
+type IAsyncDataReduxKey = IUsersReduxState | IRecordsReduxState | IStatReduxState;
+
 interface IProps {
-    asyncDataKeys: string[];
+    asyncDataKeys: ("users" | "records" | "stat")[];
     children: ReactElement;
 }
 
@@ -18,8 +26,8 @@ export const Page: React.FunctionComponent<IProps> = (props: IProps) => {
     const state = useSelector((state: IApplicationReduxState) => state);
     const keys = props.asyncDataKeys;
 
-    for (let i = 0; i < keys.length; i++) {
-        const {isLoading, data} = state[keys[i]];
+    for (const key of keys) {
+        const {data, isLoading} = state[key as keyof IApplicationReduxState] as IAsyncDataReduxKey;
 
         if (!data && isLoading) {
             return <LoadingOverlay />;
