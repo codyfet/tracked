@@ -66,7 +66,7 @@ import {IPartialClientUser} from "../Interfaces/User";
  *
  * @param {string} searchInput Значение, по которому будет осуществляться поиск.
  */
-export function searchMovies(searchInput: string) {
+export function searchMovies(searchInput: string): Function {
     return function (dispatch: Dispatch) {
         dispatch({type: POPULATE_MOVIES_AUTOSUGGEST_START});
 
