@@ -1,3 +1,8 @@
+import {
+    MovieCredits,
+    TVMovieDetailsItem,
+    TVSeriesDetailsItem,
+} from "./../Interfaces/TMDBInterfaces";
 import axios, {AxiosResponse} from "axios";
 
 const API_KEY = "37662c76ffc19e5cd1b95f37d77155fc";
@@ -20,7 +25,7 @@ export function searchMoviesByTitle(searchInput: string): Promise<AxiosResponse>
  *
  * @param {number} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieDetailsById(movie_id: number): Promise<AxiosResponse> {
+export function getMovieDetailsById(movie_id: number): Promise<AxiosResponse<TVMovieDetailsItem>> {
     return axios.get(`${REST_URL}/movie/${movie_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 
@@ -29,7 +34,7 @@ export function getMovieDetailsById(movie_id: number): Promise<AxiosResponse> {
  *
  * @param {number} movie_id Идентификатор запрашиваемого фильма.
  */
-export function getMovieCreditsById(movie_id: number): Promise<AxiosResponse> {
+export function getMovieCreditsById(movie_id: number): Promise<AxiosResponse<MovieCredits>> {
     return axios.get(`${REST_URL}/movie/${movie_id}/credits?api_key=${API_KEY}`);
 }
 
@@ -49,7 +54,7 @@ export function searchTvSeriesByTitle(searchInput: string): Promise<AxiosRespons
  *
  * @param {number} tv_id Идентификатор запрашиваемого сериала.
  */
-export function getTvSeriesDetailsById(tv_id: number): Promise<AxiosResponse> {
+export function getTvSeriesDetailsById(tv_id: number): Promise<AxiosResponse<TVSeriesDetailsItem>> {
     return axios.get(`${REST_URL}/tv/${tv_id}?api_key=${API_KEY}&language=ru-RU`);
 }
 

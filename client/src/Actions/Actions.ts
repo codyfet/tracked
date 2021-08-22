@@ -1,4 +1,3 @@
-import {ERecordType} from "./../Enums";
 import {
     IClientRecord,
     IClientRecordsFilter,
@@ -58,7 +57,7 @@ import {
     updateUser as tryUpdateUser,
 } from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
-import {Record} from "../Models/Record";
+import {createRecordForMovie, createRecordForTVSeries} from "../Models/Record";
 import {Dispatch} from "redux";
 import {IPartialClientUser} from "../Interfaces/User";
 
@@ -133,15 +132,17 @@ export function addDetailedMovieRecord(id: number, userId: string) {
         dispatch({type: ADD_RECORD_START});
 
         try {
-            const results = await Promise.all([getMovieDetailsById(id), getMovieCreditsById(id)]);
-            const newRecord = new Record({
+            const [detailsResponse, creditsResponse] = await Promise.all([
+                getMovieDetailsById(id),
+                getMovieCreditsById(id),
+            ]);
+            const newRecord = createRecordForMovie(
                 userId,
-                type: ERecordType.MOVIE,
-                data: {details: results[0].data, credits: results[1].data},
-            });
+                detailsResponse.data,
+                creditsResponse.data
+            );
             const result = await tryCreateRecord(newRecord);
             dispatch({type: ADD_RECORD_SUCCESS, payload: result.data});
-            return results;
         } catch (error) {
             dispatch({type: ADD_RECORD_FAILURE, payload: error});
             throw error;
@@ -160,15 +161,10 @@ export function addDetailedTvSeriesRecord(id: number, userId: string) {
         dispatch({type: ADD_RECORD_START});
 
         try {
-            const results = await getTvSeriesDetailsById(id);
-            const newRecord = new Record({
-                userId,
-                type: ERecordType.TV_SERIES,
-                data: {details: results.data},
-            });
+            const detailsResponse = await getTvSeriesDetailsById(id);
+            const newRecord = createRecordForTVSeries(userId, detailsResponse.data);
             const result = await tryCreateRecord(newRecord);
             dispatch({type: ADD_RECORD_SUCCESS, payload: result.data});
-            return results;
         } catch (error) {
             dispatch({type: ADD_RECORD_FAILURE, payload: error});
             throw error;

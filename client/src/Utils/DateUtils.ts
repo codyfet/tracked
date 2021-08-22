@@ -24,3 +24,14 @@ export function getFormattedDate(dateObject: Date): string {
 
     return `${day} ${month}`;
 }
+
+/**
+ * Возвращает сегодняшнюю дату в формате Date с установленным значением времени 00:00:00
+ *
+ * Пример: Sat Aug 21 2021 00:00:00 GMT+0300 (Москва, стандартное время)
+ */
+export function getEmptyTodayDate(): Date {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
+}

@@ -5,14 +5,14 @@ import {IClientCrewItem} from "./ClientCrewItem";
 import {IClientGenre} from "./ClientGenre";
 
 export interface IClientRecord extends IRecord {
-    _id: string;
+    _id?: string;
     id: number;
-    cast: IClientCastItem[];
-    crew: IClientCrewItem[];
+    cast?: IClientCastItem[];
+    crew?: IClientCrewItem[];
     genres: IClientGenre[];
 
-    isEmptyRecord: boolean;
-    isSelected: boolean;
+    isEmptyRecord?: boolean;
+    isSelected?: boolean;
 }
 
 export type IPartialClientRecord = Partial<IClientRecord>;

@@ -121,7 +121,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
                 recordsToUpdate.push({
                     id: Number(id),
                     position: positionMap[id],
-                    viewdate: new Date().setFullYear(year),
+                    viewdate: new Date(new Date().setFullYear(year)),
                     userId,
                 });
             }

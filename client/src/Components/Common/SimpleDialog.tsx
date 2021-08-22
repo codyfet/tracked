@@ -13,7 +13,7 @@ interface IProps {
  * Компонент простой диалог с кнопками Да/Нет.
  */
 export const SimpleDialog = ({header, text, onClose, onNegative, onPositive}: IProps) => (
-    <Modal size="mini" open={open} onClose={onClose}>
+    <Modal size="mini" onClose={onClose}>
         <Modal.Header>{header}</Modal.Header>
         <Modal.Content>
             <p>{text}</p>

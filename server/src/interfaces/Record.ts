@@ -24,13 +24,13 @@ export interface IRecord {
     director: string[];
     reViewed: boolean;
     notFinished: boolean;
-    cast: ICastItem[];
-    crew: ICrewItem[];
+    cast?: ICastItem[];
+    crew?: ICrewItem[];
     position: string;
 
-    season: string;
-    inProduction: boolean;
-    numberOfSeasons: boolean;
+    season?: string;
+    inProduction?: boolean;
+    numberOfSeasons?: number;
 }
 
 /**

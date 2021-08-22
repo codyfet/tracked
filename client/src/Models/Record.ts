@@ -1,59 +1,73 @@
-// @ts-nocheck
-// TODO: Убрать ts-nocheck.
+import {
+    MovieCredits,
+    TVMovieDetailsItem,
+    TVSeriesDetailsItem,
+} from "./../Interfaces/TMDBInterfaces";
+import {ERecordType} from "./../Enums";
+import {IClientRecord} from "./../Interfaces/ClientRecord";
 import {map} from "lodash";
-import {ERecordType} from "../Enums";
+import {getEmptyTodayDate} from "../Utils/DateUtils";
 
 /**
- * Класс Record (Запись).
+ * Создает объект "Запись" с фильмом на основе деатльной информации от TMBD, который будет отправлен в БД.
  */
-export class Record {
-    constructor({userId, type, data}) {
-        this.userId = userId;
+export function createRecordForMovie(
+    userId: string,
+    details: TVMovieDetailsItem,
+    credits: MovieCredits
+): IClientRecord {
+    return {
+        userId,
+        id: details.id,
+        viewdate: getEmptyTodayDate(),
+        posterpath: details.poster_path,
+        title: details.title,
+        releaseYear: details.release_date.substring(0, 4),
+        originalTitle: details.original_title,
+        rating: "0",
+        type: ERecordType.MOVIE,
+        backdrop_path: details.backdrop_path,
+        genres: details.genres,
+        overview: details.overview,
+        production_countries: map(details.production_countries, (item) => item.iso_3166_1),
+        director: [credits.crew?.find((crewItem) => crewItem.job === "Director")?.name],
+        reViewed: false,
+        notFinished: false,
+        cast: credits.cast,
+        crew: credits.crew,
 
-        if (type === ERecordType.MOVIE) {
-            const {details, credits} = data;
+        position: "0",
+    };
+}
 
-            this.id = details.id;
-            this.viewdate = new Date().setHours(0, 0, 0, 0);
-            this.posterpath = details.poster_path;
-            this.title = details.title;
-            this.releaseYear = details.release_date.substring(0, 4);
-            this.originalTitle = details.original_title;
-            this.rating = "0";
-            this.type = ERecordType.MOVIE;
-            this.backdrop_path = details.backdrop_path;
-            this.genres = details.genres;
-            this.overview = details.overview;
-            this.production_countries = map(
-                details.production_countries,
-                (item) => item.iso_3166_1
-            );
-            this.director = [credits.crew?.find((crewItem) => crewItem.job === "Director")?.name];
-            this.reViewed = false;
-            this.notFinished = false;
-            this.cast = credits.cast;
-            this.crew = credits.crew;
-        } else if (type === ERecordType.TV_SERIES) {
-            const {details} = data;
+/**
+ * Создает объект "Запись" с сериалом на основе деатльной информации от TMBD, который будет отправлен в БД.
+ */
+export function createRecordForTVSeries(
+    userId: string,
+    details: TVSeriesDetailsItem
+): IClientRecord {
+    return {
+        userId,
+        id: details.id,
+        viewdate: getEmptyTodayDate(),
+        posterpath: details.poster_path,
+        title: details.name,
+        releaseYear: details.first_air_date.substring(0, 4),
+        originalTitle: details.original_name,
+        rating: "0",
+        type: ERecordType.TV_SERIES,
+        backdrop_path: details.backdrop_path,
+        genres: details.genres,
+        overview: details.overview,
+        production_countries: details.origin_country,
+        director: map(details.created_by, (p) => p.name),
+        reViewed: false,
+        notFinished: false,
+        season: "1",
+        inProduction: details.in_production,
+        numberOfSeasons: details.number_of_seasons,
 
-            this.id = details.id;
-            this.viewdate = new Date();
-            this.posterpath = details.poster_path;
-            this.title = details.name;
-            this.releaseYear = details.first_air_date.substring(0, 4);
-            this.originalTitle = details.original_name;
-            this.rating = "0";
-            this.type = ERecordType.TV_SERIES;
-            this.backdrop_path = details.backdrop_path;
-            this.genres = details.genres;
-            this.overview = details.overview;
-            this.production_countries = details.origin_country;
-            this.director = map(details.created_by, (p) => p.name);
-            this.reViewed = false;
-            this.notFinished = false;
-            this.season = "1";
-            this.inProduction = details.in_production;
-            this.numberOfSeasons = details.number_of_seasons;
-        }
-    }
+        position: "0",
+    };
 }
