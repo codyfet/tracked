@@ -196,9 +196,11 @@ export function updateRecord(recordId: string, fields: IPartialClientRecord) {
 /**
  * Thunk функция для выполнения ajax запроса для обновления массива записей.
  *
- * @param {IClientRecord[]} records Массив записей.
+ * @param {Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[]} records Массив записей.
  */
-export function updateRecords(records: IClientRecord[]) {
+export function updateRecords(
+    records: Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[]
+) {
     return async function (dispatch: Dispatch) {
         dispatch({type: GET_RECORDS_START});
 

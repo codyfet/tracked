@@ -72,9 +72,11 @@ export function updateRecord(recordId: string, fields: IPartialClientRecord) {
 /**
  * Изменяет массив запись.
  *
- * @param {[{id, ...fieldsToUpdate}]} records Массив записей для изменения.
+ * @param {Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[]} records Массив записей для изменения.
  */
-export function updateRecords(records: IClientRecord[]) {
+export function updateRecords(
+    records: Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[]
+) {
     return axios.put("/api/record/update", records);
 }
 

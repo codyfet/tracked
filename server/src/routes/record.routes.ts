@@ -86,9 +86,9 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
          */
         async.eachSeries(
             req.body,
-            function iteratee(item: IRecordModel, callback) {
-                RecordModel.findByIdAndUpdate(
-                    item.id,
+            async function iteratee(item: IRecordModel, callback) {
+                await RecordModel.findByIdAndUpdate(
+                    item._id,
                     {position: item.position},
                     {useFindAndModify: false}
                 ).exec();

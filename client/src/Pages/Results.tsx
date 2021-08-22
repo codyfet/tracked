@@ -100,7 +100,8 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
      */
     const handeCreateResultsClick = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault();
-        const recordsToUpdate: IClientRecord[] = [];
+        const recordsToUpdate: Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[] =
+            [];
         const positionElements = event.currentTarget
             .closest(".results")
             .getElementsByClassName("position");
@@ -113,14 +114,14 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
         }
 
         getFilteredRecords(records, isMoviesSelected).forEach((record) => {
-            const id = record._id;
-            const oldValue = record.position;
-            const newValue = positionMap[record._id];
+            const {_id, position} = record;
+            const oldValue = position;
+            const newValue = positionMap[_id];
 
             if (oldValue !== newValue) {
                 recordsToUpdate.push({
-                    id: Number(id),
-                    position: positionMap[id],
+                    _id,
+                    position: positionMap[_id],
                     viewdate: new Date(new Date().setFullYear(year)),
                     userId,
                 });
