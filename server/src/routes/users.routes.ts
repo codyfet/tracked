@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
-import {IUser} from "../interfaces/User";
+import {IUserModel} from "../interfaces/User";
 import User from "../models/User";
 import {verifyToken} from "../utils/tokenUtils";
 
@@ -13,7 +13,7 @@ const router: Router = express.Router();
 // /api/users
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const filter: FilterQuery<IUser> = {};
+        const filter: FilterQuery<IUserModel> = {};
         const limit: number = req.query.limit ? +req.query.limit : 0;
         const page: number = req.query.page ? +req.query.page : 0;
 

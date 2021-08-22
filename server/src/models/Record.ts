@@ -1,4 +1,4 @@
-import {IRecord} from "../interfaces/Record";
+import {IRecordModel} from "../interfaces/Record";
 import {Schema, model} from "mongoose";
 
 /**
@@ -65,4 +65,4 @@ const RecordSchema: Schema = new Schema({
     numberOfSeasons: {type: Number},
 });
 
-export default model<IRecord>("Record", RecordSchema);
+export const RecordModel = model<IRecordModel>("Record", RecordSchema);

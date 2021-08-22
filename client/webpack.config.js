@@ -77,7 +77,7 @@ const getDistFilename = (extension) => {
 
 module.exports = {
     context: path.resolve(__dirname, "src"),
-    entry: ["@babel/polyfill", "./index.js"],
+    entry: ["@babel/polyfill", "./index.tsx"],
     output: {
         filename: getDistFilename("js"),
         path: path.resolve(__dirname, "dist"),
@@ -99,7 +99,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx|ts|tsx)$/,
                 exclude: /node_modules/,
                 use: getJsLoaders(),
             },
@@ -122,7 +122,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: [".js", ".css", ".less", ".png"],
+        extensions: [".js", ".css", ".less", ".ts", ".tsx"],
     },
     optimization: getOptimization(),
     plugins: [

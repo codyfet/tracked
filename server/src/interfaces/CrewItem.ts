@@ -1,11 +1,20 @@
-import {Document} from "mongoose";
+import mongoose = require("mongoose");
 
-export interface ICrewItem extends Document {
+export interface ICrewItem {
+    adult: boolean;
     credit_id: string;
     department: string;
     gender: number;
-    id: number;
+    // id: number;
     job: string;
+    known_for_department: string;
     name: string;
+    original_name: string;
+    popularity: number;
     profile_path: string;
 }
+
+/**
+ * Модель, обогащенная mongoose функциональностями.
+ */
+export interface ICrewItemModel extends ICrewItem, mongoose.Document {}

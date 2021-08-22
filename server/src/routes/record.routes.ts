@@ -1,4 +1,4 @@
-import Record from "../models/Record";
+import {RecordModel} from "../models/Record";
 import User from "../models/User";
 import {verifyToken} from "../utils/tokenUtils";
 import {NotAuthorizedError} from "../utils/errorUtils";
@@ -7,7 +7,7 @@ import config from "config";
 import async from "async";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
-import {IRecord} from "../interfaces/Record";
+import {IRecordModel} from "../interfaces/Record";
 
 const router: Router = express.Router();
 
@@ -23,7 +23,7 @@ router.post("/create", verifyToken, async (req: Request, res: Response) => {
             throw new NotAuthorizedError();
         }
 
-        const record: IRecord = new Record(req.body);
+        const record = new RecordModel(req.body);
         const result = await record.save();
 
         /**
@@ -57,7 +57,7 @@ router.put("/:id/update", verifyToken, async (req: Request, res: Response) => {
         //     throw new NotAuthorizedError();
         // }
 
-        const record = await Record.findByIdAndUpdate(
+        const record = await RecordModel.findByIdAndUpdate(
             req.params.id,
             {$set: req.body},
             {useFindAndModify: false, new: true}
@@ -86,9 +86,9 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
          */
         async.eachSeries(
             req.body,
-            function iteratee(item: IRecord, callback) {
-                Record.findByIdAndUpdate(
-                    item.id,
+            async function iteratee(item: IRecordModel, callback) {
+                await RecordModel.findByIdAndUpdate(
+                    item._id,
                     {position: item.position},
                     {useFindAndModify: false}
                 ).exec();
@@ -98,12 +98,12 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
                 if (!err) {
                     const userId = req.body[0].userId;
                     const year = new Date(req.body[0].viewdate).getFullYear();
-                    const filter: FilterQuery<IRecord> = {
+                    const filter: FilterQuery<IRecordModel> = {
                         userId,
                         viewdate: {$gte: new Date(year, 0, 1), $lt: new Date(year, 11, 31)},
                     };
                     try {
-                        const records = await Record.find(filter).exec();
+                        const records = await RecordModel.find(filter).exec();
                         res.status(201).json(records);
                     } catch (errorF) {
                         res.status(403).json({message: errorF.message});
@@ -138,7 +138,7 @@ router.delete("/:id/delete", verifyToken, async (req: Request, res: Response) =>
         //     throw new NotAuthorizedError();
         // }
 
-        await Record.findOneAndDelete({_id: req.params.id}).exec();
+        await RecordModel.findOneAndDelete({_id: req.params.id}).exec();
 
         res.status(201).json({message: "Запись успешно удалена"});
     } catch (error) {
@@ -157,7 +157,7 @@ router.delete("/:id/delete", verifyToken, async (req: Request, res: Response) =>
 // /api/record
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const filter: FilterQuery<IRecord> = {
+        const filter: FilterQuery<IRecordModel> = {
             userId: req.query.userId as string,
             viewdate: {
                 $gte: new Date(req.query.year ? +req.query.year : 0, 0, 1),
@@ -169,7 +169,7 @@ router.get("/", async (req: Request, res: Response) => {
             filter.type = {$in: req.query.types as string[]};
         }
 
-        const records = await Record.find(filter).sort(req.query.sortBy).exec();
+        const records = await RecordModel.find(filter).sort(req.query.sortBy).exec();
 
         res.status(201).json(records);
     } catch (error) {

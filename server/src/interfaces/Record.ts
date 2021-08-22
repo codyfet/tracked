@@ -1,11 +1,15 @@
-import {ICastItem} from "./CastItem";
-import {Document} from "mongoose";
-import {IGenre} from "./Genre";
-import {ICrewItem} from "./CrewItem";
+import mongoose = require("mongoose");
+import {ICastItem, ICastItemModel} from "./CastItem";
+import {IGenre, IGenreModel} from "./Genre";
+import {ICrewItem, ICrewItemModel} from "./CrewItem";
 
-export interface IRecord extends Document {
+/**
+ * Модель Записи без mongoose функциональностей (можно использовать в client части).
+ */
+export interface IRecord {
+    // _id: string;
     userId: string;
-    id: number;
+    // id: number;
     viewdate: Date;
     posterpath: string;
     title: string;
@@ -20,11 +24,21 @@ export interface IRecord extends Document {
     director: string[];
     reViewed: boolean;
     notFinished: boolean;
-    cast: ICastItem[];
-    crew: ICrewItem[];
+    cast?: ICastItem[];
+    crew?: ICrewItem[];
     position: string;
 
-    season: string;
-    inProduction: boolean;
-    numberOfSeasons: boolean;
+    season?: string;
+    inProduction?: boolean;
+    numberOfSeasons?: number;
+}
+
+/**
+ * Модель "Записи", обогащённая mongoose функциональностями (для использования на сервере).
+ * Также переопределены атрибуты, для которых существуют mongoose-модели.
+ */
+export interface IRecordModel extends IRecord, mongoose.Document {
+    genres: IGenreModel[];
+    cast: ICastItemModel[];
+    crew: ICrewItemModel[];
 }
