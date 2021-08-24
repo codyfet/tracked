@@ -3,7 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import Autosuggest, {ChangeEvent, SuggestionSelectedEventData} from "react-autosuggest";
 import {noop} from "lodash";
 import {IApplicationReduxState} from "../Reducers";
-import {Result} from "../Interfaces/TMDBInterfaces";
+import {ResultMovie, ResultTVSeries} from "../Interfaces/TMDBInterfaces";
+
+type Result = ResultMovie & ResultTVSeries;
 
 export interface ITMDbSelectProps {
     searchAction: (inputValue: string) => void;
@@ -101,6 +103,7 @@ export const TMDbSelect = ({
             getSuggestionValue={getSuggestionValue}
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
+            multiSection={null}
         />
     );
 };

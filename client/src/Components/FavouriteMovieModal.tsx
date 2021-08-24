@@ -6,7 +6,7 @@ import {searchMovies, updateUser} from "../Actions/Actions";
 import {Image} from "semantic-ui-react";
 import {IMAGE_URL} from "../Consts";
 import {IApplicationReduxState} from "../Reducers";
-import {Result} from "../Interfaces/TMDBInterfaces";
+import {ResultMovie} from "../Interfaces/TMDBInterfaces";
 import {IFavouriteMovie} from "../../../server/src/interfaces/FavouriteMovie";
 import debounceAction from "debounce-action";
 
@@ -33,7 +33,7 @@ export const FavouriteMovieModal = ({onClose, index}: IProps) => {
                     searchAction={debounceAction(searchMovies, 300, {
                         leading: false,
                     })}
-                    onSuggestionSelected={(selectedSuggestion: Result) =>
+                    onSuggestionSelected={(selectedSuggestion: ResultMovie) =>
                         setSuggestion(selectedSuggestion)
                     }
                     titlePropName="title"

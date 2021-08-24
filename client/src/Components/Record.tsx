@@ -32,8 +32,8 @@ import {IconRemove} from "./Icons/IconRemove";
 import "react-datepicker/dist/react-datepicker.css";
 import {IClientRecord} from "../Interfaces/ClientRecord";
 import {ERecordType} from "../Enums";
-import {Result} from "../Interfaces/TMDBInterfaces";
 import debounceAction from "debounce-action";
+import {ResultMovie, ResultTVSeries} from "../Interfaces/TMDBInterfaces";
 
 interface ICustomInputProps {
     value: string;
@@ -174,7 +174,7 @@ export const Record = ({
                       searchAction: debounceAction(searchMovies, 300, {
                           leading: false,
                       }),
-                      onSuggestionSelected: (suggestion: Result, userId: string) =>
+                      onSuggestionSelected: (suggestion: ResultMovie, userId: string) =>
                           dispatch(addDetailedMovieRecord(suggestion.id, userId)),
                       titlePropName: "title",
                       releasePropName: "release_date",
@@ -184,7 +184,7 @@ export const Record = ({
                       searchAction: debounceAction(searchTvSeries, 300, {
                           leading: false,
                       }),
-                      onSuggestionSelected: (suggestion: Result, userId: string) =>
+                      onSuggestionSelected: (suggestion: ResultTVSeries, userId: string) =>
                           dispatch(addDetailedTvSeriesRecord(suggestion.id, userId)),
                       titlePropName: "name",
                       releasePropName: "first_air_date",

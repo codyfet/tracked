@@ -1,9 +1,12 @@
 import {
     MovieCredits,
+    ResultMovie,
+    ResultTVSeries,
     TVMovieDetailsItem,
     TVSeriesDetailsItem,
 } from "./../Interfaces/TMDBInterfaces";
 import axios, {AxiosResponse} from "axios";
+import {ISearchByTitleResponse} from "../Interfaces/TMDBResponses";
 
 const API_KEY = "37662c76ffc19e5cd1b95f37d77155fc";
 
@@ -14,7 +17,9 @@ const REST_URL = "https://api.themoviedb.org/3";
  *
  * @param {string} searchInput Значение для поиска.
  */
-export function searchMoviesByTitle(searchInput: string): Promise<AxiosResponse> {
+export function searchMoviesByTitle(
+    searchInput: string
+): Promise<AxiosResponse<ISearchByTitleResponse<ResultMovie>>> {
     return axios.get(
         `${REST_URL}/search/movie?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
     );
@@ -43,7 +48,9 @@ export function getMovieCreditsById(movie_id: number): Promise<AxiosResponse<Mov
  *
  * @param {string} searchInput Значение для поиска.
  */
-export function searchTvSeriesByTitle(searchInput: string): Promise<AxiosResponse> {
+export function searchTvSeriesByTitle(
+    searchInput: string
+): Promise<AxiosResponse<ISearchByTitleResponse<ResultTVSeries>>> {
     return axios.get(
         `${REST_URL}/search/tv?api_key=${API_KEY}&language=ru-RU&query=${searchInput}&page=1&include_adult=false`
     );

@@ -31,33 +31,43 @@ export interface ConfigLanguages {
     name: string;
 }
 
-// TRENDING
-
-export interface Trending {
-    page: number;
-    results: Result[];
-    total_pages: number;
-    total_results: number;
+/**
+ * Модель фильма из сервиса "Поиск фильма".
+ */
+export interface ResultMovie {
+    adult: boolean; // false
+    backdrop_path: string; // "/kyuvnGGlcnfwE3bbMrBkszzrJGb.jpg"
+    genre_ids: number[]; // [16, 12, 35, 10751]
+    id: number; // 518755
+    original_language: OriginalLanguage; // "ru"
+    original_title: string; // "Волки и овцы: Ход свиньёй"
+    overview: string; // "В спокойной и размеренной жизни объединённого городка волков и овец появляются неожиданные гости — песец и маленькая овечка. Никто не ожидал, что они принесут с собой смертельную опасность, преодолеть которую можно лишь всем вместе. Ведь только сообща решаются большие проблемы и серьёзные задачи — в единстве сила!"
+    popularity: number; // 20.668
+    poster_path: string; // "/kkrBQjrA35wXxUk6WKdiJorWR5a.jpg"
+    release_date: string; // "2019-01-24"
+    title: string; // "Волки и овцы: Ход свиньёй"
+    video: boolean; // false
+    vote_average: number; // 7
+    vote_count: number; // 56
 }
 
-export interface Result {
-    adult: boolean;
-    backdrop_path: string;
-    genre_ids: number[];
-    id: number;
-    original_language: OriginalLanguage;
-    original_title: string;
-    overview: string;
-    poster_path: string;
-    release_date?: string;
-    title?: string;
-    video: boolean;
-    vote_average: number;
-    vote_count: number;
-    popularity: number;
-
-    name?: string;
-    first_air_date?: string;
+/**
+ * Модель сериала из сервиса "Поиск сериала".
+ */
+export interface ResultTVSeries {
+    backdrop_path: string; // "/s56eyXy8rADp5DpZknfe2HXq4u4.jpg"
+    first_air_date: string; // "2019-12-20"
+    genre_ids: number[]; // [10765, 18, 10759]
+    id: number; // 71912
+    name: string; // "Ведьмак"
+    origin_country: string[]; // ["US"]
+    original_language: OriginalLanguage; // "en"
+    original_name: string; // "The Witcher"
+    overview: string; // "Ведьмак Геральт, мутант и убийца чудовищ, на своей верной лошади по кличке Плотва путешествует по Континенту. За тугой мешочек чеканных монет этот мужчина избавит вас от всякой настырной нечисти - хоть от чудищ болотных, оборотней и даже заколдованных принцесс. В сельской глуши местную девушку Йеннифэр, которой сильно не повезло с внешностью, зато посчастливилось иметь способности к магии, отец продаёт колдунье в ученицы. А малолетняя наследница королевства Цинтра по имени Цири вынуждена пуститься в бега, когда их страну захватывает империя Нильфгаард. Судьбы этих троих окажутся тесно связаны, но скоро сказка сказывается, да не скоро дело делается."
+    popularity: number; // 121.901
+    poster_path: string; // "/3MlspZT8LgKImnYDS11cLxdbxnK.jpg"
+    vote_average: number; // 8.1
+    vote_count: number; // 2399
 }
 
 /**

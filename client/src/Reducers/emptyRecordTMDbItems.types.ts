@@ -1,3 +1,3 @@
-import {Result} from "./../Interfaces/TMDBInterfaces";
+import {ResultMovie, ResultTVSeries} from "./../Interfaces/TMDBInterfaces";
 
-export type IEmptyRecordTMDbItemsReduxState = Result[];
+export type IEmptyRecordTMDbItemsReduxState = (ResultMovie | ResultTVSeries)[];
