@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import config from "config";
 import {NextFunction, Request, Response} from "express";
 
 /**
@@ -8,8 +7,8 @@ import {NextFunction, Request, Response} from "express";
  * @param {string} userId Идентификатор пользователя.
  */
 function createToken(userId: string) {
-    const token = jwt.sign({userId}, config.get("jwtSecret"), {
-        expiresIn: config.get("sessionExpiresIn"),
+    const token = jwt.sign({userId}, `${process.env.JWT_SECRET}`, {
+        expiresIn: `${process.env.SESSION_EXPIRES_IN}`,
     });
 
     return token;

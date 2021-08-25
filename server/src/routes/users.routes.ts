@@ -51,7 +51,7 @@ router.get("/", async (req: Request, res: Response) => {
 // /api/users/:id/update
 router.put("/:id/update", verifyToken, async (req: Request, res: Response) => {
     try {
-        const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
+        const decoded = await jwt.verify(req.token, `${process.env.JWT_SECRET}`);
 
         if (decoded.userId !== req.params.id) {
             throw new NotAuthorizedError();
