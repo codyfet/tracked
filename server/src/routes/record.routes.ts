@@ -3,7 +3,6 @@ import User from "../models/User";
 import {verifyToken} from "../utils/tokenUtils";
 import {NotAuthorizedError} from "../utils/errorUtils";
 import jwt, {JwtPayload} from "jsonwebtoken";
-import config from "config";
 import async from "async";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
@@ -16,7 +15,7 @@ router.post("/create", verifyToken, async (req: Request, res: Response) => {
     try {
         const decoded: JwtPayload = (await jwt.verify(
             req.token,
-            config.get("jwtSecret")
+            `${process.env.JWT_SECRET}`
         )) as JwtPayload;
 
         if (decoded.userId !== req.body.userId) {
@@ -51,7 +50,7 @@ router.post("/create", verifyToken, async (req: Request, res: Response) => {
 router.put("/:id/update", verifyToken, async (req: Request, res: Response) => {
     try {
         // TODO: Временно убираю, т.к. здесь эта логика не работает.
-        // const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
+        // const decoded = await jwt.verify(req.token, `${process.env.JWT_SECRET}`);
 
         // if (decoded.userId !== req.body.userId) {
         //     throw new NotAuthorizedError();
@@ -132,7 +131,7 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
 router.delete("/:id/delete", verifyToken, async (req: Request, res: Response) => {
     try {
         // TODO: Временно убираю, т.к. здесь эта логика не работает.
-        // const decoded = await jwt.verify(req.token, config.get("jwtSecret"));
+        // const decoded = await jwt.verify(req.token, `${process.env.JWT_SECRET}`);
 
         // if (decoded.userId !== req.body.userId) {
         //     throw new NotAuthorizedError();

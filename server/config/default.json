@@ -1,6 +1,0 @@
-{
-    "port": 5000,
-    "mongoUri": "mongodb+srv://codyfet:AccentTracked13*@cluster0.do8dd.azure.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    "jwtSecret": "codyfet tracked brilliant",
-    "sessionExpiresIn": "1h"
-}

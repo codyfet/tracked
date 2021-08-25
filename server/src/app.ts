@@ -1,6 +1,8 @@
 import express, {Application} from "express";
-import config from "config";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 /**
  * Фикс для поддержки атрибута token в поле Request.
@@ -25,11 +27,11 @@ app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/users", require("./routes/users.routes"));
 
-const PORT = config.get("port") || 5000;
+const PORT = process.env.PORT || 5000;
 
 async function start() {
     try {
-        await mongoose.connect(config.get("mongoUri"), {
+        await mongoose.connect(`${process.env.MONGO_URI}`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true,
@@ -37,7 +39,9 @@ async function start() {
             // + Хороший пример работы с конфигом
         });
         console.log("Connection to db succeeded.");
-        app.listen(PORT, () => console.log(`App started on ${PORT}.`));
+        app.listen(PORT, () =>
+            console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
+        );
     } catch (error) {
         console.log("Server error", error.message);
         process.exit(1);
