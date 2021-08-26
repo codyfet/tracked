@@ -1,12 +1,11 @@
+import {TokenInterface} from "./../interfaces/Token";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
 import {IUserModel} from "../interfaces/User";
 import User from "../models/User";
 import {verifyToken} from "../utils/tokenUtils";
-
-const {NotAuthorizedError} = require("../utils/errorUtils");
-const jwt = require("jsonwebtoken");
-const config = require("config");
+import {NotAuthorizedError} from "../utils/errorUtils";
+import jwt from "jsonwebtoken";
 
 const router: Router = express.Router();
 
@@ -51,7 +50,10 @@ router.get("/", async (req: Request, res: Response) => {
 // /api/users/:id/update
 router.put("/:id/update", verifyToken, async (req: Request, res: Response) => {
     try {
-        const decoded = await jwt.verify(req.token, `${process.env.JWT_SECRET}`);
+        const decoded: TokenInterface = (await jwt.verify(
+            req.token,
+            process.env.JWT_SECRET
+        )) as TokenInterface;
 
         if (decoded.userId !== req.params.id) {
             throw new NotAuthorizedError();
