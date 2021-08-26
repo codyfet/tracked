@@ -1,8 +1,6 @@
 import express, {Application} from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
-
-dotenv.config();
+import connectDB from "./config/db";
 
 /**
  * Фикс для поддержки атрибута token в поле Request.
@@ -14,7 +12,20 @@ declare global {
             token: string;
         }
     }
+    namespace NodeJS {
+        interface ProcessEnv {
+            NODE_ENV: "development" | "production";
+            PORT?: string;
+            MONGO_URI: string;
+            JWT_SECRET: string;
+            SESSION_EXPIRES_IN: string;
+        }
+    }
 }
+
+dotenv.config();
+
+connectDB();
 
 const app: Application = express();
 
@@ -29,23 +40,6 @@ app.use("/api/users", require("./routes/users.routes"));
 
 const PORT = process.env.PORT || 5000;
 
-async function start() {
-    try {
-        await mongoose.connect(`${process.env.MONGO_URI}`, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            useCreateIndex: true,
-            // Список опций можно посмотреть тут https://www.youtube.com/watch?v=lNqaQ0wEeAo
-            // + Хороший пример работы с конфигом
-        });
-        console.log("Connection to db succeeded.");
-        app.listen(PORT, () =>
-            console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
-        );
-    } catch (error) {
-        console.log("Server error", error.message);
-        process.exit(1);
-    }
-}
-
-start();
+app.listen(PORT, () =>
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
+);
