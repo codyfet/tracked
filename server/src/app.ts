@@ -1,6 +1,7 @@
 import express, {Application} from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
+import colors from "colors";
 
 /**
  * Фикс для поддержки атрибута token в поле Request.
@@ -41,5 +42,7 @@ app.use("/api/users", require("./routes/users.routes"));
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () =>
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
+    console.log(
+        colors.yellow.bold(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}.`)
+    )
 );
