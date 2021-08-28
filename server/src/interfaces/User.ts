@@ -10,6 +10,7 @@ export interface IUser {
     username: string;
     favouriteMovies: IFavouriteMovie[];
     records: IRecord[];
+    isAdmin: boolean;
 }
 
 /**

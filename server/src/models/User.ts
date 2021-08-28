@@ -22,6 +22,7 @@ const userSchema: Schema = new Schema(
         username: {type: String, required: true},
         favouriteMovies: [FavouriteMovieSchema],
         records: [{type: Schema.Types.ObjectId, ref: "Record"}],
+        isAdmin: {type: Boolean, required: true, default: false},
     },
     {
         timestamps: true,
