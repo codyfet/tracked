@@ -58,7 +58,7 @@ export const Header = () => {
     };
 
     return (
-        <div className="header">
+        <div className="header-app">
             <span className="logo">
                 <Link to="/" key="main">
                     <span>tracked</span>

@@ -250,9 +250,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
                                                     </Table.Cell>
                                                     <Table.Cell>{record.title}</Table.Cell>
                                                     <Table.Cell
-                                                        className={
-                                                            record.rating === "0" ? "red" : ""
-                                                        }
+                                                        className={record.rating === 0 ? "red" : ""}
                                                     >
                                                         {record.rating}
                                                     </Table.Cell>

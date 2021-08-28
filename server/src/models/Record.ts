@@ -47,7 +47,7 @@ const RecordSchema: Schema = new Schema({
     title: {type: String, required: true},
     releaseYear: {type: String, required: true},
     originalTitle: {type: String},
-    rating: {type: String},
+    rating: {type: Number, default: 0},
     type: {type: String, required: true},
     backdrop_path: {type: String},
     genres: [GenreSchema],

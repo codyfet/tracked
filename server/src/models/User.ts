@@ -24,6 +24,7 @@ const userSchema: Schema = new Schema(
         records: [{type: Schema.Types.ObjectId, ref: "Record"}],
     },
     {
+        timestamps: true,
         /**
          * Удаляем records из ответа.
          */

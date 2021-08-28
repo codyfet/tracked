@@ -15,7 +15,7 @@ export interface IRecord {
     title: string;
     releaseYear: string;
     originalTitle: string;
-    rating: string;
+    rating: number;
     type: string;
     backdrop_path: string;
     genres: IGenre[];

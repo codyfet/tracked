@@ -77,7 +77,7 @@ export const Record = ({
     const [viewdateValue, setViewdateValue] = useUpdate<Date>(viewdate, (newValue) =>
         dispatch(updateRecord(_id, {viewdate: newValue}))
     );
-    const [ratingValue, setRatingValue] = useUpdate<string>(rating, (newValue) =>
+    const [ratingValue, setRatingValue] = useUpdate<number>(rating, (newValue) =>
         dispatch(updateRecord(_id, {rating: newValue}))
     );
     const [seasonValue, setSeasonValue] = useUpdate<string>(season, (newValue) =>
@@ -240,7 +240,7 @@ export const Record = ({
                     autoFocus
                     onChange={(e) => {
                         if (!isReadonly) {
-                            setRatingValue(e.target.value);
+                            setRatingValue(+e.target.value);
                         }
                     }}
                     onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.currentTarget.select()}
@@ -252,7 +252,7 @@ export const Record = ({
         return (
             <span
                 title="Нажите, чтобы изменить"
-                className={`rating ${rating === "0" ? "red" : ""}`}
+                className={`rating ${rating === 0 ? "red" : ""}`}
                 onClick={toggleRatingEditMode}
             >
                 {rating}
