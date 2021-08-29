@@ -2,6 +2,7 @@ import express, {Application} from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import colors from "colors";
+import {errorHandler, notFound} from "./middleware/errorMiddleware";
 
 /**
  * Фикс для поддержки атрибута token в поле Request.
@@ -38,6 +39,9 @@ app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/users", require("./routes/users.routes"));
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

@@ -4,7 +4,6 @@ import {Routes} from "../Routes/Routes";
 import {useCheckAuth} from "../Hooks/Auth.hook";
 import {Header} from "./Header";
 import {Footer} from "./Footer";
-import {ErrorChecker} from "./ErrorChecker";
 
 export const App = () => {
     /**
@@ -13,12 +12,10 @@ export const App = () => {
     useCheckAuth();
 
     return (
-        <ErrorChecker>
-            <Router>
-                <Header />
-                <Routes />
-                <Footer />
-            </Router>
-        </ErrorChecker>
+        <Router>
+            <Header />
+            <Routes />
+            <Footer />
+        </Router>
     );
 };

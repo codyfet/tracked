@@ -1,3 +1,5 @@
+import {IErrorDataObject} from "./../Interfaces/Common";
+import {IErrorResponse} from "../../../server/src/Interfaces/Error";
 import {
     IClientRecord,
     IClientRecordsFilter,
@@ -60,6 +62,7 @@ import {TRACKED_USER_DATA} from "../Consts";
 import {createRecordForMovie, createRecordForTVSeries} from "../Models/Record";
 import {Dispatch} from "redux";
 import {IPartialClientUser} from "../Interfaces/User";
+import {AxiosResponse} from "axios";
 
 /**
  * Thunk функция для выполнения ajax запроса для поиска фильмов.
@@ -239,11 +242,16 @@ export function getRecords(userId: string, options: IClientRecordsFilter) {
 
         try {
             const records = await tryGetRecords(userId, options);
-            dispatch({type: GET_RECORDS_SUCCESS, payload: records});
-            return records;
+            dispatch({type: GET_RECORDS_SUCCESS, payload: records.data});
         } catch (error) {
-            dispatch({type: GET_RECORDS_FAILURE, payload: error});
-            throw error;
+            const response: AxiosResponse<IErrorResponse> = error.response;
+            const message: string = response?.data.message ?? error.message;
+            const status: number = response?.status ?? error.status;
+            const errorObject: IErrorDataObject = {
+                message,
+                status,
+            };
+            dispatch({type: GET_RECORDS_FAILURE, payload: errorObject});
         }
     };
 }

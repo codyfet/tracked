@@ -58,8 +58,8 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
     const dispatch = useDispatch();
     const profileUserId = match.params.id;
     const {
-        users: {data: usersData},
-        stat: {data: statData},
+        users: {data: usersData, isLoading: isUsersLoading, error: usersError},
+        stat: {data: statData, isLoading: isStatLoading, error: statError},
         user: {data: loggedInUser},
     } = useSelector((state: IApplicationReduxState) => state);
     const profileUser = usersData ? usersData.items[0] : null;
@@ -108,7 +108,10 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
     }
 
     return (
-        <Page asyncDataKeys={["users", "stat"]}>
+        <Page
+            isLoading={isUsersLoading || isStatLoading}
+            errorMessage={usersError?.message || statError?.message}
+        >
             <Container className="profile">
                 <Header as="h2" size="large">
                     Профиль пользователя

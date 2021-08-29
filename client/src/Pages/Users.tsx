@@ -13,7 +13,7 @@ import {IApplicationReduxState} from "../Reducers";
 export const Users = () => {
     const dispatch = useDispatch();
     const {
-        users: {data: usersData},
+        users: {data: usersData, isLoading: isUsersLoading, error: usersError},
     } = useSelector((state: IApplicationReduxState) => state);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -33,7 +33,7 @@ export const Users = () => {
     }, [usersData]);
 
     return (
-        <Page asyncDataKeys={["users"]}>
+        <Page isLoading={isUsersLoading} errorMessage={usersError?.message}>
             <Container className="users">
                 <Header as="h2" size="large">
                     Пользователи

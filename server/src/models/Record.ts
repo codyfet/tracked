@@ -39,30 +39,35 @@ const GenreSchema: Schema = new Schema({
 /**
  * Модель Запись (Фильм/Сериал).
  */
-const RecordSchema: Schema = new Schema({
-    userId: {type: Schema.Types.ObjectId, ref: "User", required: true},
-    id: {type: Number, required: true},
-    viewdate: {type: Date},
-    posterpath: {type: String},
-    title: {type: String, required: true},
-    releaseYear: {type: String, required: true},
-    originalTitle: {type: String},
-    rating: {type: String},
-    type: {type: String, required: true},
-    backdrop_path: {type: String},
-    genres: [GenreSchema],
-    overview: {type: String},
-    production_countries: [String],
-    director: [String],
-    reViewed: {type: Boolean},
-    notFinished: {type: Boolean},
-    cast: [CastItemSchema],
-    crew: [CrewItemSchema],
-    position: {type: String},
+const RecordSchema: Schema = new Schema(
+    {
+        userId: {type: Schema.Types.ObjectId, ref: "User", required: true},
+        id: {type: Number, required: true},
+        viewdate: {type: Date},
+        posterpath: {type: String},
+        title: {type: String, required: true},
+        releaseYear: {type: String, required: true},
+        originalTitle: {type: String},
+        rating: {type: Number, default: 0},
+        type: {type: String, required: true},
+        backdrop_path: {type: String},
+        genres: [GenreSchema],
+        overview: {type: String},
+        production_countries: [String],
+        director: [String],
+        reViewed: {type: Boolean},
+        notFinished: {type: Boolean},
+        cast: [CastItemSchema],
+        crew: [CrewItemSchema],
+        position: {type: String},
 
-    season: {type: String},
-    inProduction: {type: Boolean},
-    numberOfSeasons: {type: Number},
-});
+        season: {type: String},
+        inProduction: {type: Boolean},
+        numberOfSeasons: {type: Number},
+    },
+    {
+        timestamps: true,
+    }
+);
 
 export const RecordModel = model<IRecordModel>("Record", RecordSchema);

@@ -4,7 +4,7 @@ import {
     IClientRecordsFilter,
     IPartialClientRecord,
 } from "../Interfaces/ClientRecord";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {TRACKED_USER_DATA} from "../Consts";
 import {IPartialClientUser} from "../Interfaces/User";
 
@@ -94,7 +94,10 @@ export function deleteRecord(recordId: string) {
  *
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
  */
-export function getRecords(userId: string, options: IClientRecordsFilter) {
+export function getRecords(
+    userId: string,
+    options: IClientRecordsFilter
+): Promise<AxiosResponse<IClientRecord[]>> {
     const params: {userId: string; sortBy?: string; year?: number; types?: ERecordType[]} = {
         userId,
     };
@@ -111,7 +114,7 @@ export function getRecords(userId: string, options: IClientRecordsFilter) {
         params.types = options.types;
     }
 
-    return axios.get("/api/record", {params});
+    return axios.get<IClientRecord[]>("/api/record", {params});
 }
 
 /**

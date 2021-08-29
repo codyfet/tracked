@@ -25,7 +25,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
     const dispatch = useDispatch();
     const userId = match.params.id;
     const {
-        records: {data: records},
+        records: {data: records, isLoading: isRecordsLoading, error: recordsError},
         user: {
             data: {userId: loggedInUser},
         },
@@ -68,7 +68,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
     });
 
     return (
-        <Page asyncDataKeys={["records"]}>
+        <Page isLoading={isRecordsLoading} errorMessage={recordsError?.message}>
             <Container className="diary">
                 <Header as="h2" size="large">
                     Журнал пользователя

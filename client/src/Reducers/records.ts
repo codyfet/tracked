@@ -153,7 +153,7 @@ const recordsReducer: Reducer<IRecordsReduxState> = (
                 isLoading: true,
             };
         case GET_RECORDS_SUCCESS: {
-            const records = map(action.payload.data, (item) => ({
+            const records: IClientRecord[] = map(action.payload, (item) => ({
                 ...item,
                 viewdate: new Date(item.viewdate),
             }));
@@ -166,7 +166,7 @@ const recordsReducer: Reducer<IRecordsReduxState> = (
         }
         case GET_RECORDS_FAILURE:
             return {
-                error: null,
+                error: action.payload as IErrorDataObject,
                 isLoading: false,
                 data: null,
             };
