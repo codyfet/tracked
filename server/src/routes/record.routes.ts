@@ -177,6 +177,8 @@ router.get(
         const records = await RecordModel.find(filter).sort(req.query.sortBy).exec();
 
         if (records) {
+            // res.status(401);
+            // throw new Error("Not Authorized");
             res.status(201).json(records);
         } else {
             /**

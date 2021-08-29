@@ -1,3 +1,4 @@
+import {IErrorResponse} from "../interfaces/Error";
 import {NextFunction, Request, Response} from "express";
 
 /**
@@ -14,14 +15,14 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
  * Еще один хороший более подробный пимер можно посмотреть здесь https://simonplend.com/how-to-create-an-error-handler-for-your-express-api/
  */
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.log(res, res);
-
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-    res.status(statusCode);
-    res.json({
+    const errorResponse: IErrorResponse = {
         message: err.message,
         stack: process.env.NODE_ENV === "production" ? null : err.stack,
-    });
+    };
+
+    res.status(statusCode);
+    res.json(errorResponse);
     next();
 };
 

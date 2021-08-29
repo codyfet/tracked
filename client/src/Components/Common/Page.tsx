@@ -1,5 +1,6 @@
 import React, {ReactElement} from "react";
 import {useSelector} from "react-redux";
+import {IErrorDataObject} from "../../Interfaces/Common";
 import {IApplicationReduxState} from "../../Reducers";
 import {IRecordsReduxState} from "../../Reducers/records.types";
 import {IStatReduxState} from "../../Reducers/stat.types";
@@ -11,6 +12,14 @@ import {LoadingOverlay} from "./LoadingOverlay";
  */
 type IAsyncDataReduxKey = IUsersReduxState | IRecordsReduxState | IStatReduxState;
 
+/**
+ * TODO: Переписать.
+ * Вынести наружу определение статусов и ошибок.
+ * Сделать пропсы:
+ * isLoading
+ * errorMessage
+ * content? return children?
+ */
 interface IProps {
     asyncDataKeys: ("users" | "records" | "stat")[];
     children: ReactElement;
@@ -27,10 +36,14 @@ export const Page: React.FunctionComponent<IProps> = (props: IProps) => {
     const keys = props.asyncDataKeys;
 
     for (const key of keys) {
-        const {data, isLoading} = state[key as keyof IApplicationReduxState] as IAsyncDataReduxKey;
+        const {data, isLoading, error} = state[
+            key as keyof IApplicationReduxState
+        ] as IAsyncDataReduxKey;
 
         if (!data && isLoading) {
             return <LoadingOverlay />;
+        } else if (error) {
+            return <div>{(error as IErrorDataObject).message}</div>;
         }
     }
 
