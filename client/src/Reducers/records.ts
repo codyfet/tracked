@@ -166,7 +166,7 @@ const recordsReducer: Reducer<IRecordsReduxState> = (
         }
         case GET_RECORDS_FAILURE:
             return {
-                error: null,
+                error: null, // TODO: Вот тут что то не так, должна сохраняться ошибка
                 isLoading: false,
                 data: null,
             };

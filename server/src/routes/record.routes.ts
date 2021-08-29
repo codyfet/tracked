@@ -7,6 +7,7 @@ import async from "async";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
 import {IRecordModel} from "../interfaces/Record";
+import asyncHandler from "express-async-handler";
 
 const router: Router = express.Router();
 
@@ -153,9 +154,14 @@ router.delete("/:id/delete", verifyToken, async (req: Request, res: Response) =>
     }
 });
 
-// /api/record
-router.get("/", async (req: Request, res: Response) => {
-    try {
+/**
+ * @desc    Возвращает список записей.
+ * @route   GET /api/record.
+ * @access  Public
+ */
+router.get(
+    "/",
+    asyncHandler(async (req: Request, res: Response) => {
         const filter: FilterQuery<IRecordModel> = {
             userId: req.query.userId as string,
             viewdate: {
@@ -170,12 +176,18 @@ router.get("/", async (req: Request, res: Response) => {
 
         const records = await RecordModel.find(filter).sort(req.query.sortBy).exec();
 
-        res.status(201).json(records);
-    } catch (error) {
-        console.log("Error:", error.message);
-
-        res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
-    }
-});
+        if (records) {
+            res.status(201).json(records);
+        } else {
+            /**
+             * Достаточно просто выкинуть ошибку и asyncHandler прокинет ее в кастомную middleware (см. errorMiddleware),
+             * которая отправит ошибку на ui в формате json. По дефолту отправится 500 ошибка, если нужно переопределить номер,
+             * то достаточно добавить перед выкидыванием ошибки
+             * res.status(404).
+             */
+            throw new Error("Что-то пошло не так...");
+        }
+    })
+);
 
 module.exports = router;
