@@ -1,4 +1,5 @@
 import React, {ReactElement} from "react";
+import {ErrorMessage} from "../ErrorMessage";
 import {LoadingOverlay} from "./LoadingOverlay";
 
 interface IProps {
@@ -18,4 +19,10 @@ export const Page: React.FunctionComponent<IProps> = ({
     errorMessage,
     children,
 }: IProps) =>
-    isLoading ? <LoadingOverlay /> : errorMessage ? <div>{errorMessage}</div> : children;
+    isLoading ? (
+        <LoadingOverlay />
+    ) : errorMessage ? (
+        <ErrorMessage errorMessage={errorMessage} />
+    ) : (
+        children
+    );
