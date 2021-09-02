@@ -15,7 +15,7 @@ const FavouriteMovieSchema: Schema = new Schema({
 /**
  * Модель Пользователь.
  */
-const userSchema: Schema = new Schema(
+const userSchema: Schema<IUser> = new Schema<IUser>(
     {
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
