@@ -45,25 +45,14 @@ export const Login = () => {
     };
 
     /**
-     * Возвращает компонент, выводящий ошибки логина/регистрации.
+     * Возвращает компонент, выводящий ошибку логина/регистрации.
      */
     const getErrorMessage = () => {
         if (!user?.error) {
             return null;
         }
 
-        if (isLoginMode) {
-            return <Message negative content={<p>{user.error?.message}</p>} />;
-        }
-
-        return (
-            <Message
-                error
-                list={user.error?.errors?.map((e, index: number) => (
-                    <p key={index}>{e.msg}</p>
-                ))}
-            />
-        );
+        return <Message negative content={<p>{user.error?.message}</p>} />;
     };
 
     return (

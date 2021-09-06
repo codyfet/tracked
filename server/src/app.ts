@@ -37,7 +37,6 @@ const app: Application = express();
 app.use(express.json({limit: "50mb"}));
 app.use(express.static("client/dist"));
 
-app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/users", require("./routes/users.routes"));
