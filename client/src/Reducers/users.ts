@@ -39,9 +39,7 @@ const usersReducer: Reducer<IUsersReduxState> = (state = initialState, action: U
             return {
                 data: null,
                 isLoading: false,
-                // error: action.payload.response,
                 error: {
-                    errors: action.payload.response.data.errors,
                     message: action.payload.response.data.message,
                 },
             };

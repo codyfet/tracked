@@ -27,7 +27,7 @@ axios.interceptors.request.use(function (config) {
  * @param {object} data Данные, введённые пользователем (логин/пароль).
  */
 export function login(data: {email: string; password: string}) {
-    return axios.post("/api/auth/login", data);
+    return axios.post("/api/user/login", data);
 }
 
 /**
@@ -36,7 +36,7 @@ export function login(data: {email: string; password: string}) {
  * @param {object} data Данные, введённые пользователем (логин/пароль).
  */
 export function register(data: {email: string; password: string; username: string}) {
-    return axios.post("/api/auth/register", data);
+    return axios.post("/api/user", data);
 }
 
 /**
@@ -47,7 +47,7 @@ export function register(data: {email: string; password: string; username: strin
 export function getUserInfo(userId: string) {
     const params = {userId};
 
-    return axios.get("/api/auth/user", {params});
+    return axios.get("/api/user/profile", {params});
 }
 
 /**
