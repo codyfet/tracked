@@ -1,6 +1,7 @@
 import {IUser, IUserModel} from "../interfaces/User";
 import {Schema, model} from "mongoose";
 import {IRecord} from "../interfaces/Record";
+import bcrypt from "bcryptjs";
 
 /**
  * Модель Любимый фильм.
@@ -15,7 +16,7 @@ const FavouriteMovieSchema: Schema = new Schema({
 /**
  * Модель Пользователь.
  */
-const userSchema: Schema = new Schema(
+const userSchema: Schema<IUser> = new Schema<IUser>(
     {
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
@@ -53,6 +54,18 @@ userSchema.virtual("years").get(function (this: IUser) {
  */
 userSchema.set("toJSON", {
     virtuals: false,
+});
+
+/**
+ * Хэширует пароль перед сохранением его в БД.
+ */
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        next();
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
 });
 
 export default model<IUserModel>("User", userSchema);

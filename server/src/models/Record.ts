@@ -1,4 +1,4 @@
-import {IRecordModel} from "../interfaces/Record";
+import {IRecord, IRecordModel} from "../interfaces/Record";
 import {Schema, model} from "mongoose";
 
 /**
@@ -39,7 +39,7 @@ const GenreSchema: Schema = new Schema({
 /**
  * Модель Запись (Фильм/Сериал).
  */
-const RecordSchema: Schema = new Schema(
+const RecordSchema: Schema<IRecord> = new Schema<IRecord>(
     {
         userId: {type: Schema.Types.ObjectId, ref: "User", required: true},
         id: {type: Number, required: true},

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import colors from "colors";
 import {errorHandler, notFound} from "./middleware/errorMiddleware";
+import {IUserModel} from "./interfaces/User";
 
 /**
  * Фикс для поддержки атрибута token в поле Request.
@@ -11,7 +12,8 @@ import {errorHandler, notFound} from "./middleware/errorMiddleware";
 declare global {
     namespace Express {
         interface Request {
-            token: string;
+            token: string; // TODO: Убрать.
+            user: IUserModel;
         }
     }
     namespace NodeJS {
@@ -39,6 +41,7 @@ app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/users", require("./routes/users.routes"));
+app.use("/api/user", require("./routes/user.routes"));
 
 app.use(notFound);
 app.use(errorHandler);
