@@ -46,7 +46,7 @@ const userReducer: Reducer<IUserReduxState> = (state = initialState, action: Use
                 data: null,
                 isLoading: false,
                 error: {
-                    message: action.payload.response.data.message,
+                    message: action.payload.message,
                 },
             };
         // case UPDATE_USER_START:
