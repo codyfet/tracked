@@ -5,11 +5,16 @@ import {useToggle} from "../Hooks/Toggle.hook";
 import {Button, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
 import {AUTHENTICATION_CLEAR} from "../Actions/ActionTypes";
 import {IApplicationReduxState} from "../Reducers";
+import {useHistory, useLocation} from "react-router-dom";
+import {ILocationState} from "../Interfaces/Common";
 
 /**
  * Страница логин/регистрация.
  */
 export const Login = () => {
+    const history = useHistory();
+    const location = useLocation<ILocationState>();
+    const prevLocation = location.state?.prevLocation;
     const [form, setForm] = useState({email: "", password: "", username: ""});
     const [isLoginMode, toggleMode] = useToggle(true);
     const dispatch = useDispatch();
@@ -42,6 +47,14 @@ export const Login = () => {
         e.preventDefault();
         toggleMode();
         dispatch({type: AUTHENTICATION_CLEAR});
+    };
+
+    /**
+     * Обработчик нажатия на кнопку "Войти" (submit).
+     */
+    const handleSubmit = async () => {
+        await dispatch(isLoginMode ? login(form) : register(form));
+        history.push(prevLocation || "/");
     };
 
     /**
@@ -91,11 +104,7 @@ export const Login = () => {
                                 onChange={handleInputChange}
                             />
                         )}
-                        <Button
-                            fluid
-                            size="large"
-                            onClick={() => dispatch(isLoginMode ? login(form) : register(form))}
-                        >
+                        <Button fluid size="large" onClick={handleSubmit}>
                             {buttonText}
                         </Button>
                     </Segment>

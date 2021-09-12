@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Icon} from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {logout} from "../Actions/Actions";
 import {IApplicationReduxState} from "../Reducers";
 
@@ -12,7 +12,16 @@ export const Header = () => {
     const [isResponsive, setResponsive] = useState(false);
     const {user} = useSelector((state: IApplicationReduxState) => state);
     const dispatch = useDispatch();
+    const history = useHistory();
     const isAutheticated = !!user.data;
+
+    /**
+     * Обработчик нажатия на кнопку "Выйти".
+     */
+    const handleLogout = async () => {
+        await dispatch(logout());
+        history.push("/");
+    };
 
     /**
      * Формирует доступные пункты меню.
@@ -35,7 +44,7 @@ export const Header = () => {
                             to={`/profile/${user.data.userId}`}
                             key="profile"
                         >{`${user.data.username}`}</Link>
-                        <a onClick={() => dispatch(logout())}>выйти</a>
+                        <a onClick={handleLogout}>выйти</a>
                     </span>
 
                     <Icon
