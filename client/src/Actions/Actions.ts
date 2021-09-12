@@ -300,8 +300,14 @@ export function login({email, password}: {email: string; password: string}) {
 
             return response;
         } catch (error) {
-            dispatch({type: AUTHENTICATION_FAILURE, payload: error});
-            throw error;
+            const response: AxiosResponse<IErrorResponse> = error.response;
+            const message: string = response?.data.message ?? error.message;
+            const status: number = response?.status ?? error.status;
+            const errorObject: IErrorDataObject = {
+                message,
+                status,
+            };
+            dispatch({type: AUTHENTICATION_FAILURE, payload: errorObject});
         }
     };
 }
@@ -352,8 +358,14 @@ export function register({
 
             return response;
         } catch (error) {
-            dispatch({type: AUTHENTICATION_FAILURE, payload: error});
-            throw error;
+            const response: AxiosResponse<IErrorResponse> = error.response;
+            const message: string = response?.data.message ?? error.message;
+            const status: number = response?.status ?? error.status;
+            const errorObject: IErrorDataObject = {
+                message,
+                status,
+            };
+            dispatch({type: AUTHENTICATION_FAILURE, payload: errorObject});
         }
     };
 }
@@ -370,8 +382,14 @@ export function getUserInfo(userId: string) {
             dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
             return response;
         } catch (error) {
-            dispatch({type: AUTHENTICATION_FAILURE, payload: error});
-            throw error;
+            const response: AxiosResponse<IErrorResponse> = error.response;
+            const message: string = response?.data.message ?? error.message;
+            const status: number = response?.status ?? error.status;
+            const errorObject: IErrorDataObject = {
+                message,
+                status,
+            };
+            dispatch({type: AUTHENTICATION_FAILURE, payload: errorObject});
         }
     };
 }
