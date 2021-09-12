@@ -1,29 +1,14 @@
 import React from "react";
-import {useSelector} from "react-redux";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch, useLocation} from "react-router-dom";
 import {Main} from "../Pages/Main";
 import {Login} from "../Pages/Login";
 import {Users} from "../Pages/Users";
 import {Results} from "../Pages/Results";
 import {Diary} from "../Pages/Diary";
 import {Profile} from "../Pages/Profile";
-import {IApplicationReduxState} from "../Reducers";
-
-// import * as H from "history";
-
-// export interface RouteComponentProps<P> {
-//     match: match<P>;
-//     location: H.Location;
-//     history: H.History;
-//     staticContext?: any;
-// }
-
-// export interface match<P> {
-//     params: P;
-//     isExact: boolean;
-//     path: string;
-//     url: string;
-// }
+import {ProtectedRoute} from "../Components/Common/ProtectedRoute";
+import {ILocationState} from "../Interfaces/Common";
+import {ErrorMessage} from "../Components/ErrorMessage";
 
 /**
  * Возвращает набор доступных роутов приложения.
@@ -31,27 +16,21 @@ import {IApplicationReduxState} from "../Reducers";
  * @param {boolean} isAutheticated Признак авторизации пользователя.
  */
 export const Routes = () => {
-    const {user} = useSelector((state: IApplicationReduxState) => state);
-    const isAutheticated = user?.data;
-
-    if (isAutheticated) {
-        return (
-            <Switch>
-                <Route path="/" exact component={Main} />
-                <Route path="/users" component={Users} />
-                <Route path="/results/:id" component={Results} />
-                <Route path="/diary/:id" component={Diary} />
-                <Route path="/profile/:id" component={Profile} />
-                <Redirect to="/" />
-            </Switch>
-        );
-    }
+    const location = useLocation<ILocationState>();
+    const errorMessage = location.state?.errorMessage;
 
     return (
-        <Switch>
-            <Route path="/" exact component={Main} />
-            <Route path="/login" component={Login} />
-            <Redirect to="/" />
-        </Switch>
+        <>
+            {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
+
+            <Switch>
+                <Route path="/" exact component={Main} />
+                <Route path="/login" component={Login} />
+                <ProtectedRoute path="/users" component={Users} />
+                <ProtectedRoute path="/results/:id" component={Results} />
+                <ProtectedRoute path="/diary/:id" component={Diary} />
+                <ProtectedRoute path="/profile/:id" component={Profile} />
+            </Switch>
+        </>
     );
 };

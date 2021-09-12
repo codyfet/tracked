@@ -13,3 +13,8 @@ export interface IErrorDataObject {
     message: string;
     status?: number;
 }
+
+export interface ILocationState {
+    errorMessage: string;
+    prevLocation: string;
+}
