@@ -67,7 +67,7 @@ export const FavouriteMovieModal = ({onClose, index}: IProps) => {
         const updatedFavouriteMovies: IFavouriteMovie[] = [...user?.favouriteMovies];
         updatedFavouriteMovies[index] = movie;
 
-        dispatch(updateUser(user?._id, {favouriteMovies: updatedFavouriteMovies}));
+        dispatch(updateUser({favouriteMovies: updatedFavouriteMovies}));
         onClose();
     };
 

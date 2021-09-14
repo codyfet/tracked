@@ -97,7 +97,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                         }
                     );
                     dispatch(
-                        updateUser(profileUserId, {
+                        updateUser({
                             favouriteMovies: updatedFavouriteMovies,
                         })
                     );

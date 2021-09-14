@@ -124,4 +124,32 @@ const getUserProfile = asyncHandler(async (req: Request, res: Response) => {
     }
 });
 
-export {authUser, registerUser, getUserProfile};
+/**
+ * @desc    Изменить данные пользователя (профиль).
+ * @route   PUT /api/user/profile.
+ * @access  Private
+ */
+const updateUserProfile = asyncHandler(async (req: Request, res: Response) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.username = req.body.username ?? user.username;
+        user.email = req.body.email ?? user.email;
+        user.favouriteMovies = req.body.favouriteMovies ?? user.favouriteMovies;
+
+        if (req.body.password) {
+            user.password = req.body.password;
+        }
+
+        const updatedUser = await user.save();
+
+        // TODO: Возвращать тоже самое, что и остальные сервисы из этого контроллера.
+        // Не возвращать пароль.
+        res.json(updatedUser);
+    } else {
+        res.status(401);
+        throw new Error("User not found");
+    }
+});
+
+export {authUser, registerUser, getUserProfile, updateUserProfile};

@@ -151,11 +151,10 @@ export function getUsers({
 }
 
 /**
- * Изменяет данные о пользователе.
+ * Изменяет данные пользователя (который залогинен).
  *
- * @param {string} userId ObjectId идентификатор записи.
  * @param {object} fields Объект с изменёнными полями.
  */
-export function updateUser(userId: string, fields: IPartialClientUser) {
-    return axios.put(`/api/users/${userId}/update`, fields);
+export function updateUser(fields: IPartialClientUser) {
+    return axios.put("/api/user/profile", fields);
 }
