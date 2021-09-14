@@ -53,8 +53,11 @@ export const Login = () => {
      * Обработчик нажатия на кнопку "Войти" (submit).
      */
     const handleSubmit = async () => {
-        await dispatch(isLoginMode ? login(form) : register(form));
-        history.push(prevLocation || "/");
+        const result = await dispatch(isLoginMode ? login(form) : register(form));
+
+        if (result) {
+            history.push(prevLocation || "/");
+        }
     };
 
     /**
