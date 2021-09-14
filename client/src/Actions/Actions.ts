@@ -418,15 +418,14 @@ export function getUsers({userId, page}: {userId?: string; page?: number}) {
 /**
  * Thunk функция для выполнения ajax запроса для изменения данных о пользователе.
  *
- * @param {string} userId ObjectId идентификатор пользователя.
  * @param {IPartialClientUser} fields Объект с изменёнными полями.
  */
-export function updateUser(userId: string, fields: IPartialClientUser) {
+export function updateUser(fields: IPartialClientUser) {
     return async function (dispatch: Dispatch) {
         dispatch({type: UPDATE_USER_START});
 
         try {
-            const result = await tryUpdateUser(userId, fields);
+            const result = await tryUpdateUser(fields);
             dispatch({type: UPDATE_USER_SUCCESS, payload: result.data});
             return result;
         } catch (error) {

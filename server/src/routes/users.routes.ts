@@ -1,11 +1,7 @@
-import {TokenInterface} from "./../interfaces/Token";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
 import {IUserModel} from "../interfaces/User";
 import User from "../models/User";
-import {verifyToken} from "../utils/tokenUtils";
-import {NotAuthorizedError} from "../utils/errorUtils";
-import jwt from "jsonwebtoken";
 
 const router: Router = express.Router();
 
@@ -44,37 +40,6 @@ router.get("/", async (req: Request, res: Response) => {
         console.log("Error:", error.message);
 
         res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
-    }
-});
-
-// /api/users/:id/update
-router.put("/:id/update", verifyToken, async (req: Request, res: Response) => {
-    try {
-        const decoded: TokenInterface = (await jwt.verify(
-            req.token,
-            process.env.JWT_SECRET
-        )) as TokenInterface;
-
-        if (decoded.userId !== req.params.id) {
-            throw new NotAuthorizedError();
-        }
-
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            {$set: req.body},
-            {useFindAndModify: false, new: true}
-        ).exec();
-        res.status(201).json(user);
-    } catch (error) {
-        console.log("Error:", error);
-
-        if (error.name === "TokenExpiredError") {
-            res.status(403).json({message: "Сессия истекла."});
-        } else if (error.name === "NotAuthorizedError") {
-            res.status(403).json({message: error.message});
-        } else {
-            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
-        }
     }
 });
 
