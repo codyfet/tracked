@@ -39,7 +39,6 @@ app.use(express.static("client/dist"));
 
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
-app.use("/api/users", require("./routes/users.routes"));
 app.use("/api/user", require("./routes/user.routes"));
 
 app.use(notFound);

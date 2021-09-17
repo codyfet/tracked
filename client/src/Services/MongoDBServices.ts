@@ -147,7 +147,7 @@ export function getUsers({
 }) {
     const params = {userId, limit, page};
 
-    return axios.get("/api/users", {params});
+    return axios.get("/api/user", {params});
 }
 
 /**

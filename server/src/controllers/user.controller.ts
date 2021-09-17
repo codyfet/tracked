@@ -8,6 +8,7 @@ import {RecordModel} from "../models/Record";
 import {FilterQuery} from "mongoose";
 import {IRecordModel} from "../interfaces/Record";
 import {validationResult} from "express-validator";
+import {IUserModel} from "../interfaces/User";
 
 /**
  * @desc    Авторизация пользователя и создание токена.
@@ -152,4 +153,40 @@ const updateUserProfile = asyncHandler(async (req: Request, res: Response) => {
     }
 });
 
-export {authUser, registerUser, getUserProfile, updateUserProfile};
+/**
+ * @desc    Получить список пользователей.
+ * @route   GET /api/user.
+ * @access  Private
+ */
+const getUsers = asyncHandler(async (req: Request, res: Response) => {
+    const filter: FilterQuery<IUserModel> = {};
+    const limit: number = req.query.limit ? +req.query.limit : 0;
+    const page: number = req.query.page ? +req.query.page : 0;
+
+    if (req.query.userId) {
+        filter._id = req.query.userId;
+    }
+
+    const total = await User.countDocuments();
+    const users = await User.find(filter)
+        .skip(page * limit)
+        .limit(limit)
+        /**
+         * Отключено за ненадобностью.
+         */
+        // .populate({
+        //     path: 'records',
+        //     select: 'viewdate -_id'
+        // })
+        .exec();
+
+    res.json({
+        items: users,
+        total,
+        page,
+        limit,
+        hasNext: total - limit * (page + 1) > 0,
+    });
+});
+
+export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers};
