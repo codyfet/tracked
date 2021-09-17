@@ -9,6 +9,9 @@ export interface IClientUser extends IUser {
     token: string;
 }
 
-export type IPartialClientUser = Partial<IClientUser>;
+export type IPartialClientUser = Pick<
+    IClientUser,
+    "username" | "password" | "favouriteMovies" | "email"
+>; // синхронно IUpdateUserProfileRequestBody
 
 export type IUserErrorResponse = AxiosResponse<IErrorDataObject>;

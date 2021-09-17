@@ -1,3 +1,15 @@
+import {
+    IAuthUserRequestBody,
+    IAuthUserResponseBody,
+    IGetUserProfileQueryParams,
+    IGetUserProfileResponseBody,
+    IGetUsersQueryParams,
+    IGetUsersResponseBody,
+    IRegisterUserRequestBody,
+    IRegisterUserResponseBody,
+    IUpdateUserProfileRequestBody,
+    IUpdateUserProfileResponseBody,
+} from "./../../../server/src/controllers/user.controller";
 import {ERecordType} from "./../Enums";
 import {
     IClientRecord,
@@ -6,7 +18,6 @@ import {
 } from "../Interfaces/ClientRecord";
 import axios, {AxiosResponse} from "axios";
 import {TRACKED_USER_DATA} from "../Consts";
-import {IPartialClientUser} from "../Interfaces/User";
 
 /**
  * Добавляет токен в каждый запрос.
@@ -24,30 +35,31 @@ axios.interceptors.request.use(function (config) {
 /**
  * Осуществляет попытку логина пользователя.
  *
- * @param {object} data Данные, введённые пользователем (логин/пароль).
+ * @param {IAuthUserRequestBody} data Данные, введённые пользователем (логин/пароль).
  */
-export function login(data: {email: string; password: string}) {
-    return axios.post("/api/user/login", data);
+export function login(data: IAuthUserRequestBody) {
+    return axios.post<IAuthUserResponseBody>("/api/user/login", data);
 }
 
 /**
  * Осуществляет попытку регистрации пользователя.
  *
- * @param {object} data Данные, введённые пользователем (логин/пароль).
+ * @param {IRegisterUserRequestBody} data Данные, введённые пользователем (логин/пароль).
  */
-export function register(data: {email: string; password: string; username: string}) {
-    return axios.post("/api/user", data);
+export function register(data: IRegisterUserRequestBody) {
+    return axios.post<IRegisterUserResponseBody>("/api/user", data);
 }
 
 /**
  * Возвращает данные пользователя.
+ * TODO: В текущей реализации userId не нужен? Ведь он передается в токене.
  *
  * @param {object} data Данные, введённые пользователем (логин/пароль).
  */
 export function getUserInfo(userId: string) {
-    const params = {userId};
+    const params: IGetUserProfileQueryParams = {userId};
 
-    return axios.get("/api/user/profile", {params});
+    return axios.get<IGetUserProfileResponseBody>("/api/user/profile", {params});
 }
 
 /**
@@ -136,25 +148,17 @@ export function getStat(userId: string, year: number) {
  * @param {number} limit Количество записей в одной пачке данных (по умолчанию 10).
  * @param {number} page Номер текущей пачки (по умолчанию 0).
  */
-export function getUsers({
-    userId,
-    limit = 10,
-    page = 0,
-}: {
-    userId: string;
-    limit?: number;
-    page?: number;
-}) {
+export function getUsers({userId, limit = 10, page = 0}: IGetUsersQueryParams) {
     const params = {userId, limit, page};
 
-    return axios.get("/api/user", {params});
+    return axios.get<IGetUsersResponseBody>("/api/user", {params});
 }
 
 /**
  * Изменяет данные пользователя (который залогинен).
  *
- * @param {object} fields Объект с изменёнными полями.
+ * @param {IUpdateUserProfileRequestBody} fields Объект с изменёнными полями.
  */
-export function updateUser(fields: IPartialClientUser) {
-    return axios.put("/api/user/profile", fields);
+export function updateUser(fields: IUpdateUserProfileRequestBody) {
+    return axios.put<IUpdateUserProfileResponseBody>("/api/user/profile", fields);
 }
