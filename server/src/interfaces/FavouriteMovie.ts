@@ -10,4 +10,4 @@ export interface IFavouriteMovie {
 /**
  * Модель, обогащенная mongoose функциональностями.
  */
-export interface IFavouriteMovieModel extends IFavouriteMovie, mongoose.Document {}
+export interface IFavouriteMovieDocument extends IFavouriteMovie, mongoose.Document {}

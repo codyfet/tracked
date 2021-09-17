@@ -1,3 +1,4 @@
+import {IUserDocument} from "./../interfaces/User";
 import {NextFunction, Request, Response} from "express";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";

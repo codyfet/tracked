@@ -8,4 +8,4 @@ export interface IGenre {
 /**
  * Модель, обогащенная mongoose функциональностями.
  */
-export interface IGenreModel extends IGenre, mongoose.Document {}
+export interface IGenreDocument extends IGenre, mongoose.Document {}

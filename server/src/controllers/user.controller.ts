@@ -1,4 +1,4 @@
-import {IFavouriteMovieModel} from "./../interfaces/FavouriteMovie";
+import {IFavouriteMovieDocument} from "./../interfaces/FavouriteMovie";
 import {Request, Response} from "express";
 import asyncHandler from "express-async-handler";
 import User from "../models/User";
@@ -7,9 +7,9 @@ import {createToken} from "../utils/tokenUtils";
 import groupBy from "lodash/groupBy";
 import {RecordModel} from "../models/Record";
 import {FilterQuery} from "mongoose";
-import {IRecordModel} from "../interfaces/Record";
+import {IRecordDocument} from "../interfaces/Record";
 import {validationResult} from "express-validator";
-import {IUserModel} from "../interfaces/User";
+import {IUserDocument} from "../interfaces/User";
 
 /**
  * Body запроса для сервиса authUser.
@@ -31,7 +31,7 @@ export interface IAuthUserRequestBody {
  * @prop {string} isAdmin Признак является ли пользователь админом.
  * @prop {string} token Токен.
  * @prop {string} years Массив лет, в которых у пользователя есть записи.
- * @prop {IFavouriteMovieModel[]} favouriteMovies Массив любимых фильмов.
+ * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
  */
 export interface IAuthUserResponseBody {
     userId: string;
@@ -40,7 +40,7 @@ export interface IAuthUserResponseBody {
     isAdmin: boolean;
     token: string;
     years: string[];
-    favouriteMovies: IFavouriteMovieModel[];
+    favouriteMovies: IFavouriteMovieDocument[];
 }
 
 /**
@@ -62,7 +62,7 @@ const authUser = asyncHandler(
         const user = await User.findOne({email});
 
         if (user && (await bcrypt.compare(password, user.password))) {
-            const filter: FilterQuery<IRecordModel> = {
+            const filter: FilterQuery<IRecordDocument> = {
                 userId: user.id,
             };
             const records = await RecordModel.find(filter).exec();
@@ -111,7 +111,7 @@ export interface IRegisterUserRequestBody {
  * @prop {string} isAdmin Признак является ли пользователь админом.
  * @prop {string} token Токен.
  * @prop {string} years Массив лет, в которых у пользователя есть записи.
- * @prop {IFavouriteMovieModel[]} favouriteMovies Массив любимых фильмов.
+ * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
  */
 export interface IRegisterUserResponseBody {
     userId: string;
@@ -181,7 +181,7 @@ export interface IGetUserProfileQueryParams {
  * @prop {string} [email] Электронная почта.
  * @prop {string} [password] Пароль.
  * @prop {string} [username] Имя пользователя.
- * @prop {IFavouriteMovieModel[]} [favouriteMovies] Массив любимых фильмов.
+ * @prop {IFavouriteMovieDocument[]} [favouriteMovies] Массив любимых фильмов.
  */
 export interface IGetUserProfileResponseBody {
     userId: string;
@@ -189,7 +189,7 @@ export interface IGetUserProfileResponseBody {
     email: string;
     isAdmin: boolean;
     years: string[];
-    favouriteMovies: IFavouriteMovieModel[];
+    favouriteMovies: IFavouriteMovieDocument[];
 }
 
 /**
@@ -204,11 +204,11 @@ const getUserProfile = asyncHandler(
     ) => {
         const user = await User.findById(req.user._id);
 
-        const filter: FilterQuery<IRecordModel> = {
+        const filter: FilterQuery<IRecordDocument> = {
             userId: user?.id,
         };
         const records = await RecordModel.find(filter).exec();
-        const groupedRecordsByYears = groupBy(records, (record: IRecordModel) =>
+        const groupedRecordsByYears = groupBy(records, (record: IRecordDocument) =>
             new Date(record.viewdate).getFullYear()
         );
         const years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>
@@ -237,19 +237,19 @@ const getUserProfile = asyncHandler(
  * @prop {string} [email] Электронная почта.
  * @prop {string} [password] Пароль.
  * @prop {string} [username] Имя пользователя.
- * @prop {IFavouriteMovieModel[]} [favouriteMovies] Массив любимых фильмов.
+ * @prop {IFavouriteMovieDocument[]} [favouriteMovies] Массив любимых фильмов.
  */
 export interface IUpdateUserProfileRequestBody {
     email?: string;
     password?: string;
     username?: string;
-    favouriteMovies?: IFavouriteMovieModel[];
+    favouriteMovies?: IFavouriteMovieDocument[];
 }
 
 /**
  * Body ответа для сервиса updateUserProfileUser.
  */
-export interface IUpdateUserProfileResponseBody extends IUserModel {}
+export interface IUpdateUserProfileResponseBody extends IUserDocument {}
 
 /**
  * @desc    Изменить данные пользователя (профиль).
@@ -303,10 +303,10 @@ export interface IGetUsersQueryParams {
  * @prop {string} [email] Электронная почта.
  * @prop {string} [password] Пароль.
  * @prop {string} [username] Имя пользователя.
- * @prop {IFavouriteMovieModel[]} [favouriteMovies] Массив любимых фильмов.
+ * @prop {IFavouriteMovieDocument[]} [favouriteMovies] Массив любимых фильмов.
  */
 export interface IGetUsersResponseBody {
-    items: IUserModel[];
+    items: IUserDocument[];
     total: number;
     page: number;
     limit: number;
@@ -323,7 +323,7 @@ const getUsers = asyncHandler(
         req: Request<{}, {}, {}, IGetUsersQueryParams>,
         res: Response<IGetUsersResponseBody>
     ) => {
-        const filter: FilterQuery<IUserModel> = {};
+        const filter: FilterQuery<IUserDocument> = {};
         const limit: number = req.query.limit ? +req.query.limit : 0;
         const page: number = req.query.page ? +req.query.page : 0;
 

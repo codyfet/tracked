@@ -1,4 +1,4 @@
-import {IUser, IUserModel} from "../interfaces/User";
+import {IUser, IUserDocument} from "../interfaces/User";
 import {Schema, model} from "mongoose";
 import {IRecord} from "../interfaces/Record";
 import bcrypt from "bcryptjs";
@@ -68,4 +68,4 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-export default model<IUserModel>("User", userSchema);
+export default model<IUserDocument>("User", userSchema);

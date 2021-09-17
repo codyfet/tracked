@@ -17,4 +17,4 @@ export interface ICrewItem {
 /**
  * Модель, обогащенная mongoose функциональностями.
  */
-export interface ICrewItemModel extends ICrewItem, mongoose.Document {}
+export interface ICrewItewDocument extends ICrewItem, mongoose.Document {}

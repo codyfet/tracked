@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import colors from "colors";
 import {errorHandler, notFound} from "./middleware/errorMiddleware";
-import {IUserModel} from "./interfaces/User";
+import {IUserDocument} from "./interfaces/User";
 
 /**
  * Фикс для поддержки атрибута token в поле Request.
@@ -13,7 +13,7 @@ declare global {
     namespace Express {
         interface Request {
             token: string; // TODO: Убрать.
-            user: IUserModel;
+            user: IUserDocument;
         }
     }
     namespace NodeJS {
