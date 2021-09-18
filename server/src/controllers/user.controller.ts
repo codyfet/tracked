@@ -335,11 +335,13 @@ const getUsers = asyncHandler(
         const users = await User.find(filter)
             .skip(page * limit)
             .limit(limit)
-            .populate({
-                path: "favouriteMovies",
-                // path: "records",
-                // select: 'viewdate -_id'
-            })
+            /**
+             * Отключено за ненадобностью.
+             */
+            // .populate({
+            //     path: 'records',
+            //     select: 'viewdate -_id'
+            // })
             .exec();
 
         res.json({

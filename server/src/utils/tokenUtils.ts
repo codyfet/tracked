@@ -16,7 +16,6 @@ function createToken(userId: string) {
 
 /**
  * Middleware функция, которая поверяет есть ли jwt-токен пользователя и прокидывает его дальше.
- * @deprecated Использовать protect вместо этой middleware.
  */
 function verifyToken(req: Request, res: Response, next: NextFunction) {
     const bearerHeader = req.headers["authorization"];
