@@ -43,7 +43,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
  */
 userSchema.virtual("years").get(function (this: IUser) {
     const years = this.records.map((record: IRecord) => record.viewdate.getFullYear());
-    const uniqueYears = [...new Set(years)];
+    const uniqueYears = [...Array.from(new Set(years))];
     return uniqueYears;
 });
 
