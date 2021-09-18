@@ -12,7 +12,7 @@ import {IUserDocument} from "./interfaces/User";
 declare global {
     namespace Express {
         interface Request {
-            token: string; // TODO: Убрать.
+            token: string; // TODO: Убрать после ухода от verifyToken.
             user: IUserDocument;
         }
     }
