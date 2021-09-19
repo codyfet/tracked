@@ -5,6 +5,7 @@ export interface IFavouriteMovie {
     title: string;
     release_date: string;
     poster_path: string;
+    position: number;
 }
 
 /**

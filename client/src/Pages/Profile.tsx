@@ -12,6 +12,8 @@ import {YearsSelect} from "../Components/YearsSelect";
 import {IApplicationReduxState} from "../Reducers";
 import {IDirectorsDataItem} from "../../../server/src/interfaces/Stat";
 import {NameType, Payload, ValueType} from "recharts/types/component/DefaultTooltipContent";
+import {map} from "lodash";
+import {IClientFavouriteMovie} from "../Interfaces/ClientFavouriteMovie";
 
 interface ITooltipProps {
     active: boolean;
@@ -82,23 +84,30 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
 
     const favs = [];
 
+    let positionDictionary: {[position: number]: IClientFavouriteMovie};
+    const positionMapped: {[position: number]: IClientFavouriteMovie}[] = map(
+        profileUser?.favouriteMovies,
+        (item) => ({
+            [item.position]: item,
+        })
+    );
+
+    if (positionMapped) {
+        positionDictionary = Object.assign({}, ...positionMapped);
+    }
+
     for (let i = 0; i < 10; i++) {
         favs.push(
             <FavouriteMovie
-                movie={profileUser?.favouriteMovies[i]}
+                movie={positionDictionary?.[i]}
                 index={i}
                 onRemove={() => {
-                    const updatedFavouriteMovies = profileUser?.favouriteMovies.map(
-                        (item, index) => {
-                            if (index === i) {
-                                return null;
-                            }
-                            return item;
-                        }
+                    const filtered = profileUser?.favouriteMovies.filter(
+                        (item) => item.position !== i
                     );
                     dispatch(
                         updateUser({
-                            favouriteMovies: updatedFavouriteMovies,
+                            favouriteMovies: filtered,
                         })
                     );
                 }}

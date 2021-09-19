@@ -7,8 +7,8 @@ import {Image} from "semantic-ui-react";
 import {IMAGE_URL} from "../Consts";
 import {IApplicationReduxState} from "../Reducers";
 import {ResultMovie} from "../Interfaces/TMDBInterfaces";
-import {IFavouriteMovie} from "../../../server/src/interfaces/FavouriteMovie";
 import debounceAction from "debounce-action";
+import {IClientFavouriteMovie} from "../Interfaces/ClientFavouriteMovie";
 
 interface IProps {
     onClose: () => void;
@@ -62,10 +62,11 @@ export const FavouriteMovieModal = ({onClose, index}: IProps) => {
             title: suggestion.title,
             poster_path: suggestion.poster_path,
             release_date: suggestion.release_date,
+            position: index,
         };
 
-        const updatedFavouriteMovies: IFavouriteMovie[] = [...user?.favouriteMovies];
-        updatedFavouriteMovies[index] = movie;
+        const updatedFavouriteMovies: IClientFavouriteMovie[] = [...user?.favouriteMovies];
+        updatedFavouriteMovies.push(movie);
 
         dispatch(updateUser({favouriteMovies: updatedFavouriteMovies}));
         onClose();

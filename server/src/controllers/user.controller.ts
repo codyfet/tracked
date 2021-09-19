@@ -1,3 +1,4 @@
+import {IClientFavouriteMovie} from "./../../../client/src/Interfaces/ClientFavouriteMovie";
 import {IFavouriteMovieDocument} from "./../interfaces/FavouriteMovie";
 import {Request, Response} from "express";
 import asyncHandler from "express-async-handler";
@@ -10,6 +11,7 @@ import {FilterQuery} from "mongoose";
 import {IRecordDocument} from "../interfaces/Record";
 import {validationResult} from "express-validator";
 import {IUserDocument} from "../interfaces/User";
+import FavouriteMovie from "../models/FavouriteMovie";
 
 /**
  * Body запроса для сервиса authUser.
@@ -237,13 +239,13 @@ const getUserProfile = asyncHandler(
  * @prop {string} [email] Электронная почта.
  * @prop {string} [password] Пароль.
  * @prop {string} [username] Имя пользователя.
- * @prop {IFavouriteMovieDocument[]} [favouriteMovies] Массив любимых фильмов.
+ * @prop {IClientFavouriteMovie[]} [favouriteMovies] Массив любимых фильмов.
  */
 export interface IUpdateUserProfileRequestBody {
     email?: string;
     password?: string;
     username?: string;
-    favouriteMovies?: IFavouriteMovieDocument[];
+    favouriteMovies?: IClientFavouriteMovie[];
 }
 
 /**
@@ -261,19 +263,45 @@ const updateUserProfile = asyncHandler(
         req: Request<{}, {}, IUpdateUserProfileRequestBody>,
         res: Response<IUpdateUserProfileResponseBody>
     ) => {
-        const user = await User.findById(req.user._id);
+        const user = await (await User.findById(req.user._id))
+            .populate({path: "favouriteMovies"})
+            .execPopulate();
 
         if (user) {
             user.username = req.body.username ?? user.username;
             user.email = req.body.email ?? user.email;
-            user.favouriteMovies = req.body.favouriteMovies ?? user.favouriteMovies;
+
+            if (req.body.favouriteMovies) {
+                const newFavouriteMovie = req.body.favouriteMovies.find((item) => !item?._id);
+                // Добавление записи.
+                if (newFavouriteMovie) {
+                    const newDocument = await FavouriteMovie.create(newFavouriteMovie);
+                    user.favouriteMovies.push(newDocument);
+                } else {
+                    // Удаление записи.
+                    const positionDictionary: {[position: number]: IClientFavouriteMovie} = {};
+                    req.body.favouriteMovies.forEach((fm) => {
+                        positionDictionary[fm.position] = fm;
+                    });
+                    let idToRemove: string;
+                    user.favouriteMovies.forEach((fm) => {
+                        if (!positionDictionary[fm.position]) {
+                            idToRemove = fm._id;
+                        }
+                    });
+                    if (idToRemove) {
+                        user.favouriteMovies = user.favouriteMovies.filter(
+                            (fm) => fm._id !== idToRemove
+                        );
+                    }
+                }
+            }
 
             if (req.body.password) {
                 user.password = req.body.password;
             }
 
             const updatedUser = await user.save();
-
             // TODO: Возвращать тоже самое, что и остальные сервисы из этого контроллера.
             // TODO: Не возвращать пароль.
             res.json(updatedUser);
@@ -338,10 +366,11 @@ const getUsers = asyncHandler(
             /**
              * Отключено за ненадобностью.
              */
-            // .populate({
-            //     path: 'records',
-            //     select: 'viewdate -_id'
-            // })
+            .populate({
+                path: "favouriteMovies",
+                // path: 'records',
+                // select: 'viewdate -_id'
+            })
             .exec();
 
         res.json({
