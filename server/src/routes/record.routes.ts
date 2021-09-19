@@ -6,7 +6,7 @@ import jwt, {JwtPayload} from "jsonwebtoken";
 import async from "async";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
-import {IRecordModel} from "../interfaces/Record";
+import {IRecordDocument} from "../interfaces/Record";
 import {getRecords} from "../controllers/record.controller";
 
 const router: Router = express.Router();
@@ -86,7 +86,7 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
          */
         async.eachSeries(
             req.body,
-            async function iteratee(item: IRecordModel, callback) {
+            async function iteratee(item: IRecordDocument, callback) {
                 await RecordModel.findByIdAndUpdate(
                     item._id,
                     {position: item.position},
@@ -98,7 +98,7 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
                 if (!err) {
                     const userId = req.body[0].userId;
                     const year = new Date(req.body[0].viewdate).getFullYear();
-                    const filter: FilterQuery<IRecordModel> = {
+                    const filter: FilterQuery<IRecordDocument> = {
                         userId,
                         viewdate: {$gte: new Date(year, 0, 1), $lt: new Date(year, 11, 31)},
                     };

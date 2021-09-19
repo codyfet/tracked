@@ -1,4 +1,4 @@
-import {IRecord, IRecordModel} from "../interfaces/Record";
+import {IRecord, IRecordDocument} from "../interfaces/Record";
 import {Schema, model} from "mongoose";
 
 /**
@@ -70,4 +70,4 @@ const RecordSchema: Schema<IRecord> = new Schema<IRecord>(
     }
 );
 
-export const RecordModel = model<IRecordModel>("Record", RecordSchema);
+export const RecordModel = model<IRecordDocument>("Record", RecordSchema);

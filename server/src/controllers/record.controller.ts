@@ -1,7 +1,7 @@
 import {RecordModel} from "../models/Record";
 import {Request, Response} from "express";
 import {FilterQuery} from "mongoose";
-import {IRecordModel} from "../interfaces/Record";
+import {IRecordDocument} from "../interfaces/Record";
 import asyncHandler from "express-async-handler";
 
 /**
@@ -10,7 +10,7 @@ import asyncHandler from "express-async-handler";
  * @access  Public
  */
 const getRecords = asyncHandler(async (req: Request, res: Response) => {
-    const filter: FilterQuery<IRecordModel> = {
+    const filter: FilterQuery<IRecordDocument> = {
         userId: req.query.userId as string,
         viewdate: {
             $gte: new Date(req.query.year ? +req.query.year : 0, 0, 1),

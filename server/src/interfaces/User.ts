@@ -1,7 +1,7 @@
 import mongoose = require("mongoose");
 
-import {IRecord, IRecordModel} from "./Record";
-import {IFavouriteMovie, IFavouriteMovieModel} from "./FavouriteMovie";
+import {IRecord, IRecordDocument} from "./Record";
+import {IFavouriteMovie, IFavouriteMovieDocument} from "./FavouriteMovie";
 
 export interface IUser {
     // _id: string;
@@ -16,7 +16,7 @@ export interface IUser {
 /**
  * Модель, обогащенная mongoose функциональностями.
  */
-export interface IUserModel extends IUser, mongoose.Document {
-    records: IRecordModel[];
-    favouriteMovies: IFavouriteMovieModel[];
+export interface IUserDocument extends IUser, mongoose.Document {
+    records: IRecordDocument[];
+    favouriteMovies: IFavouriteMovieDocument[];
 }

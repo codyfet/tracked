@@ -5,9 +5,10 @@ export interface IFavouriteMovie {
     title: string;
     release_date: string;
     poster_path: string;
+    position: number;
 }
 
 /**
  * Модель, обогащенная mongoose функциональностями.
  */
-export interface IFavouriteMovieModel extends IFavouriteMovie, mongoose.Document {}
+export interface IFavouriteMovieDocument extends IFavouriteMovie, mongoose.Document {}

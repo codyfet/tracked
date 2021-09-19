@@ -1,17 +1,7 @@
-import {IUser, IUserModel} from "../interfaces/User";
+import {IUser, IUserDocument} from "../interfaces/User";
 import {Schema, model} from "mongoose";
 import {IRecord} from "../interfaces/Record";
 import bcrypt from "bcryptjs";
-
-/**
- * Модель Любимый фильм.
- */
-const FavouriteMovieSchema: Schema = new Schema({
-    id: {type: Number, required: true},
-    title: {type: String, required: true},
-    release_date: {type: String},
-    poster_path: {type: String},
-});
 
 /**
  * Модель Пользователь.
@@ -21,7 +11,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
         email: {type: String, required: true, unique: true},
         password: {type: String, required: true},
         username: {type: String, required: true},
-        favouriteMovies: [FavouriteMovieSchema],
+        favouriteMovies: [{type: Schema.Types.ObjectId, ref: "FavouriteMovie"}],
         records: [{type: Schema.Types.ObjectId, ref: "Record"}],
         isAdmin: {type: Boolean, required: true, default: false},
     },
@@ -43,7 +33,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
  */
 userSchema.virtual("years").get(function (this: IUser) {
     const years = this.records.map((record: IRecord) => record.viewdate.getFullYear());
-    const uniqueYears = [...new Set(years)];
+    const uniqueYears = [...Array.from(new Set(years))];
     return uniqueYears;
 });
 
@@ -68,4 +58,4 @@ userSchema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-export default model<IUserModel>("User", userSchema);
+export default model<IUserDocument>("User", userSchema);

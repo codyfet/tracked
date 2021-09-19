@@ -14,4 +14,4 @@ export interface ICastItem {
 /**
  * Модель, обогащенная mongoose функциональностями.
  */
-export interface ICastItemModel extends ICastItem, mongoose.Document {}
+export interface ICastItemDocument extends ICastItem, mongoose.Document {}
