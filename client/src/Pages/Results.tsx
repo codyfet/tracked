@@ -48,9 +48,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
     const profileUserId = match.params.id;
     const {
         records: {data: records, isLoading: isRecordsLoading, error: recordsError},
-        user: {
-            data: {userId},
-        },
+        user: {data: userData},
     } = useSelector((state: IApplicationReduxState) => state);
     const [isMoviesSelected, setMoviesSelected] = useState(true);
     const [enrichedRecords, setEnrichedRecords] = useState(null);
@@ -123,7 +121,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
                     _id,
                     position: positionMap[_id],
                     viewdate: new Date(new Date().setFullYear(year)),
-                    userId,
+                    userId: userData.userId,
                 });
             }
         });
@@ -176,7 +174,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
                         <Message info>
                             <p>В вашем журнале нет ни одной записи за текущий год.</p>
                         </Message>
-                        <Link to={`/diary/${userId}`} key="diary">
+                        <Link to={`/diary/${userData.userId}`} key="diary">
                             Перейти к журналу
                         </Link>
                     </>
@@ -272,35 +270,37 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
 
     return (
         <Page isLoading={isRecordsLoading} errorMessage={recordsError?.message}>
-            <Container className="results">
-                <Header as="h2" size="large">
-                    Итоги
-                </Header>
-                <YearsSelect
-                    selectedYear={year}
-                    onSelect={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) =>
-                        setYear(data.value as number)
-                    }
-                />
-                &nbsp;&nbsp;&nbsp;
-                <span
-                    className={`record-filter ${isMoviesSelected ? "" : "not-selected"}`}
-                    onClick={() => setMoviesSelected(true)}
-                    title={"Показать фильмы"}
-                >
-                    Фильмы
-                </span>
-                &nbsp;&nbsp;&nbsp;
-                <span
-                    className={`record-filter ${!isMoviesSelected ? "" : "not-selected"}`}
-                    onClick={() => setMoviesSelected(false)}
-                    title={"Показать сериалы"}
-                >
-                    Сериалы
-                </span>
-                &nbsp;&nbsp;&nbsp;
-                {renderContent()}
-            </Container>
+            {() => (
+                <Container className="results">
+                    <Header as="h2" size="large">
+                        Итоги
+                    </Header>
+                    <YearsSelect
+                        selectedYear={year}
+                        onSelect={(event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) =>
+                            setYear(data.value as number)
+                        }
+                    />
+                    &nbsp;&nbsp;&nbsp;
+                    <span
+                        className={`record-filter ${isMoviesSelected ? "" : "not-selected"}`}
+                        onClick={() => setMoviesSelected(true)}
+                        title={"Показать фильмы"}
+                    >
+                        Фильмы
+                    </span>
+                    &nbsp;&nbsp;&nbsp;
+                    <span
+                        className={`record-filter ${!isMoviesSelected ? "" : "not-selected"}`}
+                        onClick={() => setMoviesSelected(false)}
+                        title={"Показать сериалы"}
+                    >
+                        Сериалы
+                    </span>
+                    &nbsp;&nbsp;&nbsp;
+                    {renderContent()}
+                </Container>
+            )}
         </Page>
     );
 };
