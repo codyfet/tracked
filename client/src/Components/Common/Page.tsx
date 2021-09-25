@@ -1,11 +1,13 @@
 import React, {ReactElement} from "react";
+import {useSelector} from "react-redux";
+import {IApplicationReduxState} from "../../Reducers";
 import {ErrorMessage} from "../ErrorMessage";
 import {LoadingOverlay} from "./LoadingOverlay";
 
 interface IProps {
     isLoading: boolean;
     errorMessage: string;
-    children: ReactElement;
+    children: () => ReactElement;
 }
 
 /**
@@ -18,11 +20,16 @@ export const Page: React.FunctionComponent<IProps> = ({
     isLoading,
     errorMessage,
     children,
-}: IProps) =>
-    isLoading ? (
+}: IProps) => {
+    const {
+        user: {isLoading: isUserLoading},
+    } = useSelector((state: IApplicationReduxState) => state);
+
+    return isLoading || isUserLoading ? (
         <LoadingOverlay />
     ) : errorMessage ? (
         <ErrorMessage errorMessage={errorMessage} />
     ) : (
-        children
+        children()
     );
+};

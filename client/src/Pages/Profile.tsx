@@ -82,7 +82,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [year]);
 
-    const favs = [];
+    const favs: JSX.Element[] = [];
 
     let positionDictionary: {[position: number]: IClientFavouriteMovie};
     const positionMapped: {[position: number]: IClientFavouriteMovie}[] = map(
@@ -111,7 +111,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                         })
                     );
                 }}
-                disabled={profileUserId !== loggedInUser.userId}
+                disabled={profileUserId !== loggedInUser?.userId}
             />
         );
     }
@@ -121,207 +121,213 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
             isLoading={isUsersLoading || isStatLoading}
             errorMessage={usersError?.message || statError?.message}
         >
-            <Container className="profile">
-                <Header as="h2" size="large">
-                    Профиль пользователя
-                </Header>
-                <Segment>
-                    <Grid className="profile-data">
-                        <Grid.Column width={4}>
-                            <Image
-                                className="profile-data-image"
-                                src="../src/Assets/matthew.png"
-                                circular
-                            />
-                            <div className="title">{`${profileUser?.username}`}</div>
-                            <div className="additional">Russia, Tver</div>
-                            <div className="label">В этом году</div>
-                            <div className="counter">
-                                <div className="total">
-                                    {statData?.recordsCurrentYearCount.movies +
-                                        statData?.recordsCurrentYearCount.tvseries}
-                                </div>
-                                <div className="divided">
-                                    <div>{statData?.recordsCurrentYearCount.movies} фильмов</div>
-                                    <div>{statData?.recordsCurrentYearCount.tvseries} сериалов</div>
-                                </div>
-                            </div>
-                            <div className="label">За всё время</div>
-                            <div className="counter">
-                                <div className="total">
-                                    {statData?.recordsTotalCount.movies +
-                                        statData?.recordsTotalCount.tvseries}
-                                </div>
-                                <div className="divided">
-                                    <div>{statData?.recordsTotalCount.movies} фильмов</div>
-                                    <div>{statData?.recordsTotalCount.tvseries} сериалов</div>
-                                </div>
-                            </div>
-                            <div>
-                                <Link to={`/diary/${profileUserId}`}>Смотреть журнал</Link>
-                            </div>
-                        </Grid.Column>
-                        <Grid.Column width={12}>
-                            <div>Любимые фильмы</div>
-                            <div className="grid-panel">{favs}</div>
-                        </Grid.Column>
-                    </Grid>
-                </Segment>
-
-                <Grid>
-                    <Grid.Row>
-                        <Grid.Column width={4}></Grid.Column>
-                        <Grid.Column width={8} textAlign="center">
-                            <h1>
-                                <YearsSelect
-                                    showAllOption
-                                    selectedYear={year}
-                                    onSelect={(
-                                        event: React.SyntheticEvent<HTMLElement>,
-                                        data: DropdownProps
-                                    ) => setYear(Number(data.value))}
+            {() => (
+                <Container className="profile">
+                    <Header as="h2" size="large">
+                        Профиль пользователя
+                    </Header>
+                    <Segment>
+                        <Grid className="profile-data">
+                            <Grid.Column width={4}>
+                                <Image
+                                    className="profile-data-image"
+                                    src="../src/Assets/matthew.png"
+                                    circular
                                 />
-                            </h1>
-                            <h3>
-                                {`${marksData.reduce((acc, cur) => (acc += cur.markCount), 0)}`}{" "}
-                                оценок
-                            </h3>
-                            <ResponsiveContainer width="100%" height={200}>
-                                <BarChart margin={{top: 30}} data={marksData}>
-                                    <Bar dataKey="markCount" fill="#5CE0E6">
-                                        <LabelList dataKey="markCount" position="top" />
-                                    </Bar>
-                                    <XAxis dataKey="mark" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </Grid.Column>
-                        <Grid.Column width={4}></Grid.Column>
-                    </Grid.Row>
+                                <div className="title">{`${profileUser?.username}`}</div>
+                                <div className="additional">Russia, Tver</div>
+                                <div className="label">В этом году</div>
+                                <div className="counter">
+                                    <div className="total">
+                                        {statData?.recordsCurrentYearCount.movies +
+                                            statData?.recordsCurrentYearCount.tvseries}
+                                    </div>
+                                    <div className="divided">
+                                        <div>
+                                            {statData?.recordsCurrentYearCount.movies} фильмов
+                                        </div>
+                                        <div>
+                                            {statData?.recordsCurrentYearCount.tvseries} сериалов
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="label">За всё время</div>
+                                <div className="counter">
+                                    <div className="total">
+                                        {statData?.recordsTotalCount.movies +
+                                            statData?.recordsTotalCount.tvseries}
+                                    </div>
+                                    <div className="divided">
+                                        <div>{statData?.recordsTotalCount.movies} фильмов</div>
+                                        <div>{statData?.recordsTotalCount.tvseries} сериалов</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <Link to={`/diary/${profileUserId}`}>Смотреть журнал</Link>
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column width={12}>
+                                <div>Любимые фильмы</div>
+                                <div className="grid-panel">{favs}</div>
+                            </Grid.Column>
+                        </Grid>
+                    </Segment>
 
-                    <Grid.Row>
-                        <Grid.Column width={8}>
-                            <h3>Жанры</h3>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <BarChart
-                                    width={600}
-                                    height={300}
-                                    data={statData?.genresData}
-                                    layout="vertical"
-                                    margin={{top: 5, bottom: 5}}
-                                >
-                                    <XAxis type="number" />
-                                    <YAxis
-                                        type="category"
-                                        dataKey="name"
-                                        interval={0}
-                                        width={150}
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={4}></Grid.Column>
+                            <Grid.Column width={8} textAlign="center">
+                                <h1>
+                                    <YearsSelect
+                                        showAllOption
+                                        selectedYear={year}
+                                        onSelect={(
+                                            event: React.SyntheticEvent<HTMLElement>,
+                                            data: DropdownProps
+                                        ) => setYear(Number(data.value))}
                                     />
-                                    <Tooltip
-                                        content={({active, payload, label}) => (
-                                            <CustomGenreTooltip
-                                                active={active}
-                                                payload={payload}
-                                                label={label}
-                                            />
-                                        )}
-                                    />
-                                    <Bar dataKey="value" fill="#19C2FA" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </Grid.Column>
-                        <Grid.Column width={8} textAlign="center">
-                            <h3>Страны</h3>
-                            <ResponsiveContainer width="100%" height={300}>
-                                <BarChart
-                                    width={600}
-                                    height={300}
-                                    data={statData?.countriesData}
-                                    layout="vertical"
-                                    margin={{top: 5, bottom: 5}}
-                                >
-                                    <XAxis type="number" />
-                                    <YAxis
-                                        type="category"
-                                        dataKey="countryName"
-                                        interval={0}
-                                        width={150}
-                                    />
-                                    <Tooltip
-                                        content={({active, payload, label}) => (
-                                            <CustomCountryTooltip
-                                                active={active}
-                                                payload={payload}
-                                                label={label}
-                                            />
-                                        )}
-                                    />
-                                    <Bar dataKey="countryCount" fill="#FA1955" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </Grid.Column>
-                    </Grid.Row>
+                                </h1>
+                                <h3>
+                                    {`${marksData.reduce((acc, cur) => (acc += cur.markCount), 0)}`}{" "}
+                                    оценок
+                                </h3>
+                                <ResponsiveContainer width="100%" height={200}>
+                                    <BarChart margin={{top: 30}} data={marksData}>
+                                        <Bar dataKey="markCount" fill="#5CE0E6">
+                                            <LabelList dataKey="markCount" position="top" />
+                                        </Bar>
+                                        <XAxis dataKey="mark" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </Grid.Column>
+                            <Grid.Column width={4}></Grid.Column>
+                        </Grid.Row>
 
-                    <Grid.Row columns={3}>
-                        <Grid.Column>
-                            <h3>Режиссёры</h3>
-                            <List ordered>
-                                {statData?.directorsData.map((item: IDirectorsDataItem) => {
-                                    return (
-                                        <List.Item
-                                            key={`${item.director}${item.directorCount}`}
-                                        >{`${item.director} (${item.directorCount})`}</List.Item>
-                                    );
-                                })}
-                            </List>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <h3>Актёры</h3>
-                            <List ordered>
-                                {statData?.actorsData.map((item, index) => {
-                                    return (
-                                        <List.Item
-                                            key={index}
-                                        >{`${item.actor} (${item.actorCount})`}</List.Item>
-                                    );
-                                })}
-                            </List>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <h3>Актрисы</h3>
-                            <List ordered>
-                                {statData?.actressesData.map((item, index) => {
-                                    return (
-                                        <List.Item
-                                            key={index}
-                                        >{`${item.actress} (${item.actressCount})`}</List.Item>
-                                    );
-                                })}
-                            </List>
-                        </Grid.Column>
-                    </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={8}>
+                                <h3>Жанры</h3>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <BarChart
+                                        width={600}
+                                        height={300}
+                                        data={statData?.genresData}
+                                        layout="vertical"
+                                        margin={{top: 5, bottom: 5}}
+                                    >
+                                        <XAxis type="number" />
+                                        <YAxis
+                                            type="category"
+                                            dataKey="name"
+                                            interval={0}
+                                            width={150}
+                                        />
+                                        <Tooltip
+                                            content={({active, payload, label}) => (
+                                                <CustomGenreTooltip
+                                                    active={active}
+                                                    payload={payload}
+                                                    label={label}
+                                                />
+                                            )}
+                                        />
+                                        <Bar dataKey="value" fill="#19C2FA" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </Grid.Column>
+                            <Grid.Column width={8} textAlign="center">
+                                <h3>Страны</h3>
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <BarChart
+                                        width={600}
+                                        height={300}
+                                        data={statData?.countriesData}
+                                        layout="vertical"
+                                        margin={{top: 5, bottom: 5}}
+                                    >
+                                        <XAxis type="number" />
+                                        <YAxis
+                                            type="category"
+                                            dataKey="countryName"
+                                            interval={0}
+                                            width={150}
+                                        />
+                                        <Tooltip
+                                            content={({active, payload, label}) => (
+                                                <CustomCountryTooltip
+                                                    active={active}
+                                                    payload={payload}
+                                                    label={label}
+                                                />
+                                            )}
+                                        />
+                                        <Bar dataKey="countryCount" fill="#FA1955" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </Grid.Column>
+                        </Grid.Row>
 
-                    <Grid.Row>
-                        <Grid.Column>
-                            <h3>Год выпуска</h3>
-                            <ResponsiveContainer width="100%" height={200}>
-                                <BarChart margin={{top: 30}} data={statData?.yearsData}>
-                                    <Bar dataKey="yearCount" fill="#5CE0E6">
-                                        <LabelList dataKey="yearCount" position="top" />
-                                    </Bar>
-                                    <XAxis
-                                        dataKey="year"
-                                        interval={0}
-                                        height={100}
-                                        tick={({x, y, payload}) => (
-                                            <CustomizedAxisTick x={x} y={y} payload={payload} />
-                                        )}
-                                    />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Container>
+                        <Grid.Row columns={3}>
+                            <Grid.Column>
+                                <h3>Режиссёры</h3>
+                                <List ordered>
+                                    {statData?.directorsData.map((item: IDirectorsDataItem) => {
+                                        return (
+                                            <List.Item
+                                                key={`${item.director}${item.directorCount}`}
+                                            >{`${item.director} (${item.directorCount})`}</List.Item>
+                                        );
+                                    })}
+                                </List>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <h3>Актёры</h3>
+                                <List ordered>
+                                    {statData?.actorsData.map((item, index) => {
+                                        return (
+                                            <List.Item
+                                                key={index}
+                                            >{`${item.actor} (${item.actorCount})`}</List.Item>
+                                        );
+                                    })}
+                                </List>
+                            </Grid.Column>
+                            <Grid.Column>
+                                <h3>Актрисы</h3>
+                                <List ordered>
+                                    {statData?.actressesData.map((item, index) => {
+                                        return (
+                                            <List.Item
+                                                key={index}
+                                            >{`${item.actress} (${item.actressCount})`}</List.Item>
+                                        );
+                                    })}
+                                </List>
+                            </Grid.Column>
+                        </Grid.Row>
+
+                        <Grid.Row>
+                            <Grid.Column>
+                                <h3>Год выпуска</h3>
+                                <ResponsiveContainer width="100%" height={200}>
+                                    <BarChart margin={{top: 30}} data={statData?.yearsData}>
+                                        <Bar dataKey="yearCount" fill="#5CE0E6">
+                                            <LabelList dataKey="yearCount" position="top" />
+                                        </Bar>
+                                        <XAxis
+                                            dataKey="year"
+                                            interval={0}
+                                            height={100}
+                                            tick={({x, y, payload}) => (
+                                                <CustomizedAxisTick x={x} y={y} payload={payload} />
+                                            )}
+                                        />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Container>
+            )}
         </Page>
     );
 };

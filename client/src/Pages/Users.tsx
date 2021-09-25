@@ -34,37 +34,39 @@ export const Users = () => {
 
     return (
         <Page isLoading={isUsersLoading} errorMessage={usersError?.message}>
-            <Container className="users">
-                <Header as="h2" size="large">
-                    Пользователи
-                </Header>
-                <Table singleLine>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Пользователь</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-
-                    <Table.Body>
-                        {usersData?.items.map((user) => (
-                            <Table.Row key={user._id}>
-                                <Table.Cell>
-                                    <Link to={`/profile/${user._id}`} key="profile">
-                                        {user.username}
-                                    </Link>
-                                </Table.Cell>
+            {() => (
+                <Container className="users">
+                    <Header as="h2" size="large">
+                        Пользователи
+                    </Header>
+                    <Table singleLine>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Пользователь</Table.HeaderCell>
                             </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-                <Pagination
-                    defaultActivePage={currentPage + 1}
-                    totalPages={totalPages}
-                    onPageChange={(_event, data) => {
-                        setCurrentPage(Number(data.activePage) - 1);
-                    }}
-                />
-            </Container>
+                        </Table.Header>
+
+                        <Table.Body>
+                            {usersData?.items.map((user) => (
+                                <Table.Row key={user._id}>
+                                    <Table.Cell>
+                                        <Link to={`/profile/${user._id}`} key="profile">
+                                            {user.username}
+                                        </Link>
+                                    </Table.Cell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+                    <Pagination
+                        defaultActivePage={currentPage + 1}
+                        totalPages={totalPages}
+                        onPageChange={(_event, data) => {
+                            setCurrentPage(Number(data.activePage) - 1);
+                        }}
+                    />
+                </Container>
+            )}
         </Page>
     );
 };

@@ -26,9 +26,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
     const userId = match.params.id;
     const {
         records: {data: records, isLoading: isRecordsLoading, error: recordsError},
-        user: {
-            data: {userId: loggedInUser},
-        },
+        user: {data: loggedUserData},
     } = useSelector((state: IApplicationReduxState) => state);
 
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
@@ -69,88 +67,92 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
 
     return (
         <Page isLoading={isRecordsLoading} errorMessage={recordsError?.message}>
-            <Container className="diary">
-                <Header as="h2" size="large">
-                    Журнал пользователя
-                </Header>
-                <Grid columns="2" verticalAlign="middle">
-                    <Grid.Column>
-                        <YearsSelect
-                            selectedYear={recordsFilter.year}
-                            onSelect={(
-                                event: React.SyntheticEvent<HTMLElement>,
-                                data: DropdownProps
-                            ) =>
-                                setRecordsFilter({
-                                    ...recordsFilter,
-                                    year: Number(data.value),
-                                })
-                            }
-                        />
-                        &nbsp;&nbsp;&nbsp;
-                        <span
-                            className={`record-filter ${
-                                isMoviesFilterApplied ? "" : "not-selected"
-                            }`}
-                            onClick={() => setMoviesFilterApplied(!isMoviesFilterApplied)}
-                            title={isMoviesFilterApplied ? "Скрыть фильмы" : "Показать фильмы"}
-                        >
-                            Фильмы ({moviesCount})
-                        </span>
-                        &nbsp;&nbsp;&nbsp;
-                        <span
-                            className={`record-filter ${
-                                isTvSeriesFilterApplied ? "" : "not-selected"
-                            }`}
-                            onClick={() => setTvSeriesFilterApplied(!isTvSeriesFilterApplied)}
-                            title={isTvSeriesFilterApplied ? "Скрыть сериалы" : "Показать сериалы"}
-                        >
-                            Сериалы ({tvseriesCount})
-                        </span>
-                        &nbsp;&nbsp;&nbsp;
-                    </Grid.Column>
-                    <Grid.Column textAlign="right">
-                        {loggedInUser === userId && (
-                            <>
-                                <span>Добавить</span>&nbsp;&nbsp;&nbsp;
-                                <Button
-                                    disabled={isEmptyRecordExist}
-                                    onClick={() =>
-                                        dispatch({
-                                            type: ADD_EMPTY_MOVIE_RECORD,
-                                        })
-                                    }
-                                >
-                                    Фильм
-                                </Button>
-                                <Button
-                                    disabled={isEmptyRecordExist}
-                                    onClick={() =>
-                                        dispatch({
-                                            type: ADD_EMPTY_TVSERIES_RECORD,
-                                        })
-                                    }
-                                >
-                                    Сериал
-                                </Button>
-                            </>
-                        )}
-                    </Grid.Column>
-                </Grid>
+            {() => (
+                <Container className="diary">
+                    <Header as="h2" size="large">
+                        Журнал пользователя
+                    </Header>
+                    <Grid columns="2" verticalAlign="middle">
+                        <Grid.Column>
+                            <YearsSelect
+                                selectedYear={recordsFilter.year}
+                                onSelect={(
+                                    event: React.SyntheticEvent<HTMLElement>,
+                                    data: DropdownProps
+                                ) =>
+                                    setRecordsFilter({
+                                        ...recordsFilter,
+                                        year: Number(data.value),
+                                    })
+                                }
+                            />
+                            &nbsp;&nbsp;&nbsp;
+                            <span
+                                className={`record-filter ${
+                                    isMoviesFilterApplied ? "" : "not-selected"
+                                }`}
+                                onClick={() => setMoviesFilterApplied(!isMoviesFilterApplied)}
+                                title={isMoviesFilterApplied ? "Скрыть фильмы" : "Показать фильмы"}
+                            >
+                                Фильмы ({moviesCount})
+                            </span>
+                            &nbsp;&nbsp;&nbsp;
+                            <span
+                                className={`record-filter ${
+                                    isTvSeriesFilterApplied ? "" : "not-selected"
+                                }`}
+                                onClick={() => setTvSeriesFilterApplied(!isTvSeriesFilterApplied)}
+                                title={
+                                    isTvSeriesFilterApplied ? "Скрыть сериалы" : "Показать сериалы"
+                                }
+                            >
+                                Сериалы ({tvseriesCount})
+                            </span>
+                            &nbsp;&nbsp;&nbsp;
+                        </Grid.Column>
+                        <Grid.Column textAlign="right">
+                            {loggedUserData.userId === userId && (
+                                <>
+                                    <span>Добавить</span>&nbsp;&nbsp;&nbsp;
+                                    <Button
+                                        disabled={isEmptyRecordExist}
+                                        onClick={() =>
+                                            dispatch({
+                                                type: ADD_EMPTY_MOVIE_RECORD,
+                                            })
+                                        }
+                                    >
+                                        Фильм
+                                    </Button>
+                                    <Button
+                                        disabled={isEmptyRecordExist}
+                                        onClick={() =>
+                                            dispatch({
+                                                type: ADD_EMPTY_TVSERIES_RECORD,
+                                            })
+                                        }
+                                    >
+                                        Сериал
+                                    </Button>
+                                </>
+                            )}
+                        </Grid.Column>
+                    </Grid>
 
-                {filtered.map((record) => (
-                    <Record key={record._id} {...record} />
-                ))}
+                    {filtered.map((record) => (
+                        <Record key={record._id} {...record} />
+                    ))}
 
-                {filtered.length === 0 && (
-                    <Message info>
-                        <Message.Header>
-                            В вашем журнале пока нет ни одной записи для выбранного года
-                        </Message.Header>
-                        <p>Добавьте запись о просмотренном фильме или сериале</p>
-                    </Message>
-                )}
-            </Container>
+                    {filtered.length === 0 && (
+                        <Message info>
+                            <Message.Header>
+                                В вашем журнале пока нет ни одной записи для выбранного года
+                            </Message.Header>
+                            <p>Добавьте запись о просмотренном фильме или сериале</p>
+                        </Message>
+                    )}
+                </Container>
+            )}
         </Page>
     );
 };
