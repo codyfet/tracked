@@ -1,51 +1,13 @@
 import {RecordModel} from "../models/Record";
-import User from "../models/User";
 import {verifyToken} from "../utils/tokenUtils";
-import {NotAuthorizedError} from "../utils/errorUtils";
-import jwt, {JwtPayload} from "jsonwebtoken";
 import async from "async";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
 import {IRecordDocument} from "../interfaces/Record";
-import {getRecords} from "../controllers/record.controller";
+import {createRecord, getRecords} from "../controllers/record.controller";
+import {protect} from "../middleware/authMiddleware";
 
 const router: Router = express.Router();
-
-// /api/record/create
-router.post("/create", verifyToken, async (req: Request, res: Response) => {
-    try {
-        const decoded: JwtPayload = (await jwt.verify(
-            req.token,
-            process.env.JWT_SECRET
-        )) as JwtPayload;
-
-        if (decoded.userId !== req.body.userId) {
-            throw new NotAuthorizedError();
-        }
-
-        const record = new RecordModel(req.body);
-        const result = await record.save();
-
-        /**
-         * Сохраняем record и в модели User.
-         */
-        const user = await User.findOne({_id: record.userId});
-        user?.records.push(record);
-        await user?.save();
-
-        res.status(201).json(result);
-    } catch (error) {
-        console.log("Error:", error.message);
-
-        if (error.name === "TokenExpiredError") {
-            res.status(403).json({message: "Сессия истекла."});
-        } else if (error.name === "NotAuthorizedError") {
-            res.status(403).json({message: error.message});
-        } else {
-            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
-        }
-    }
-});
 
 // /api/record/:id/update
 router.put("/:id/update", verifyToken, async (req: Request, res: Response) => {
@@ -155,6 +117,6 @@ router.delete("/:id/delete", verifyToken, async (req: Request, res: Response) =>
 });
 
 // TODO: Сделать остальные методы через контроллер аналогично этому.
-router.route("/").get(getRecords);
+router.route("/").get(getRecords).post(protect, createRecord);
 
 module.exports = router;

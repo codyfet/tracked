@@ -1,4 +1,8 @@
 import {
+    IGetRecordsQueryParams,
+    IGetRecordsResponseBody,
+} from "./../../../server/src/controllers/record.controller";
+import {
     IAuthUserRequestBody,
     IAuthUserResponseBody,
     IGetUserProfileQueryParams,
@@ -10,7 +14,6 @@ import {
     IUpdateUserProfileRequestBody,
     IUpdateUserProfileResponseBody,
 } from "./../../../server/src/controllers/user.controller";
-import {ERecordType} from "./../Enums";
 import {
     IClientRecord,
     IClientRecordsFilter,
@@ -68,7 +71,7 @@ export function getUserInfo(userId: string) {
  * @param {IClientRecord} record Данные новой записи.
  */
 export function createRecord(record: IClientRecord) {
-    return axios.post("/api/record/create", record);
+    return axios.post("/api/record", record);
 }
 
 /**
@@ -105,12 +108,13 @@ export function deleteRecord(recordId: string) {
  * Возвращает массив записей пользователя.
  *
  * @param {object} userId ObjectId пользователя, чьи записи извлекаем.
+ * @param {IClientRecordsFilter} options Опции запроса.
  */
 export function getRecords(
     userId: string,
     options: IClientRecordsFilter
-): Promise<AxiosResponse<IClientRecord[]>> {
-    const params: {userId: string; sortBy?: string; year?: number; types?: ERecordType[]} = {
+): Promise<AxiosResponse<IGetRecordsResponseBody>> {
+    const params: IGetRecordsQueryParams = {
         userId,
     };
 
@@ -126,7 +130,7 @@ export function getRecords(
         params.types = options.types;
     }
 
-    return axios.get<IClientRecord[]>("/api/record", {params});
+    return axios.get<IGetRecordsResponseBody>("/api/record", {params});
 }
 
 /**
