@@ -110,4 +110,44 @@ const createRecord = asyncHandler(
     }
 );
 
-export {getRecords, createRecord};
+/**
+ * Body запроса для сервиса deleteRecord.
+ *
+ * @prop {string} [id] ObjectId удаляемой записи.
+ */
+export interface IDeleteRecordRequestParams {
+    id?: string;
+}
+
+/**
+ * Body ответа для сервиса deleteRecord.
+ *
+ * @prop {"Запись успешно удалена"} message Текст с сообщением о успешном удалении записи.
+ */
+export interface IDeleteRecordResponseBody {
+    message: "Запись успешно удалена";
+}
+
+/**
+ * @desc    Удаляет запись.
+ * @route   DELETE /api/record.
+ * @access  Private
+ */
+const deleteRecord = asyncHandler(
+    async (req: Request<IDeleteRecordRequestParams>, res: Response<IDeleteRecordResponseBody>) => {
+        const user = await (await User.findById(req.user._id))
+            .populate({path: "records"})
+            .execPopulate();
+
+        if (user) {
+            user.records = user.records.filter((record) => record._id.toString() !== req.params.id);
+
+            await user.save();
+            await RecordModel.findOneAndDelete({_id: req.params.id}).exec(); // TODO: Уйти от хранения этих записей в двух местах.
+
+            res.status(201).json({message: "Запись успешно удалена"});
+        }
+    }
+);
+
+export {getRecords, createRecord, deleteRecord};

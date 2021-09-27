@@ -4,7 +4,7 @@ import async from "async";
 import express, {Request, Response, Router} from "express";
 import {FilterQuery} from "mongoose";
 import {IRecordDocument} from "../interfaces/Record";
-import {createRecord, getRecords} from "../controllers/record.controller";
+import {createRecord, deleteRecord, getRecords} from "../controllers/record.controller";
 import {protect} from "../middleware/authMiddleware";
 
 const router: Router = express.Router();
@@ -90,33 +90,8 @@ router.put("/update", verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-// /api/record/:id/delete
-router.delete("/:id/delete", verifyToken, async (req: Request, res: Response) => {
-    try {
-        // TODO: Временно убираю, т.к. здесь эта логика не работает.
-        // const decoded = await jwt.verify(req.token, process.env.JWT_SECRET);
-
-        // if (decoded.userId !== req.body.userId) {
-        //     throw new NotAuthorizedError();
-        // }
-
-        await RecordModel.findOneAndDelete({_id: req.params.id}).exec();
-
-        res.status(201).json({message: "Запись успешно удалена"});
-    } catch (error) {
-        console.log("Error:", error.message);
-
-        if (error.name === "TokenExpiredError") {
-            res.status(403).json({message: "Сессия истекла."});
-        } else if (error.name === "NotAuthorizedError") {
-            res.status(403).json({message: error.message});
-        } else {
-            res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
-        }
-    }
-});
-
 // TODO: Сделать остальные методы через контроллер аналогично этому.
 router.route("/").get(getRecords).post(protect, createRecord);
+router.route("/:id").delete(protect, deleteRecord);
 
 module.exports = router;

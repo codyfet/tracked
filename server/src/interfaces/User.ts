@@ -9,7 +9,7 @@ export interface IUser {
     password: string;
     username: string;
     favouriteMovies: IFavouriteMovie[];
-    records: IRecord[];
+    records: IRecord[]; // TODO: Думаю, это лишнее - хранить здесь записи.
     isAdmin: boolean;
 }
 

@@ -78,7 +78,7 @@ export function createRecord(record: IClientRecord) {
  * Изменяет запись.
  *
  * @param {string} recordId ObjectId идентификатор записи.
- * @param {IPartialClientRecord} fields Объект с измеёнными полями.
+ * @param {IPartialClientRecord} fields Объект с изменёнными полями.
  */
 export function updateRecord(recordId: string, fields: IPartialClientRecord) {
     return axios.put(`/api/record/${recordId}/update`, fields);
@@ -101,7 +101,7 @@ export function updateRecords(
  * @param {string} recordId ObjectId идентификатор записи.
  */
 export function deleteRecord(recordId: string) {
-    return axios.delete(`/api/record/${recordId}/delete`);
+    return axios.delete(`/api/record/${recordId}`);
 }
 
 /**
