@@ -111,7 +111,7 @@ const createRecord = asyncHandler(
 );
 
 /**
- * Body запроса для сервиса deleteRecord.
+ * Параметры запроса для сервиса deleteRecord.
  *
  * @prop {string} [id] ObjectId удаляемой записи.
  */
@@ -150,4 +150,43 @@ const deleteRecord = asyncHandler(
     }
 );
 
-export {getRecords, createRecord, deleteRecord};
+/**
+ * Параметры запроса для сервиса updateRecord.
+ *
+ * @prop {string} [id] ObjectId изменяемой записи.
+ */
+export interface IUpdateRecordRequestParams {
+    id?: string;
+}
+
+/**
+ * Body запроса для сервиса updateRecord.
+ */
+export interface IUpdateRecordRequestBody {}
+
+/**
+ * Body ответа для сервиса updateRecord.
+ */
+export interface IUpdateRecordResponseBody extends IRecordDocument {}
+
+/**
+ * @desc    Изменяет запись.
+ * @route   PUT /api/record.
+ * @access  Private
+ */
+const updateRecord = asyncHandler(
+    async (
+        req: Request<IUpdateRecordRequestParams, {}, IUpdateRecordRequestBody>,
+        res: Response<IUpdateRecordResponseBody>
+    ) => {
+        const record = await RecordModel.findByIdAndUpdate(
+            req.params.id,
+            {$set: req.body},
+            {useFindAndModify: false, new: true}
+        ).exec();
+        // TODO: Нужно ли обновлять в массиве user.records ?
+        res.status(201).json(record);
+    }
+);
+
+export {getRecords, createRecord, deleteRecord, updateRecord};

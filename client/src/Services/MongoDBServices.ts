@@ -81,7 +81,7 @@ export function createRecord(record: IClientRecord) {
  * @param {IPartialClientRecord} fields Объект с изменёнными полями.
  */
 export function updateRecord(recordId: string, fields: IPartialClientRecord) {
-    return axios.put(`/api/record/${recordId}/update`, fields);
+    return axios.put(`/api/record/${recordId}`, fields);
 }
 
 /**
