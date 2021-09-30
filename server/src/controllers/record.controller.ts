@@ -6,6 +6,7 @@ import {FilterQuery} from "mongoose";
 import {IRecordDocument} from "../interfaces/Record";
 import asyncHandler from "express-async-handler";
 import User from "../models/User";
+import async from "async";
 
 /**
  * Query параметры запроса для сервиса getRecords.
@@ -24,13 +25,8 @@ export interface IGetRecordsQueryParams {
 
 /**
  * Body ответа для сервиса getUsers.
- *
- * @prop {string} [email] Электронная почта.
- * @prop {string} [password] Пароль.
- * @prop {string} [username] Имя пользователя.
- * @prop {IFavouriteMovieDocument[]} [favouriteMovies] Массив любимых фильмов.
  */
-export interface IGetRecordsResponseBody extends IRecordDocument {}
+export type IGetRecordsResponseBody = IRecordDocument[];
 
 /**
  * @desc    Возвращает список записей.
@@ -40,7 +36,7 @@ export interface IGetRecordsResponseBody extends IRecordDocument {}
 const getRecords = asyncHandler(
     async (
         req: Request<{}, {}, {}, IGetRecordsQueryParams>,
-        res: Response<IGetRecordsResponseBody[]>
+        res: Response<IGetRecordsResponseBody>
     ) => {
         const filter: FilterQuery<IRecordDocument> = {
             userId: req.query.userId as string,
@@ -111,7 +107,7 @@ const createRecord = asyncHandler(
 );
 
 /**
- * Body запроса для сервиса deleteRecord.
+ * Параметры запроса для сервиса deleteRecord.
  *
  * @prop {string} [id] ObjectId удаляемой записи.
  */
@@ -150,4 +146,96 @@ const deleteRecord = asyncHandler(
     }
 );
 
-export {getRecords, createRecord, deleteRecord};
+/**
+ * Параметры запроса для сервиса updateRecord.
+ *
+ * @prop {string} [id] ObjectId изменяемой записи.
+ */
+export interface IUpdateRecordRequestParams {
+    id?: string;
+}
+
+/**
+ * Body запроса для сервиса updateRecord.
+ */
+export interface IUpdateRecordRequestBody {}
+
+/**
+ * Body ответа для сервиса updateRecord.
+ */
+export interface IUpdateRecordResponseBody extends IRecordDocument {}
+
+/**
+ * @desc    Изменяет запись.
+ * @route   PUT /api/record.
+ * @access  Private
+ */
+const updateRecord = asyncHandler(
+    async (
+        req: Request<IUpdateRecordRequestParams, {}, IUpdateRecordRequestBody>,
+        res: Response<IUpdateRecordResponseBody>
+    ) => {
+        const record = await RecordModel.findByIdAndUpdate(
+            req.params.id,
+            {$set: req.body},
+            {useFindAndModify: false, new: true}
+        ).exec();
+        // TODO: Нужно ли обновлять в массиве user.records ?
+        res.status(201).json(record);
+    }
+);
+
+/**
+ * Body запроса для сервиса updateRecords.
+ */
+export type IUpdateRecordsRequestBody = IRecordDocument[];
+
+/**
+ * Body ответа для сервиса updateRecords.
+ */
+export type IUpdateRecordsResponseBody = IRecordDocument[];
+
+/**
+ * @desc    Изменяет массив записей.
+ * @route   PUT /api/record/many.
+ * @access  Private
+ */
+const updateRecords = asyncHandler(
+    async (
+        req: Request<{}, {}, IUpdateRecordsRequestBody>,
+        res: Response<IUpdateRecordsResponseBody>
+    ) => {
+        /**
+         * Единовременно обновляется только один запрос к бд.
+         */
+        async.eachSeries(
+            req.body,
+            async function iteratee(item: IRecordDocument, callback) {
+                await RecordModel.findByIdAndUpdate(
+                    item._id,
+                    {position: item.position},
+                    {useFindAndModify: false}
+                ).exec();
+                callback();
+            },
+            async function allDone(err) {
+                if (!err) {
+                    const userId = req.body[0].userId;
+                    const year = new Date(req.body[0].viewdate).getFullYear();
+                    const filter: FilterQuery<IRecordDocument> = {
+                        userId,
+                        viewdate: {$gte: new Date(year, 0, 1), $lt: new Date(year, 11, 31)},
+                    };
+                    const records = await RecordModel.find(filter).exec();
+                    res.status(201).json(records);
+                }
+                console.log("Обновление закончено.");
+                if (err) {
+                    console.log("Ошибка: ", err);
+                }
+            }
+        );
+    }
+);
+
+export {getRecords, createRecord, deleteRecord, updateRecord, updateRecords};

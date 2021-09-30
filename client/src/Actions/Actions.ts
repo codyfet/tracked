@@ -203,7 +203,7 @@ export function updateRecords(
 
         try {
             const result = await tryUpdateRecords(records);
-            dispatch({type: GET_RECORDS_SUCCESS, payload: result});
+            dispatch({type: GET_RECORDS_SUCCESS, payload: result.data});
             return result;
         } catch (error) {
             dispatch({type: GET_RECORDS_FAILURE, payload: error});
