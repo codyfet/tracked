@@ -1,6 +1,10 @@
 import {
+    ICreateRecordResponseBody,
+    IDeleteRecordResponseBody,
     IGetRecordsQueryParams,
     IGetRecordsResponseBody,
+    IUpdateRecordResponseBody,
+    IUpdateRecordsResponseBody,
 } from "./../../../server/src/controllers/record.controller";
 import {
     IAuthUserRequestBody,
@@ -71,7 +75,7 @@ export function getUserInfo(userId: string) {
  * @param {IClientRecord} record Данные новой записи.
  */
 export function createRecord(record: IClientRecord) {
-    return axios.post("/api/record", record);
+    return axios.post<ICreateRecordResponseBody>("/api/record", record);
 }
 
 /**
@@ -81,7 +85,7 @@ export function createRecord(record: IClientRecord) {
  * @param {IPartialClientRecord} fields Объект с изменёнными полями.
  */
 export function updateRecord(recordId: string, fields: IPartialClientRecord) {
-    return axios.put(`/api/record/${recordId}`, fields);
+    return axios.put<IUpdateRecordResponseBody>(`/api/record/${recordId}`, fields);
 }
 
 /**
@@ -92,7 +96,7 @@ export function updateRecord(recordId: string, fields: IPartialClientRecord) {
 export function updateRecords(
     records: Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[]
 ) {
-    return axios.put("/api/record/update", records);
+    return axios.put<IUpdateRecordsResponseBody>("/api/record/update", records);
 }
 
 /**
@@ -101,7 +105,7 @@ export function updateRecords(
  * @param {string} recordId ObjectId идентификатор записи.
  */
 export function deleteRecord(recordId: string) {
-    return axios.delete(`/api/record/${recordId}`);
+    return axios.delete<IDeleteRecordResponseBody>(`/api/record/${recordId}`);
 }
 
 /**
