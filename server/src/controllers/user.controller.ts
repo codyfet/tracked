@@ -363,6 +363,7 @@ const getUsers = asyncHandler(
         const users = await User.find(filter)
             .skip(page * limit)
             .limit(limit)
+            .select("-password -email")
             /**
              * Отключено за ненадобностью.
              */
