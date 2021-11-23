@@ -2,6 +2,7 @@ import express, {Application} from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
 import colors from "colors";
+import morgan from "morgan";
 import {errorHandler, notFound} from "./middleware/errorMiddleware";
 import {IUserDocument} from "./interfaces/User";
 
@@ -32,6 +33,10 @@ dotenv.config();
 connectDB();
 
 const app: Application = express();
+
+if (process.env.NODE_ENV === "development") {
+    app.use(morgan("dev"));
+}
 
 // app.use(express.json({extended: true, limit: "50mb"}));
 app.use(express.json({limit: "50mb"}));
