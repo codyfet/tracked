@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import colors from "colors";
 import morgan from "morgan";
+import * as path from "path";
 import {errorHandler, notFound} from "./middleware/errorMiddleware";
 import {IUserDocument} from "./interfaces/User";
 
@@ -40,11 +41,22 @@ if (process.env.NODE_ENV === "development") {
 
 // app.use(express.json({extended: true, limit: "50mb"}));
 app.use(express.json({limit: "50mb"}));
-app.use(express.static("client/dist"));
 
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/user", require("./routes/user.routes"));
+
+if (process.env.NODE_ENV === "production") {
+    const staticPath = path.resolve(__dirname, "..", "..", "..", "..", "client", "dist");
+
+    app.use(express.static(staticPath));
+
+    app.get("*", (req, res) => res.sendFile(staticPath + "/index.html"));
+} else {
+    app.get("/", (req, res) => {
+        res.send("API is running...");
+    });
+}
 
 app.use(notFound);
 app.use(errorHandler);

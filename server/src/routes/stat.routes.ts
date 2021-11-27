@@ -334,8 +334,6 @@ router.get("/", async (req: Request, res: Response) => {
             recordsTotalCount: StatCalculator.getRecordsTotalCount(records),
         });
     } catch (error) {
-        console.log("Error:", error.message);
-
         res.status(500).json({message: "Что-то пошло не так, попробуйте снова"});
     }
 });
