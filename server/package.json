@@ -12,7 +12,8 @@
         "copy": "ncp ../client/dist dist/client/dist",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "eslint": "eslint . ",
-        "eslint:fix": "eslint . --fix"
+        "eslint:fix": "eslint . --fix",
+        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm start"
     },
     "repository": {
         "type": "git",
