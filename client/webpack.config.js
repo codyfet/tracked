@@ -82,7 +82,7 @@ module.exports = {
         filename: getDistFilename("js"),
         path: path.resolve(__dirname, "dist"),
         clean: true,
-        publicPath: "./",
+        publicPath: isDev ? "/" : "./",
     },
     devServer: {
         port: 4210,

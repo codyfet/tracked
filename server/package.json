@@ -11,8 +11,7 @@
         "build": "npm run build --prefix ../client",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "eslint": "eslint . ",
-        "eslint:fix": "eslint . --fix",
-        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+        "eslint:fix": "eslint . --fix"
     },
     "repository": {
         "type": "git",
