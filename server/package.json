@@ -5,15 +5,14 @@
     "main": "app.js",
     "private": true,
     "scripts": {
-        "start": "tsc -p . && npm run build && npm run copy && node dist/server/src/app.js",
+        "start": "tsc -p . && npm run build_ && npm run copy && node dist/server/src/app.js",
         "server": "nodemon src/app.ts",
         "client": "npm run start --prefix ../client",
-        "build": "npm run build --prefix ../client",
+        "build_": "npm run build --prefix ../client",
         "copy": "ncp ../client/dist dist/client/dist",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "eslint": "eslint . ",
-        "eslint:fix": "eslint . --fix",
-        "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm start"
+        "eslint:fix": "eslint . --fix"
     },
     "repository": {
         "type": "git",
