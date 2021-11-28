@@ -11,7 +11,7 @@ const connectDB = async () => {
         // Список опций можно посмотреть тут https://www.youtube.com/watch?v=lNqaQ0wEeAo
         // + Хороший пример работы с конфигом
         console.log(colors.cyan.underline(`MongoDB Connected: ${conn.connection.host}`));
-    } catch (error) {
+    } catch (error: any) {
         console.error(colors.red.underline.bold(`Error: ${error.message}`));
         process.exit(1);
     }
