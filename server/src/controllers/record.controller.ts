@@ -1,4 +1,3 @@
-import {ERecordType} from "./../../../client/src/Enums";
 import {IClientRecord} from "./../../../client/src/Interfaces/ClientRecord";
 import {RecordModel} from "../models/Record";
 import {Request, Response} from "express";
@@ -7,6 +6,7 @@ import {IRecordDocument} from "../interfaces/Record";
 import asyncHandler from "express-async-handler";
 import User from "../models/User";
 import async from "async";
+import {ERecordType} from "../enums";
 
 /**
  * Query параметры запроса для сервиса getRecords.
