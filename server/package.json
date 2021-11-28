@@ -5,10 +5,11 @@
     "main": "app.js",
     "private": true,
     "scripts": {
-        "start": "tsc -p . && node dist/server/src/app.js",
+        "start": "tsc -p . && npm run build && npm run copy && node dist/server/src/app.js",
         "server": "nodemon src/app.ts",
         "client": "npm run start --prefix ../client",
         "build": "npm run build --prefix ../client",
+        "copy": "ncp ../client/dist dist/client/dist",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "eslint": "eslint . ",
         "eslint:fix": "eslint . --fix"
@@ -59,6 +60,7 @@
         "eslint": "^7.32.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
+        "ncp": "^2.0.0",
         "nodemon": "^2.0.4",
         "prettier": "^2.3.2",
         "ts-node": "^10.1.0",

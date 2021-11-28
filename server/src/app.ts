@@ -47,7 +47,7 @@ app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/user", require("./routes/user.routes"));
 
 if (process.env.NODE_ENV === "production") {
-    const staticPath = path.resolve(__dirname, "..", "..", "..", "..", "client", "dist");
+    const staticPath = path.resolve(__dirname, "..", "..", "client", "dist");
 
     app.use(express.static(staticPath));
 
