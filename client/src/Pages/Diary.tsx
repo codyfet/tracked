@@ -6,7 +6,7 @@ import {
 import {getRecords} from "../Actions/Actions";
 import {Button, Container, DropdownProps, Grid, Header, Message} from "semantic-ui-react";
 import React, {useEffect, useState} from "react";
-import {filter, some} from "lodash";
+import {filter, isNull, some} from "lodash";
 import {useDispatch, useSelector} from "react-redux";
 import {Record} from "../Components/Record";
 import {Page} from "../Components/Common/Page";
@@ -25,7 +25,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
     const dispatch = useDispatch();
     const userId = match.params.id;
     const {
-        records: {data: records, isLoading: isRecordsLoading, error: recordsError},
+        records: {data: records, error: recordsError},
         user: {data: loggedUserData},
     } = useSelector((state: IApplicationReduxState) => state);
 
@@ -66,7 +66,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
     });
 
     return (
-        <Page isLoading={isRecordsLoading} errorMessage={recordsError?.message}>
+        <Page isLoading={isNull(records)} errorMessage={recordsError?.message}>
             {() => (
                 <Container className="diary">
                     <Header as="h2" size="large">
