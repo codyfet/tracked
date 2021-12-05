@@ -239,8 +239,13 @@ export const Record = ({
                     value={ratingValue}
                     autoFocus
                     onChange={(e) => {
+                        const value = +e.target.value;
+
+                        if (isNaN(value) || value < 1 || value > 10) {
+                            return null;
+                        }
                         if (!isReadonly) {
-                            setRatingValue(+e.target.value);
+                            setRatingValue(value);
                         }
                     }}
                     onFocus={(e: React.FocusEvent<HTMLInputElement>) => e.currentTarget.select()}
