@@ -131,6 +131,7 @@ module.exports = {
             minify: {
                 collapseWhitespace: isProd,
             },
+            favicon: "./Assets/favicon.png",
         }),
         new MiniCssExtractPlugin({
             filename: getDistFilename("css"),
