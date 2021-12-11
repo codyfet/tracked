@@ -106,7 +106,7 @@ class StatCalculator {
     static getYearsData(movies) {
         const yearsData = [];
         const yearsGroupedMovies = lodash_1.default.groupBy(movies, "releaseYear");
-        for (let i = 1950; i < 2021; i++) {
+        for (let i = 1950; i < 2023; i++) {
             const year = i + "";
             yearsData.push({
                 year,
