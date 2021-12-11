@@ -96,7 +96,7 @@ export function updateRecord(recordId: string, fields: IPartialClientRecord) {
 export function updateRecords(
     records: Pick<IClientRecord, "_id" | "position" | "viewdate" | "userId">[]
 ) {
-    return axios.put<IUpdateRecordsResponseBody>("/api/record/update", records);
+    return axios.put<IUpdateRecordsResponseBody>("/api/record/many", records);
 }
 
 /**

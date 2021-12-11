@@ -151,7 +151,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
             return (
                 <>
                     {getFilteredRecords(records, isMoviesSelected)
-                        .filter((record) => record.position)
+                        .filter((record) => parseInt(record.position))
                         .sort(compareRecordsByPosition)
                         .map((record) => (
                             <Record isReadOnly isPositionMode key={record._id} {...record} />

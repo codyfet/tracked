@@ -5,7 +5,7 @@
     "main": "app.js",
     "private": true,
     "scripts": {
-        "start": "tsc -p . && npm run build_ && npm run copy && node dist/server/src/app.js",
+        "prod": "tsc -p . && npm run build_ && npm run copy && node dist/server/src/app.js",
         "server": "nodemon src/app.ts",
         "client": "npm run start --prefix ../client",
         "build_": "npm run build --prefix ../client",
