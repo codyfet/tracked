@@ -133,7 +133,7 @@ class StatCalculator {
         const yearsData: IYearsDataItem[] = [];
         const yearsGroupedMovies = _.groupBy(movies, "releaseYear");
 
-        for (let i = 1950; i < 2021; i++) {
+        for (let i = 1950; i < 2023; i++) {
             const year = i + "";
 
             yearsData.push({

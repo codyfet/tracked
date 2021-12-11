@@ -5,6 +5,6 @@ import React from "react";
  */
 export const Footer = () => (
     <div className="footer">
-        <div className="copyright">tracked🎥2020</div>
+        <div className="copyright">tracked🎥2021</div>
     </div>
 );
