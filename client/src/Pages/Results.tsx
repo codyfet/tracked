@@ -154,7 +154,7 @@ export const Results = ({match}: RouteComponentProps<TParams>) => {
                         .filter((record) => record.position)
                         .sort(compareRecordsByPosition)
                         .map((record) => (
-                            <Record isReadonly key={record._id} {...record} />
+                            <Record isReadOnly isPositionMode key={record._id} {...record} />
                         ))}
                     <a href="#" onClick={handleEditResultsClick}>
                         Редактировать

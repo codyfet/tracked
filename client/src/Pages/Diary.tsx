@@ -29,6 +29,8 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
         user: {data: loggedUserData},
     } = useSelector((state: IApplicationReduxState) => state);
 
+    const isReadOnly = userId !== loggedUserData?.userId;
+
     const [isMoviesFilterApplied, setMoviesFilterApplied] = useState(true);
     const [isTvSeriesFilterApplied, setTvSeriesFilterApplied] = useState(true);
 
@@ -111,7 +113,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
                             &nbsp;&nbsp;&nbsp;
                         </Grid.Column>
                         <Grid.Column textAlign="right">
-                            {loggedUserData.userId === userId && (
+                            {!isReadOnly && (
                                 <>
                                     <span>Добавить</span>&nbsp;&nbsp;&nbsp;
                                     <Button
@@ -140,7 +142,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
                     </Grid>
 
                     {filtered.map((record) => (
-                        <Record key={record._id} {...record} />
+                        <Record key={record._id} {...record} isReadOnly />
                     ))}
 
                     {filtered.length === 0 && (

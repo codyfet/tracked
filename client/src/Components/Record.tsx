@@ -42,8 +42,13 @@ interface ICustomInputProps {
     onBlur: () => void;
 }
 
+/**
+ * @prop {boolean} isReadOnly Признак неизменяемой записи.
+ * @prop {boolean} isPositionMode Признак того, что необходимо отрисовать запись с номером (для представляения "Итоги").
+ */
 interface IProps extends IClientRecord {
-    isReadonly?: boolean;
+    isReadOnly?: boolean;
+    isPositionMode?: boolean;
 }
 /**
  * Компонент карточка фильма.
@@ -62,7 +67,8 @@ export const Record = ({
     production_countries,
     season,
     position,
-    isReadonly,
+    isReadOnly,
+    isPositionMode,
 }: IProps) => {
     const isEmptyRecord = _id === "0";
     const isMovie = type === ERecordType.MOVIE;
@@ -97,7 +103,7 @@ export const Record = ({
             return null;
         }
 
-        if (isEditModeViewdateEnabled) {
+        if (!isReadOnly && isEditModeViewdateEnabled) {
             const CustomInput = ({value, onClick, onChange, onBlur}: ICustomInputProps) => (
                 <Input
                     className="datepicker-input"
@@ -114,7 +120,7 @@ export const Record = ({
                     locale={ru}
                     selected={viewdateValue}
                     onChange={(viewdate: Date) => {
-                        if (!isReadonly) {
+                        if (!isReadOnly) {
                             setViewdateValue(viewdate);
                             toggleViewdateEditMode();
                         }
@@ -147,7 +153,7 @@ export const Record = ({
      * Рисует информацию о сезоне (для сериалов).
      */
     const renderSeasonInfo = () => {
-        return !isReadonly && isEditModeSeasonInfoEnabled ? (
+        return !isReadOnly && isEditModeSeasonInfoEnabled ? (
             <Input
                 className="edit-mode-season-info"
                 value={seasonValue}
@@ -232,7 +238,7 @@ export const Record = ({
      * Рисует поле Рейтинг.
      */
     const renderRating = () => {
-        if (isEditModeRatingEnabled) {
+        if (!isReadOnly && isEditModeRatingEnabled) {
             return (
                 <Input
                     className="edit-mode-rating"
@@ -244,7 +250,7 @@ export const Record = ({
                         if (isNaN(value) || value < 1 || value > 10) {
                             return null;
                         }
-                        if (!isReadonly) {
+                        if (!isReadOnly) {
                             setRatingValue(value);
                         }
                     }}
@@ -321,8 +327,8 @@ export const Record = ({
                         {renderRating()}
                     </Grid.Column>
                 </Grid>
-                {!isReadonly && renderIconsPanel()}
-                {isReadonly && (
+                {!isReadOnly && renderIconsPanel()}
+                {isPositionMode && (
                     <Label circular className="position" color="orange">
                         {position}
                     </Label>
