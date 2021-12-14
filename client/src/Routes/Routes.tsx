@@ -6,6 +6,7 @@ import {Users} from "../Pages/Users";
 import {Results} from "../Pages/Results";
 import {Diary} from "../Pages/Diary";
 import {Profile} from "../Pages/Profile";
+import {About} from "../Pages/About";
 import {ProtectedRoute} from "../Components/Common/ProtectedRoute";
 import {ILocationState} from "../Interfaces/Common";
 import {ErrorMessage} from "../Components/ErrorMessage";
@@ -28,6 +29,7 @@ export const Routes = () => {
             <Switch>
                 <Route path="/" exact component={Main} />
                 <Route path="/login" component={Login} />
+                <Route path="/about" component={About} />
                 <ProtectedRoute path="/users" isAuthenticated={isAuthenticated} component={Users} />
                 <ProtectedRoute
                     path="/results/:id"

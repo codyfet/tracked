@@ -7,17 +7,34 @@
     min-height: 100%;
 }
 
+.about {
+    padding-top: 14px
+}
+
 .footer {
     position: absolute;
     bottom: 0;
-    height: 70px;
+    height: 90px;
     background: #C4C4C4;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 60px;
+
+    .footer-links {
+        padding-top: 24px;
+
+        > div {
+            margin-bottom: 4px;
+
+            a {
+                .a-link();
+            }
+        }
+    }
 
     .copyright {
-        text-align: right;
-        padding-right: 40px;
-        padding-top: 26px;
+        padding-top: 38px;
     }
 }
 
