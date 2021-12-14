@@ -162,8 +162,11 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                                         <div>{statData?.recordsTotalCount.tvseries} сериалов</div>
                                     </div>
                                 </div>
-                                <div>
+                                <div className="label">
                                     <Link to={`/diary/${profileUserId}`}>Смотреть журнал</Link>
+                                </div>
+                                <div className="label">
+                                    <Link to={`/results/${profileUserId}`}>Смотреть итоги</Link>
                                 </div>
                             </Grid.Column>
                             <Grid.Column width={12}>
