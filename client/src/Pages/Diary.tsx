@@ -142,7 +142,7 @@ export const Diary = ({match}: RouteComponentProps<TParams>) => {
                     </Grid>
 
                     {filtered.map((record) => (
-                        <Record key={record._id} {...record} isReadOnly />
+                        <Record key={record._id} {...record} isReadOnly={isReadOnly} />
                     ))}
 
                     {filtered.length === 0 && (
