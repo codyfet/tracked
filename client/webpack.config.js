@@ -75,6 +75,40 @@ const getDistFilename = (extension) => {
     return isDev ? `[name].${extension}` : `[name].[hash].${extension}`;
 };
 
+/**
+ * Возвращает массив плагинов.
+ */
+const getPlugins = () => {
+    const plugins = [
+        new HtmlWebpackPlugin({
+            template: "./index.html",
+            minify: {
+                collapseWhitespace: isProd,
+            },
+            favicon: "./Assets/favicon.png",
+        }),
+        new MiniCssExtractPlugin({
+            filename: getDistFilename("css"),
+        }),
+        new ESLintPlugin(),
+    ];
+
+    // if (isDev) {
+    //     plugins.push(
+    //         new CopyWebpackPlugin({
+    //             patterns: [
+    //                 {
+    //                     from: path.resolve(__dirname, "..", "server/dist/server/uploads"),
+    //                     to: "uploads",
+    //                 },
+    //             ],
+    //         })
+    //     );
+    // }
+
+    return plugins;
+};
+
 module.exports = {
     context: path.resolve(__dirname, "src"),
     entry: ["@babel/polyfill", "./index.tsx"],
@@ -94,6 +128,7 @@ module.exports = {
                 secure: false,
             },
         },
+        writeToDisk: true,
     },
     devtool: isDev ? "source-map" : false,
     module: {
@@ -125,17 +160,5 @@ module.exports = {
         extensions: [".js", ".css", ".less", ".ts", ".tsx"],
     },
     optimization: getOptimization(),
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./index.html",
-            minify: {
-                collapseWhitespace: isProd,
-            },
-            favicon: "./Assets/favicon.png",
-        }),
-        new MiniCssExtractPlugin({
-            filename: getDistFilename("css"),
-        }),
-        new ESLintPlugin(),
-    ],
+    plugins: getPlugins(),
 };

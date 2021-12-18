@@ -40,9 +40,11 @@ app.use(express_1.default.json({ limit: "50mb" }));
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/user", require("./routes/user.routes"));
+app.use("/api/upload", require("./routes/upload.routes"));
 if (process.env.NODE_ENV === "production") {
     const staticPath = path.resolve(__dirname, "..", "..", "client", "dist");
     app.use(express_1.default.static(staticPath));
+    app.use("/uploads", express_1.default.static(path.join(__dirname, "..", "/uploads")));
     app.get("*", (req, res) => res.sendFile(staticPath + "/index.html"));
 }
 else {

@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, DropdownProps, Grid, Header, Image, List, Segment} from "semantic-ui-react";
+import {
+    Button,
+    Container,
+    DropdownProps,
+    Grid,
+    Header,
+    Image,
+    List,
+    Segment,
+} from "semantic-ui-react";
 import {Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
@@ -14,6 +23,7 @@ import {IDirectorsDataItem} from "../../../server/src/interfaces/Stat";
 import {NameType, Payload, ValueType} from "recharts/types/component/DefaultTooltipContent";
 import {map} from "lodash";
 import {IClientFavouriteMovie} from "../Interfaces/ClientFavouriteMovie";
+import axios from "axios";
 
 interface ITooltipProps {
     active: boolean;
@@ -67,6 +77,8 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
     const profileUser = usersData ? usersData.items[0] : null;
     const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
+    const [imagePath, setImagePath] = useState("");
+    // const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         dispatch(getUsers({userId: profileUserId}));
@@ -116,6 +128,26 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
         );
     }
 
+    const handleUploadFile = async (e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+            const config = {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            };
+
+            const {data: imagePath} = await axios.post("/api/upload", formData, config);
+
+            setImagePath(imagePath);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <Page
             isLoading={isUsersLoading || isStatLoading}
@@ -131,9 +163,19 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                             <Grid.Column width={4}>
                                 <Image
                                     className="profile-data-image"
-                                    src="../src/Assets/matthew.png"
+                                    src={`/uploads/${imagePath}`}
+                                    // src={"/uploads/image-1639820825554.png"}
                                     circular
                                 />
+
+                                <Button as="label" htmlFor="file" type="button" animated="fade">
+                                    <Button.Content visible>
+                                        {/* <Icon name="file" /> */}File
+                                    </Button.Content>
+                                    <Button.Content hidden>Choose a File</Button.Content>
+                                </Button>
+                                <input type="file" id="file" hidden onChange={handleUploadFile} />
+
                                 <div className="title">{`${profileUser?.username}`}</div>
                                 <div className="additional">Russia, Tver</div>
                                 <div className="label">В этом году</div>
