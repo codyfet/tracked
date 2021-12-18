@@ -14,6 +14,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
         favouriteMovies: [{type: Schema.Types.ObjectId, ref: "FavouriteMovie"}],
         records: [{type: Schema.Types.ObjectId, ref: "Record"}],
         isAdmin: {type: Boolean, required: true, default: false},
+        image: {type: String},
     },
     {
         timestamps: true,

@@ -11,6 +11,7 @@ export interface IUser {
     favouriteMovies: IFavouriteMovie[];
     records: IRecord[]; // TODO: Думаю, это лишнее - хранить здесь записи.
     isAdmin: boolean;
+    image: string;
 }
 
 /**
