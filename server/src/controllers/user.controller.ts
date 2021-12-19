@@ -180,10 +180,13 @@ export interface IGetUserProfileQueryParams {
 /**
  * Body ответа для сервиса getUsers.
  *
- * @prop {string} [email] Электронная почта.
- * @prop {string} [password] Пароль.
- * @prop {string} [username] Имя пользователя.
+ * @prop {string} userId ID Пользователя.
+ * @prop {string} username Имя пользователя.
+ * @prop {string} email Электронная почта.
+ * @prop {string} isAdmin Признак является ли пользователь админом (не используется).
+ * @prop {string[]} years Массив лет, за которые есть записи.
  * @prop {IFavouriteMovieDocument[]} [favouriteMovies] Массив любимых фильмов.
+ * @prop {string} image Изображение (аватар).
  */
 export interface IGetUserProfileResponseBody {
     userId: string;
@@ -192,6 +195,7 @@ export interface IGetUserProfileResponseBody {
     isAdmin: boolean;
     years: string[];
     favouriteMovies: IFavouriteMovieDocument[];
+    image: string;
 }
 
 /**
@@ -225,6 +229,7 @@ const getUserProfile = asyncHandler(
                 isAdmin: user.isAdmin,
                 years,
                 favouriteMovies: user?.favouriteMovies,
+                image: user.image,
             });
         } else {
             res.status(401);
@@ -240,12 +245,14 @@ const getUserProfile = asyncHandler(
  * @prop {string} [password] Пароль.
  * @prop {string} [username] Имя пользователя.
  * @prop {IClientFavouriteMovie[]} [favouriteMovies] Массив любимых фильмов.
+ * @prop {string[]} [image] Изображение в формате base64.
  */
 export interface IUpdateUserProfileRequestBody {
     email?: string;
     password?: string;
     username?: string;
     favouriteMovies?: IClientFavouriteMovie[];
+    image?: string;
 }
 
 /**
@@ -299,6 +306,10 @@ const updateUserProfile = asyncHandler(
 
             if (req.body.password) {
                 user.password = req.body.password;
+            }
+
+            if (req.body.image) {
+                user.image = req.body.image;
             }
 
             const updatedUser = await user.save();

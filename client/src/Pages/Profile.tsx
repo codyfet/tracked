@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, DropdownProps, Grid, Header, Image, List, Segment} from "semantic-ui-react";
+import {Container, DropdownProps, Grid, Header, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
@@ -14,6 +14,7 @@ import {IDirectorsDataItem} from "../../../server/src/interfaces/Stat";
 import {NameType, Payload, ValueType} from "recharts/types/component/DefaultTooltipContent";
 import {map} from "lodash";
 import {IClientFavouriteMovie} from "../Interfaces/ClientFavouriteMovie";
+import {Avatar} from "../Components/Avatar";
 
 interface ITooltipProps {
     active: boolean;
@@ -67,6 +68,8 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
     const profileUser = usersData ? usersData.items[0] : null;
     const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
+    const isReadOnly = profileUserId !== loggedInUser?.userId;
+    const image = isReadOnly ? profileUser?.image : loggedInUser?.image;
 
     useEffect(() => {
         dispatch(getUsers({userId: profileUserId}));
@@ -129,11 +132,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                     <Segment>
                         <Grid className="profile-data">
                             <Grid.Column width={4}>
-                                <Image
-                                    className="profile-data-image"
-                                    src="../src/Assets/matthew.png"
-                                    circular
-                                />
+                                <Avatar image={image} readonly={isReadOnly} />
                                 <div className="title">{`${profileUser?.username}`}</div>
                                 <div className="additional">Russia, Tver</div>
                                 <div className="label">В этом году</div>

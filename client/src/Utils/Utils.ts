@@ -50,3 +50,20 @@ export function getRandomInt(min: number, max: number): number {
 
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+/**
+ * Конвертирует файл в base64 формат.
+ *
+ * @param file Файл, кторый необходимо сконвертировать.
+ * @param callback Функцию колбэк, которую необходимо выполнить после конвертаци.
+ */
+export function convertToBase64(file: File, callback: (base64file: string) => void) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        callback(reader.result as string);
+    };
+    reader.onerror = function (error) {
+        console.log("Error: ", error);
+    };
+}

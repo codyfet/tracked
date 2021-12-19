@@ -112,6 +112,7 @@ const getUserProfile = (0, express_async_handler_1.default)((req, res) => __awai
             isAdmin: user.isAdmin,
             years,
             favouriteMovies: user === null || user === void 0 ? void 0 : user.favouriteMovies,
+            image: user.image,
         });
     }
     else {
@@ -159,6 +160,9 @@ const updateUserProfile = (0, express_async_handler_1.default)((req, res) => __a
         }
         if (req.body.password) {
             user.password = req.body.password;
+        }
+        if (req.body.image) {
+            user.image = req.body.image;
         }
         const updatedUser = yield user.save();
         // TODO: Возвращать тоже самое, что и остальные сервисы из этого контроллера.

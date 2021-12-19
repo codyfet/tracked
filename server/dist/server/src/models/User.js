@@ -24,6 +24,7 @@ const userSchema = new mongoose_1.Schema({
     favouriteMovies: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "FavouriteMovie" }],
     records: [{ type: mongoose_1.Schema.Types.ObjectId, ref: "Record" }],
     isAdmin: { type: Boolean, required: true, default: false },
+    image: { type: String },
 }, {
     timestamps: true,
     /**
