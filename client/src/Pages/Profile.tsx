@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, DropdownProps, Grid, Header, Image, List, Segment} from "semantic-ui-react";
+import {Container, DropdownProps, Grid, Header, List, Segment} from "semantic-ui-react";
 import {Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
@@ -14,8 +14,7 @@ import {IDirectorsDataItem} from "../../../server/src/interfaces/Stat";
 import {NameType, Payload, ValueType} from "recharts/types/component/DefaultTooltipContent";
 import {map} from "lodash";
 import {IClientFavouriteMovie} from "../Interfaces/ClientFavouriteMovie";
-import {convertToBase64} from "../Utils/Utils";
-import {Plus} from "../Components/Icons/Plus";
+import {Avatar} from "../Components/Avatar";
 
 interface ITooltipProps {
     active: boolean;
@@ -70,6 +69,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
     const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
     const isReadOnly = profileUserId !== loggedInUser?.userId;
+    const image = isReadOnly ? profileUser?.image : loggedInUser?.image;
 
     useEffect(() => {
         dispatch(getUsers({userId: profileUserId}));
@@ -119,78 +119,6 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
         );
     }
 
-    /**
-     * Ссылка на инпут для загрузки аватара.
-     */
-    const inputFileAvatar = useRef<HTMLInputElement>(null);
-
-    /**
-     * Обработчик загрузки фотографии.
-     */
-    const handleUploadFile = (event: ChangeEvent<HTMLInputElement>) => {
-        const file: File = (event.target as HTMLInputElement).files[0];
-
-        if (file.size > 100000) {
-            alert("Размер фото не должен превышать 100кб");
-            return;
-        }
-
-        convertToBase64(file, (base64file: string) => {
-            dispatch(
-                updateUser({
-                    image: base64file,
-                })
-            );
-        });
-    };
-
-    /**
-     * Рисуте аватар.
-     */
-    const renderAvatar = () => {
-        if (!isReadOnly) {
-            return (
-                <>
-                    {loggedInUser.image ? (
-                        <div className={"profile-data-image-wrapper editable"}>
-                            <Image
-                                className="profile-data-image"
-                                src={loggedInUser.image}
-                                circular
-                                onClick={() => inputFileAvatar.current.click()}
-                            />
-                        </div>
-                    ) : (
-                        <div
-                            className="profile-data-image avatar-placeholder"
-                            onClick={() => inputFileAvatar.current.click()}
-                        >
-                            <Plus />
-                        </div>
-                    )}
-
-                    <input
-                        id="avatar"
-                        type="file"
-                        onChange={handleUploadFile}
-                        hidden
-                        ref={inputFileAvatar}
-                    />
-                </>
-            );
-        } else {
-            return profileUser.image ? (
-                <div className={"profile-data-image-wrapper"}>
-                    <Image className="profile-data-image" src={profileUser.image} circular />
-                </div>
-            ) : (
-                <div className="profile-data-image avatar-placeholder">
-                    <Plus />
-                </div>
-            );
-        }
-    };
-
     return (
         <Page
             isLoading={isUsersLoading || isStatLoading}
@@ -204,7 +132,7 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                     <Segment>
                         <Grid className="profile-data">
                             <Grid.Column width={4}>
-                                {renderAvatar()}
+                                <Avatar image={image} readonly={isReadOnly} />
                                 <div className="title">{`${profileUser?.username}`}</div>
                                 <div className="additional">Russia, Tver</div>
                                 <div className="label">В этом году</div>
