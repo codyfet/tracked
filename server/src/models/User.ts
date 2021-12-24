@@ -15,6 +15,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
         records: [{type: Schema.Types.ObjectId, ref: "Record"}],
         isAdmin: {type: Boolean, required: true, default: false},
         image: {type: String},
+        place: {type: String},
     },
     {
         timestamps: true,

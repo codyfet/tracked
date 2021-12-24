@@ -12,6 +12,7 @@ export interface IUser {
     records: IRecord[]; // TODO: Думаю, это лишнее - хранить здесь записи.
     isAdmin: boolean;
     image: string;
+    place: string;
 }
 
 /**
