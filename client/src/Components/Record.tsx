@@ -247,7 +247,7 @@ export const Record = ({
                     onChange={(e) => {
                         const value = +e.target.value;
 
-                        if (isNaN(value) || value < 1 || value > 10) {
+                        if (isNaN(value) || value < 0 || value > 10) {
                             return null;
                         }
                         if (!isReadOnly) {
