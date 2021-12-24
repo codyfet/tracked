@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Container, DropdownProps, Grid, Header, List, Segment} from "semantic-ui-react";
+import {
+    Container,
+    DropdownProps,
+    Grid,
+    Header,
+    Icon,
+    Input,
+    List,
+    Segment,
+} from "semantic-ui-react";
 import {Bar, BarChart, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {getStat, getUsers, updateUser} from "../Actions/Actions";
 import {CustomizedAxisTick} from "../Components/Charts/CustomizedAxisTick";
@@ -15,6 +24,8 @@ import {NameType, Payload, ValueType} from "recharts/types/component/DefaultTool
 import {map} from "lodash";
 import {IClientFavouriteMovie} from "../Interfaces/ClientFavouriteMovie";
 import {Avatar} from "../Components/Avatar";
+import {useToggle} from "../Hooks/Toggle.hook";
+import {SimpleModal} from "../Components/Common/SimpleModal";
 
 interface ITooltipProps {
     active: boolean;
@@ -69,7 +80,13 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
     const marksData = statData?.marksData || [];
     const [year, setYear] = useState(0);
     const isReadOnly = profileUserId !== loggedInUser?.userId;
+    const username = isReadOnly ? profileUser?.username : loggedInUser?.username;
     const image = isReadOnly ? profileUser?.image : loggedInUser?.image;
+    const place = isReadOnly ? profileUser?.place : loggedInUser?.place;
+    const [isNameEditModeEnabled, toggleNameEditMode] = useToggle(false);
+    const [isPlaceEditModeEnabled, togglePlaceEditMode] = useToggle(false);
+    const [tempEditName, setTempEditName] = useState("");
+    const [tempEditPlace, setTempEditPlace] = useState("");
 
     useEffect(() => {
         dispatch(getUsers({userId: profileUserId}));
@@ -133,8 +150,28 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                         <Grid className="profile-data">
                             <Grid.Column width={4}>
                                 <Avatar image={image} readonly={isReadOnly} />
-                                <div className="title">{`${profileUser?.username}`}</div>
-                                <div className="additional">Russia, Tver</div>
+                                <div className="title">
+                                    {`${username}`}
+                                    {!isReadOnly && (
+                                        <Icon
+                                            name="edit"
+                                            onClick={toggleNameEditMode}
+                                            title="изменить"
+                                            className="edit-icon"
+                                        />
+                                    )}
+                                </div>
+                                <div className="additional">
+                                    {place || "город не указан"}
+                                    {!isReadOnly && (
+                                        <Icon
+                                            name="edit"
+                                            onClick={togglePlaceEditMode}
+                                            title="изменить"
+                                            className="edit-icon"
+                                        />
+                                    )}
+                                </div>
                                 <div className="label">В этом году</div>
                                 <div className="counter">
                                     <div className="total">
@@ -328,6 +365,58 @@ export const Profile = ({match}: RouteComponentProps<TParams>) => {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
+                    {isNameEditModeEnabled && (
+                        <SimpleModal
+                            content={
+                                <Input
+                                    fluid
+                                    placeholder="Имя пользователя"
+                                    value={tempEditName}
+                                    onChange={(event) => setTempEditName(event.target.value)}
+                                    maxLength="24"
+                                    autoFocus
+                                />
+                            }
+                            header="Внести изменение"
+                            onClose={toggleNameEditMode}
+                            onSuccess={() => {
+                                dispatch(
+                                    updateUser({
+                                        username: tempEditName,
+                                    })
+                                );
+                                toggleNameEditMode();
+                                setTempEditName("");
+                            }}
+                            successText="Сохранить"
+                        />
+                    )}
+                    {isPlaceEditModeEnabled && (
+                        <SimpleModal
+                            content={
+                                <Input
+                                    fluid
+                                    placeholder="Географическая локация пользователя"
+                                    value={tempEditPlace}
+                                    onChange={(event) => setTempEditPlace(event.target.value)}
+                                    maxLength="30"
+                                    autoFocus
+                                />
+                            }
+                            header="Внести изменение"
+                            onClose={toggleNameEditMode}
+                            onSuccess={() => {
+                                dispatch(
+                                    updateUser({
+                                        place: tempEditPlace,
+                                    })
+                                );
+                                togglePlaceEditMode();
+                                setTempEditPlace("");
+                            }}
+                            successText="Сохранить"
+                        />
+                    )}
                 </Container>
             )}
         </Page>

@@ -196,6 +196,7 @@ export interface IGetUserProfileResponseBody {
     years: string[];
     favouriteMovies: IFavouriteMovieDocument[];
     image: string;
+    place: string;
 }
 
 /**
@@ -230,6 +231,7 @@ const getUserProfile = asyncHandler(
                 years,
                 favouriteMovies: user?.favouriteMovies,
                 image: user.image,
+                place: user.place,
             });
         } else {
             res.status(401);
@@ -246,6 +248,7 @@ const getUserProfile = asyncHandler(
  * @prop {string} [username] Имя пользователя.
  * @prop {IClientFavouriteMovie[]} [favouriteMovies] Массив любимых фильмов.
  * @prop {string[]} [image] Изображение в формате base64.
+ * @prop {string} [place] Географическая локация пользователя.
  */
 export interface IUpdateUserProfileRequestBody {
     email?: string;
@@ -253,6 +256,7 @@ export interface IUpdateUserProfileRequestBody {
     username?: string;
     favouriteMovies?: IClientFavouriteMovie[];
     image?: string;
+    place?: string;
 }
 
 /**
@@ -277,6 +281,9 @@ const updateUserProfile = asyncHandler(
         if (user) {
             user.username = req.body.username ?? user.username;
             user.email = req.body.email ?? user.email;
+            user.place = req.body.place ?? user.place;
+            user.image = req.body.image ?? user.image;
+            user.password = req.body.password ?? user.password;
 
             if (req.body.favouriteMovies) {
                 const newFavouriteMovie = req.body.favouriteMovies.find((item) => !item?._id);
@@ -302,14 +309,6 @@ const updateUserProfile = asyncHandler(
                         );
                     }
                 }
-            }
-
-            if (req.body.password) {
-                user.password = req.body.password;
-            }
-
-            if (req.body.image) {
-                user.image = req.body.image;
             }
 
             const updatedUser = await user.save();
