@@ -1,4 +1,3 @@
-import {IUserDocument} from "./../interfaces/User";
 import {NextFunction, Request, Response} from "express";
 import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
@@ -6,6 +5,8 @@ import {TokenInterface} from "../interfaces/Token";
 import User from "../models/User";
 
 /**
+ * @deprecated Исользовать вместо этой middleware - passportProtected, которая работает с passport.
+ *
  * Middleware функция, которая обогащает каждый private запрос данными залогиненного пользователя,
  * информацию о котором можно получить из токена, хранящегося в шапке запроса (req.headers.authorization).
  */

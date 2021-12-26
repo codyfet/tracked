@@ -12,7 +12,7 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
 
 /**
  * Middleware функция, которая отсылает на ui ошибку в формате json.
- * Еще один хороший более подробный пимер можно посмотреть здесь https://simonplend.com/how-to-create-an-error-handler-for-your-express-api/
+ * Еще один хороший более подробный пример можно посмотреть здесь https://simonplend.com/how-to-create-an-error-handler-for-your-express-api/
  */
 const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
