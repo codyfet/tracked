@@ -5,6 +5,8 @@ import colors from "colors";
 import morgan from "morgan";
 import * as path from "path";
 import {errorHandler, notFound} from "./middleware/errorMiddleware";
+import passport from "passport";
+import {configure} from "./config/passport";
 import {IUserDocument} from "./interfaces/User";
 
 /**
@@ -13,10 +15,12 @@ import {IUserDocument} from "./interfaces/User";
  */
 declare global {
     namespace Express {
-        interface Request {
-            token: string; // TODO: Убрать.
-            user: IUserDocument;
-        }
+        /**
+         * Так как passport определяет пустой интерфейс Express.User,
+         * то здесь я переопределяю его своей моделью и теперь в Request лежит пользователь с нужной моделью
+         * (добавленный passport в функции authenticate).
+         */
+        interface User extends IUserDocument {}
     }
     namespace NodeJS {
         interface ProcessEnv {
@@ -41,6 +45,11 @@ if (process.env.NODE_ENV === "development") {
 
 // app.use(express.json({extended: true, limit: "50mb"}));
 app.use(express.json({limit: "50mb"}));
+
+// Конфигурируем passport.
+configure(passport);
+// Активируем passport.
+app.use(passport.initialize());
 
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));

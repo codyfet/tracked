@@ -210,7 +210,6 @@ const getUserProfile = asyncHandler(
         res: Response<IGetUserProfileResponseBody>
     ) => {
         const user = await User.findById(req.user._id);
-
         const filter: FilterQuery<IRecordDocument> = {
             userId: user?.id,
         };
@@ -221,7 +220,6 @@ const getUserProfile = asyncHandler(
         const years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>
             b.localeCompare(a)
         );
-
         if (user) {
             res.json({
                 userId: user._id,
@@ -277,14 +275,12 @@ const updateUserProfile = asyncHandler(
         const user = await (await User.findById(req.user._id))
             .populate({path: "favouriteMovies"})
             .execPopulate();
-
         if (user) {
             user.username = req.body.username ?? user.username;
             user.email = req.body.email ?? user.email;
             user.place = req.body.place ?? user.place;
             user.image = req.body.image ?? user.image;
             user.password = req.body.password ?? user.password;
-
             if (req.body.favouriteMovies) {
                 const newFavouriteMovie = req.body.favouriteMovies.find((item) => !item?._id);
                 // Добавление записи.
@@ -310,7 +306,6 @@ const updateUserProfile = asyncHandler(
                     }
                 }
             }
-
             const updatedUser = await user.save();
             // TODO: Возвращать тоже самое, что и остальные сервисы из этого контроллера.
             // TODO: Не возвращать пароль.

@@ -6,13 +6,16 @@ import {
     registerUser,
     updateUserProfile,
 } from "../controllers/user.controller";
-import {protect} from "../middleware/authMiddleware";
+import {passportProtect} from "../middleware/authPassportMiddleware";
 import {validationLogin, validationRegister} from "../middleware/validationMiddleware";
 
 const router: Router = express.Router();
 
-router.route("/").post(validationRegister, registerUser).get(protect, getUsers);
+router.route("/").post(validationRegister, registerUser).get(passportProtect, getUsers);
 router.route("/login").post(validationLogin, authUser);
-router.route("/profile").get(protect, getUserProfile).put(protect, updateUserProfile);
+router
+    .route("/profile")
+    .get(passportProtect, getUserProfile)
+    .put(passportProtect, updateUserProfile);
 
 module.exports = router;
