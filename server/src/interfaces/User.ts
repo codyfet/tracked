@@ -13,6 +13,7 @@ export interface IUser {
     isAdmin: boolean;
     image: string;
     place: string;
+    vkId?: number;
 }
 
 /**

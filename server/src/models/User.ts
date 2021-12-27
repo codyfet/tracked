@@ -16,6 +16,7 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
         isAdmin: {type: Boolean, required: true, default: false},
         image: {type: String},
         place: {type: String},
+        vkId: {type: Number},
     },
     {
         timestamps: true,

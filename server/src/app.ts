@@ -1,3 +1,8 @@
+import {
+    authenticateVkontakte,
+    callbackVkontakte,
+    vkontakteStrategy,
+} from "./config/passport-vkontakte";
 import express, {Application} from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db";
@@ -29,6 +34,8 @@ declare global {
             MONGO_URI: string;
             JWT_SECRET: string;
             SESSION_EXPIRES_IN: string;
+            VK_CLIENT_ID: string;
+            VK_CLIENT_SECRET: string;
         }
     }
 }
@@ -51,9 +58,18 @@ configure(passport);
 // Активируем passport.
 app.use(passport.initialize());
 
+passport.serializeUser((user: Express.User, cb) => cb(null, user));
+
+passport.deserializeUser((user: Express.User, cb) => cb(null, user));
+
+passport.use(vkontakteStrategy());
+
 app.use("/api/record", require("./routes/record.routes"));
 app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/user", require("./routes/user.routes"));
+
+app.use("/vkontakte", authenticateVkontakte);
+app.use("/vkontakte/callback", callbackVkontakte);
 
 if (process.env.NODE_ENV === "production") {
     const staticPath = path.resolve(__dirname, "..", "..", "client", "dist");
