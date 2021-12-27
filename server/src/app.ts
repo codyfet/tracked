@@ -1,3 +1,4 @@
+import {asyncHandler} from "express-async-handler";
 import {
     authenticateVkontakte,
     callbackVkontakte,
@@ -69,7 +70,31 @@ app.use("/api/stat", require("./routes/stat.routes"));
 app.use("/api/user", require("./routes/user.routes"));
 
 app.use("/vkontakte", authenticateVkontakte);
-app.use("/vkontakte/callback", callbackVkontakte);
+app.use(
+    "/vkontakte/callback",
+    asyncHandler(async function (req: any, res: any, next: any) {
+        return passport.authenticate(
+            "vkontakte",
+            {
+                session: false,
+                successRedirect: "/",
+                failureRedirect: "/login",
+            },
+            (err, user, info) => {
+                if (err) {
+                    console.log("В passport.authenticate произошла ошибка", err);
+                    return next(err);
+                }
+                if (!user) {
+                    res.status(401);
+                    throw new Error("Not authorized, token failed");
+                }
+                req.user = user;
+                next();
+            }
+        )(req, res, next);
+    })
+);
 
 if (process.env.NODE_ENV === "production") {
     const staticPath = path.resolve(__dirname, "..", "..", "client", "dist");
