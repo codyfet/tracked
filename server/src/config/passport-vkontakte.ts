@@ -105,6 +105,12 @@ export const vkontakteStrategy = () =>
             // scope: "email",
         },
         async (accessToken, refreshToken, params, profile, cb) => {
+            console.log("accessToken", accessToken);
+            console.log("refreshToken", refreshToken);
+            console.log("params", params);
+            console.log("profile", profile);
+            console.log("cb", cb);
+
             if (params.email) {
                 profile.emails = [{value: params.email}];
             }
