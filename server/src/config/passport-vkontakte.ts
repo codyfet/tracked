@@ -101,7 +101,7 @@ export const vkontakteStrategy = () =>
             clientID: process.env.VK_CLIENT_ID,
             clientSecret: process.env.VK_CLIENT_SECRET,
             callbackURL: "https://trackedapp.herokuapp.com/vkontakte/callback",
-            profileFields: ["email"],
+            // profileFields: ["email"],
             // scope: "email",
         },
         async (accessToken, refreshToken, params, profile, done) => {
@@ -111,48 +111,39 @@ export const vkontakteStrategy = () =>
             console.log("profile", profile);
             console.log("done", done);
 
-            // // if (params.email) {
-            // //     profile.emails = [{value: params.email}];
-            // // }
-
-            // const user = await User.findOne({vkId: parseInt(profile.id)});
-
-            // if (!user) {
-            //     const newVkUser: IUser = {
-            //         vkId: parseInt(profile.id),
-
-            //         email: "test@test.ru",
-            //         password: "1234567",
-            //         username: profile.displayName,
-            //         favouriteMovies: [],
-            //         records: [],
-            //         isAdmin: false,
-            //         image: profile.photos[0].value,
-            //         place: "Tver",
-            //     };
-            //     const createdUser = await User.create(newVkUser);
-
-            //     console.log("!!!!!!!createdUser", createdUser);
-
-            //     // return createdUser;
-
-            //     done(null, user);
+            // if (params.email) {
+            //     profile.emails = [{value: params.email}];
             // }
 
-            // console.log("user already exists!", user);
+            const user = await User.findOne({vkId: parseInt(profile.id)});
 
-            // // return user;
+            if (!user) {
+                const newVkUser: IUser = {
+                    vkId: parseInt(profile.id),
 
-            // // cb(null, await verify(profile));
-            // done(null, user);
+                    email: "test@test.ru",
+                    password: "1234567",
+                    username: profile.displayName,
+                    favouriteMovies: [],
+                    records: [],
+                    isAdmin: false,
+                    image: profile.photos[0].value,
+                    place: "Tver",
+                };
+                const createdUser = await User.create(newVkUser);
 
-            const _profile = JSON.parse(JSON.stringify(profile));
+                console.log("!!!!!!!createdUser", createdUser);
 
-            console.log("_profile", _profile);
+                // return createdUser;
 
-            _profile.emails = [{value: params.email}];
-            process.nextTick(() => {
-                done(null, _profile);
-            });
+                done(null, user);
+            }
+
+            console.log("user already exists!", user);
+
+            // return user;
+
+            // cb(null, await verify(profile));
+            done(null, user);
         }
     );
