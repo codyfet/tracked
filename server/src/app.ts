@@ -81,6 +81,9 @@ app.use(
                 failureRedirect: "/login",
             },
             (err, user, info) => {
+                console.log("user in authenticate callback", user);
+                console.log("info in authenticate callback", info);
+
                 if (err) {
                     console.log("В passport.authenticate произошла ошибка", err);
                     return next(err);
