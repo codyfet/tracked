@@ -111,9 +111,39 @@ export const vkontakteStrategy = () =>
             console.log("profile", profile);
             console.log("cb", cb);
 
-            if (params.email) {
-                profile.emails = [{value: params.email}];
+            // if (params.email) {
+            //     profile.emails = [{value: params.email}];
+            // }
+
+            const user = await User.findOne({vkId: parseInt(profile.id)});
+
+            if (!user) {
+                const newVkUser: IUser = {
+                    vkId: parseInt(profile.id),
+
+                    email: "test@test.ru",
+                    password: "1234567",
+                    username: profile.displayName,
+                    favouriteMovies: [],
+                    records: [],
+                    isAdmin: false,
+                    image: profile.photos[0].value,
+                    place: "Tver",
+                };
+                const createdUser = await User.create(newVkUser);
+
+                console.log("!!!!!!!createdUser", createdUser);
+
+                // return createdUser;
+
+                cb(null, user);
             }
-            cb(null, await verify(profile));
+
+            console.log("user already exists!", user);
+
+            // return user;
+
+            // cb(null, await verify(profile));
+            cb(null, user);
         }
     );
