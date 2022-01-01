@@ -7,6 +7,7 @@ import {AUTHENTICATION_CLEAR} from "../Actions/ActionTypes";
 import {IApplicationReduxState} from "../Reducers";
 import {useHistory, useLocation} from "react-router-dom";
 import {ILocationState} from "../Interfaces/Common";
+import VkAuth from "../Components/VKAuth";
 
 /**
  * Страница логин/регистрация.
@@ -71,6 +72,10 @@ export const Login = () => {
         return <Message negative content={<p>{user.error?.message}</p>} />;
     };
 
+    const handleVkResponse = (data) => {
+        console.log(data);
+    };
+
     return (
         <Grid className="login" textAlign="center">
             <Grid.Column style={{maxWidth: 450}}>
@@ -110,6 +115,15 @@ export const Login = () => {
                         <Button fluid size="large" onClick={handleSubmit}>
                             {buttonText}
                         </Button>
+                        <VkAuth
+                            apiId="8037662"
+                            callback={handleVkResponse}
+                            className="ui button"
+                            // eslint-disable-next-line react/no-children-prop
+                            children={<span>Войти через вк</span>}
+                        />
+                        <div id="vk_auth"></div>
+                        {/* {VK.Widgets.Auth("vk_auth", {authUrl: "/dev/Login"})}} */}
                     </Segment>
                 </Form>
                 {user?.error && getErrorMessage()}

@@ -94,6 +94,7 @@
         "react-dom": "^16.14.0",
         "react-redux": "^7.2.4",
         "react-router-dom": "^5.2.0",
+        "react-vk-auth": "0.0.2",
         "recharts": "^2.1.0",
         "redux": "^4.1.0",
         "redux-devtools-extension": "^2.13.9",
