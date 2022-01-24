@@ -169,6 +169,81 @@ const registerUser = asyncHandler(
 );
 
 /**
+ * Body запроса для сервиса registerUser.
+ *
+ * @prop {string} vkId Пароль.
+ * @prop {string} username Имя пользователя.
+ */
+export interface IVkAuthenticateRequestBody {
+    vkId: string;
+    username: string;
+}
+
+/**
+ * Body ответа для сервиса registerUser.
+ *
+ * @prop {string} userId Электронная почта.
+ * @prop {string} username Имя пользователя.
+ * @prop {string} email Электронная почта.
+ * @prop {string} isAdmin Признак является ли пользователь админом.
+ * @prop {string} token Токен.
+ * @prop {string} years Массив лет, в которых у пользователя есть записи.
+ * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
+ */
+export interface IVkAuthenticateResponseBody {
+    userId: string;
+    username: string;
+    email: string;
+    isAdmin: boolean;
+    token: string;
+    years: string[];
+}
+
+/**
+ * @desc    Регистрация нового пользователя.
+ * @route   POST /api/user/vkauthenticate.
+ * @access  Public
+ */
+const vkAuthenticate = asyncHandler(
+    async (
+        req: Request<{}, {}, IVkAuthenticateRequestBody>,
+        res: Response<IVkAuthenticateResponseBody>
+    ) => {
+        // const errors = validationResult(req);
+
+        // if (!errors.isEmpty()) {
+        //     res.status(400);
+        //     throw new Error(errors.array()[0].msg);
+        // }
+
+        const {username, vkId} = req.body;
+
+        const userExists = await User.findOne({email});
+
+        if (userExists) {
+            res.status(400);
+            throw new Error("User already exists");
+        }
+
+        const user = await User.create({username, email, password});
+
+        if (user) {
+            res.status(201).json({
+                userId: user._id,
+                username: user.username,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: createToken(user._id),
+                years: [],
+            });
+        } else {
+            res.status(400);
+            throw new Error("Invalid user data");
+        }
+    }
+);
+
+/**
  * Query параметры запроса для сервиса getUsers.
  *
  * @prop {string} [userId] Идентификатор пользователя

@@ -31,6 +31,7 @@ export const ProtectedRoute = ({component, path, isAuthenticated, ...rest}: IPro
                         } as ILocationState,
                     }}
                 />
+                // TODO: можно использовать history.push
             );
         }}
     />

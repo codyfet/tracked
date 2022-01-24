@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {Redirect} from "react-router-dom";
 
 interface IProps {
     disabled?: boolean;
@@ -11,6 +12,16 @@ interface IProps {
 interface IState {
     isLoaded: boolean;
     isProcessing: boolean;
+    redirectToMain: boolean;
+}
+
+interface VKAuthResponse {
+    uid: number;
+    first_name: string;
+    last_name: string;
+    photo: string;
+    photo_rec: string;
+    hash: string;
 }
 
 class VkAuth extends Component<IProps, IState> {
@@ -20,6 +31,7 @@ class VkAuth extends Component<IProps, IState> {
         this.state = {
             isLoaded: false,
             isProcessing: false,
+            redirectToMain: false,
         };
     }
 
@@ -33,6 +45,13 @@ class VkAuth extends Component<IProps, IState> {
         const {apiId} = this.props;
         window.vkAsyncInit = () => {
             window.VK.init({apiId});
+            window.VK.Widgets.Auth("vk_auth", {
+                onAuth: (response: VKAuthResponse) => {
+                    console.log(response);
+
+                    this.setState({redirectToMain: true});
+                },
+            });
             this.setState({isLoaded: true});
         };
     }
@@ -63,29 +82,18 @@ class VkAuth extends Component<IProps, IState> {
         }
         this.setState({isProcessing: true});
         // window.VK.Auth.login(this.checkLoginState);
-        window.VK.Widgets.Auth("vk_auth", {
-            onAuth: (
-                uid: number,
-                first_name: string,
-                last_name: string,
-                photo: string,
-                photo_rec: string,
-                hash: string
-            ) => {
-                console.log(uid);
-                console.log(first_name);
-                console.log(last_name);
-                console.log(photo);
-                console.log(photo_rec);
-                console.log(hash);
-            },
-        });
     };
 
     render() {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {disabled, callback, apiId, containerStyle, ...buttonProps} = this.props;
-        return (
+        return this.state.redirectToMain ? (
+            <Redirect
+                to={{
+                    pathname: "/",
+                }}
+            />
+        ) : (
             <span style={containerStyle}>
                 <button {...buttonProps} onClick={this.handleClick}></button>
             </span>
