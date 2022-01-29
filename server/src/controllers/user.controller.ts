@@ -1,5 +1,5 @@
 import {IClientFavouriteMovie} from "./../../../client/src/Interfaces/ClientFavouriteMovie";
-import {IFavouriteMovieDocument} from "./../interfaces/FavouriteMovie";
+import {IFavouriteMovie, IFavouriteMovieDocument} from "./../interfaces/FavouriteMovie";
 import {Request, Response} from "express";
 import asyncHandler from "express-async-handler";
 import User from "../models/User";
@@ -10,8 +10,97 @@ import {RecordModel} from "../models/Record";
 import {FilterQuery} from "mongoose";
 import {IRecordDocument} from "../interfaces/Record";
 import {validationResult} from "express-validator";
-import {IUserDocument} from "../interfaces/User";
+import {IUser, IUserDocument} from "../interfaces/User";
 import FavouriteMovie from "../models/FavouriteMovie";
+
+/**
+ * Body запроса для сервиса vkAuthenticateUser.
+ *
+ * @prop {string} email Электронная почта.
+ * @prop {string} password Пароль.
+ */
+export interface IVkAuthenticateUserRequestBody {
+    vkId: number;
+    username: string;
+    image: string;
+}
+
+/**
+ * Body ответа для всех сервисов авторизации/регистрации.
+ *
+ * @prop {string} userId Электронная почта.
+ * @prop {string} username Имя пользователя.
+ * @prop {string} email Электронная почта.
+ * @prop {string} isAdmin Признак является ли пользователь админом.
+ * @prop {string} token Токен.
+ * @prop {string} years Массив лет, в которых у пользователя есть записи.
+ * @prop {string} vkId Идентификатор вконтакте.
+ * @prop {string} image Путь к изображению (фото).
+ * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
+ */
+export interface IAuthUserResponseBody {
+    userId: string;
+    username: string;
+    email: string;
+    isAdmin: boolean;
+    token: string;
+    years: string[];
+    vkId?: number;
+    image: string;
+    favouriteMovies?: IFavouriteMovieDocument[];
+}
+
+/**
+ * @desc    Авторизация пользователя через ВК и создание токена.
+ * @route   POST /api/user/vkauthenticate.
+ * @access  Public
+ */
+const vkAuthenticateUser = asyncHandler(
+    async (
+        req: Request<{}, {}, IVkAuthenticateUserRequestBody>,
+        res: Response<IAuthUserResponseBody>
+    ) => {
+        const {vkId, username, image} = req.body;
+        let authenticatedUser: IUserDocument;
+        let years: string[] = [];
+
+        const existedUser = await User.findOne({vkId});
+
+        if (existedUser) {
+            const filter: FilterQuery<IRecordDocument> = {
+                userId: existedUser.id,
+            };
+            const records = await RecordModel.find(filter).exec();
+            const groupedRecordsByYears = groupBy(records, (r) =>
+                new Date(r.viewdate).getFullYear()
+            );
+            years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>
+                b.localeCompare(a)
+            );
+            authenticatedUser = existedUser;
+        } else {
+            const createdUser = await User.create({
+                vkId,
+                username,
+                image,
+                password: "null",
+                email: "null",
+            });
+            authenticatedUser = createdUser;
+        }
+
+        res.status(201).json({
+            userId: authenticatedUser._id,
+            username: authenticatedUser.username,
+            email: authenticatedUser.email,
+            isAdmin: authenticatedUser.isAdmin,
+            token: createToken(authenticatedUser._id),
+            vkId: authenticatedUser.vkId,
+            image: authenticatedUser.image,
+            years,
+        });
+    }
+);
 
 /**
  * Body запроса для сервиса authUser.
@@ -22,27 +111,6 @@ import FavouriteMovie from "../models/FavouriteMovie";
 export interface IAuthUserRequestBody {
     email: string;
     password: string;
-}
-
-/**
- * Body ответа для сервиса authUser.
- *
- * @prop {string} userId Электронная почта.
- * @prop {string} username Имя пользователя.
- * @prop {string} email Электронная почта.
- * @prop {string} isAdmin Признак является ли пользователь админом.
- * @prop {string} token Токен.
- * @prop {string} years Массив лет, в которых у пользователя есть записи.
- * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
- */
-export interface IAuthUserResponseBody {
-    userId: string;
-    username: string;
-    email: string;
-    isAdmin: boolean;
-    token: string;
-    years: string[];
-    favouriteMovies: IFavouriteMovieDocument[];
 }
 
 /**
@@ -83,6 +151,7 @@ const authUser = asyncHandler(
                 token: createToken(user._id),
                 years,
                 favouriteMovies: user.favouriteMovies,
+                image: user.image,
             });
         } else {
             res.status(401);
@@ -105,26 +174,6 @@ export interface IRegisterUserRequestBody {
 }
 
 /**
- * Body ответа для сервиса registerUser.
- *
- * @prop {string} userId Электронная почта.
- * @prop {string} username Имя пользователя.
- * @prop {string} email Электронная почта.
- * @prop {string} isAdmin Признак является ли пользователь админом.
- * @prop {string} token Токен.
- * @prop {string} years Массив лет, в которых у пользователя есть записи.
- * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
- */
-export interface IRegisterUserResponseBody {
-    userId: string;
-    username: string;
-    email: string;
-    isAdmin: boolean;
-    token: string;
-    years: string[];
-}
-
-/**
  * @desc    Регистрация нового пользователя.
  * @route   POST /api/user.
  * @access  Public
@@ -132,7 +181,7 @@ export interface IRegisterUserResponseBody {
 const registerUser = asyncHandler(
     async (
         req: Request<{}, {}, IRegisterUserRequestBody>,
-        res: Response<IRegisterUserResponseBody>
+        res: Response<IAuthUserResponseBody>
     ) => {
         const errors = validationResult(req);
 
@@ -160,6 +209,7 @@ const registerUser = asyncHandler(
                 isAdmin: user.isAdmin,
                 token: createToken(user._id),
                 years: [],
+                image: user.image,
             });
         } else {
             res.status(400);
@@ -389,4 +439,4 @@ const getUsers = asyncHandler(
     }
 );
 
-export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers};
+export {vkAuthenticateUser, authUser, registerUser, getUserProfile, updateUserProfile, getUsers};

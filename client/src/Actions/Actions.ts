@@ -57,6 +57,7 @@ import {
     updateRecord as tryUpdateRecord,
     updateRecords as tryUpdateRecords,
     updateUser as tryUpdateUser,
+    vkAuthenticate as tryVkAuthenticate,
 } from "../Services/MongoDBServices";
 import {TRACKED_USER_DATA} from "../Consts";
 import {createRecordForMovie, createRecordForTVSeries} from "../Models/Record";
@@ -243,7 +244,7 @@ export function getRecords(userId: string, options: IClientRecordsFilter) {
         try {
             const records = await tryGetRecords(userId, options);
             dispatch({type: GET_RECORDS_SUCCESS, payload: records.data});
-        } catch (error) {
+        } catch (error: any) {
             const response: AxiosResponse<IErrorResponse> = error.response;
             const message: string = response?.data.message ?? error.message;
             const status: number = response?.status ?? error.status;
@@ -278,6 +279,50 @@ export function getStat(userId: string, year: number) {
 }
 
 /**
+ * Thunk функция для выполнения ajax запроса для авторизации пользователя через вк виджет
+ */
+export function vkAuthenticate({
+    vkId,
+    username,
+    image,
+}: {
+    vkId: number;
+    username: string;
+    image: string;
+}) {
+    return async function (dispatch: Dispatch) {
+        dispatch({type: AUTHENTICATION_START});
+
+        try {
+            const response = await tryVkAuthenticate({vkId, username, image});
+
+            dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
+            /**
+             * Складываем данные пользователя в локал сторедж.
+             */
+            localStorage.setItem(
+                TRACKED_USER_DATA,
+                JSON.stringify({
+                    userId: response.data.userId,
+                    token: response.data.token,
+                })
+            );
+
+            return response;
+        } catch (error: any) {
+            const response: AxiosResponse<IErrorResponse> = error.response;
+            const message: string = response?.data.message ?? error.message;
+            const status: number = response?.status ?? error.status;
+            const errorObject: IErrorDataObject = {
+                message,
+                status,
+            };
+            dispatch({type: AUTHENTICATION_FAILURE, payload: errorObject});
+        }
+    };
+}
+
+/**
  * Thunk функция для выполнения ajax запроса для логина пользователя.
  */
 export function login({email, password}: {email: string; password: string}) {
@@ -299,7 +344,7 @@ export function login({email, password}: {email: string; password: string}) {
             );
 
             return response;
-        } catch (error) {
+        } catch (error: any) {
             const response: AxiosResponse<IErrorResponse> = error.response;
             const message: string = response?.data.message ?? error.message;
             const status: number = response?.status ?? error.status;
@@ -357,7 +402,7 @@ export function register({
             );
 
             return response;
-        } catch (error) {
+        } catch (error: any) {
             const response: AxiosResponse<IErrorResponse> = error.response;
             const message: string = response?.data.message ?? error.message;
             const status: number = response?.status ?? error.status;
@@ -381,7 +426,7 @@ export function getUserInfo(userId: string) {
             const response = await tryGetUserInfo(userId);
             dispatch({type: AUTHENTICATION_SUCCESS, payload: response.data});
             return response;
-        } catch (error) {
+        } catch (error: any) {
             const response: AxiosResponse<IErrorResponse> = error.response;
             const message: string = response?.data.message ?? error.message;
             const status: number = response?.status ?? error.status;

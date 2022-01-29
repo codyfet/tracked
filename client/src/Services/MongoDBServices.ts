@@ -17,6 +17,8 @@ import {
     IRegisterUserResponseBody,
     IUpdateUserProfileRequestBody,
     IUpdateUserProfileResponseBody,
+    IVkAuthenticateUserRequestBody,
+    IVkAuthenticateUserResponseBody,
 } from "./../../../server/src/controllers/user.controller";
 import {
     IClientRecord,
@@ -38,6 +40,15 @@ axios.interceptors.request.use(function (config) {
 
     return config;
 });
+
+/**
+ * Осуществляет попытку авторизации пользователя через вк виджет.
+ *
+ * @param {IVkAuthenticateUserRequestBody} data Данные пользователя, полученные от ВК.
+ */
+export function vkAuthenticate(data: IVkAuthenticateUserRequestBody) {
+    return axios.post<IVkAuthenticateUserResponseBody>("/api/user/vkauthenticate", data);
+}
 
 /**
  * Осуществляет попытку логина пользователя.
