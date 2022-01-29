@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {login, register} from "../Actions/Actions";
+import {login, register, vkAuthenticate} from "../Actions/Actions";
 import {useToggle} from "../Hooks/Toggle.hook";
 import {Button, Form, Grid, Header, Message, Segment} from "semantic-ui-react";
 import {AUTHENTICATION_CLEAR} from "../Actions/ActionTypes";
 import {IApplicationReduxState} from "../Reducers";
 import {useHistory, useLocation} from "react-router-dom";
 import {ILocationState} from "../Interfaces/Common";
+import {VKAuthResponse, VKAuthWidget} from "../Components/VKAuthWidget";
 
 /**
  * Страница логин/регистрация.
@@ -71,6 +72,22 @@ export const Login = () => {
         return <Message negative content={<p>{user.error?.message}</p>} />;
     };
 
+    /**
+     * Колбэк, вызываемый после успешной авторизации через вк виджет.
+     */
+    const authCallback = async (response: VKAuthResponse) => {
+        const result = await dispatch(
+            vkAuthenticate({
+                vkId: response.uid,
+                username: `${response.first_name} ${response.last_name}`,
+                image: response.photo_rec,
+            })
+        );
+        if (result) {
+            history.push(prevLocation || "/");
+        }
+    };
+
     return (
         <Grid className="login" textAlign="center">
             <Grid.Column style={{maxWidth: 450}}>
@@ -110,6 +127,7 @@ export const Login = () => {
                         <Button fluid size="large" onClick={handleSubmit}>
                             {buttonText}
                         </Button>
+                        <VKAuthWidget apiId={8037662} authCallback={authCallback} />
                     </Segment>
                 </Form>
                 {user?.error && getErrorMessage()}

@@ -14,6 +14,99 @@ import {IUserDocument} from "../interfaces/User";
 import FavouriteMovie from "../models/FavouriteMovie";
 
 /**
+ * Body запроса для сервиса vkAuthenticateUser.
+ *
+ * @prop {string} email Электронная почта.
+ * @prop {string} password Пароль.
+ */
+export interface IVkAuthenticateUserRequestBody {
+    vkId: number;
+    username: string;
+    image: string;
+}
+
+/**
+ * Body ответа для сервиса vkAuthenticateUser.
+ *
+ * @prop {string} userId Электронная почта.
+ * @prop {string} username Имя пользователя.
+ * @prop {string} email Электронная почта.
+ * @prop {string} isAdmin Признак является ли пользователь админом.
+ * @prop {string} token Токен.
+ * @prop {string} years Массив лет, в которых у пользователя есть записи.
+ * @prop {string} vkId Идентификатор вконтакте.
+ * @prop {string} image Путь к изображению (фото).
+ * @prop {IFavouriteMovieDocument[]} favouriteMovies Массив любимых фильмов.
+ */
+export interface IVkAuthenticateUserResponseBody {
+    userId: string;
+    username: string;
+    email: string;
+    isAdmin: boolean;
+    token: string;
+    years: string[];
+    vkId: number;
+    image: string;
+    favouriteMovies?: IFavouriteMovieDocument[];
+}
+
+const vkAuthenticateUser = asyncHandler(
+    async (
+        req: Request<{}, {}, IVkAuthenticateUserRequestBody>,
+        res: Response<IVkAuthenticateUserResponseBody>
+    ) => {
+        const {vkId, username, image} = req.body;
+        const existedUser = await User.findOne({vkId});
+
+        if (existedUser) {
+            const filter: FilterQuery<IRecordDocument> = {
+                userId: existedUser.id,
+            };
+            const records = await RecordModel.find(filter).exec();
+            const groupedRecordsByYears = groupBy(records, (r) =>
+                new Date(r.viewdate).getFullYear()
+            );
+            const years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>
+                b.localeCompare(a)
+            );
+
+            res.json({
+                userId: existedUser._id,
+                username: existedUser.username,
+                email: existedUser.email,
+                isAdmin: existedUser.isAdmin,
+                token: createToken(existedUser._id),
+                years,
+                favouriteMovies: existedUser.favouriteMovies,
+
+                vkId: existedUser.vkId,
+                image: existedUser.image,
+            });
+        } else {
+            const createdUser = await User.create({
+                vkId,
+                username,
+                image,
+                password: "null",
+                email: "null",
+            });
+
+            res.status(201).json({
+                userId: createdUser._id,
+                username: createdUser.username,
+                email: createdUser.email,
+                isAdmin: createdUser.isAdmin,
+                token: createToken(createdUser._id),
+                years: [],
+
+                vkId: createdUser.vkId,
+                image: createdUser.image,
+            });
+        }
+    }
+);
+
+/**
  * Body запроса для сервиса authUser.
  *
  * @prop {string} email Электронная почта.
@@ -26,6 +119,7 @@ export interface IAuthUserRequestBody {
 
 /**
  * Body ответа для сервиса authUser.
+ * // TODO: Привести эту модель к соответствию с моделью ответа от регистрации и от vk аутентификации.
  *
  * @prop {string} userId Электронная почта.
  * @prop {string} username Имя пользователя.
@@ -389,4 +483,4 @@ const getUsers = asyncHandler(
     }
 );
 
-export {authUser, registerUser, getUserProfile, updateUserProfile, getUsers};
+export {vkAuthenticateUser, authUser, registerUser, getUserProfile, updateUserProfile, getUsers};
