@@ -1,5 +1,5 @@
 import {IClientFavouriteMovie} from "./../../../client/src/Interfaces/ClientFavouriteMovie";
-import {IFavouriteMovieDocument} from "./../interfaces/FavouriteMovie";
+import {IFavouriteMovie, IFavouriteMovieDocument} from "./../interfaces/FavouriteMovie";
 import {Request, Response} from "express";
 import asyncHandler from "express-async-handler";
 import User from "../models/User";
@@ -10,7 +10,7 @@ import {RecordModel} from "../models/Record";
 import {FilterQuery} from "mongoose";
 import {IRecordDocument} from "../interfaces/Record";
 import {validationResult} from "express-validator";
-import {IUserDocument} from "../interfaces/User";
+import {IUser, IUserDocument} from "../interfaces/User";
 import FavouriteMovie from "../models/FavouriteMovie";
 
 /**
@@ -61,6 +61,9 @@ const vkAuthenticateUser = asyncHandler(
         res: Response<IAuthUserResponseBody>
     ) => {
         const {vkId, username, image} = req.body;
+        let authenticatedUser: IUserDocument;
+        let years: string[] = [];
+
         const existedUser = await User.findOne({vkId});
 
         if (existedUser) {
@@ -71,22 +74,10 @@ const vkAuthenticateUser = asyncHandler(
             const groupedRecordsByYears = groupBy(records, (r) =>
                 new Date(r.viewdate).getFullYear()
             );
-            const years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>
+            years = Object.keys(groupedRecordsByYears).sort((a: string, b: string) =>
                 b.localeCompare(a)
             );
-
-            res.json({
-                userId: existedUser._id,
-                username: existedUser.username,
-                email: existedUser.email,
-                isAdmin: existedUser.isAdmin,
-                token: createToken(existedUser._id),
-                years,
-                favouriteMovies: existedUser.favouriteMovies,
-
-                vkId: existedUser.vkId,
-                image: existedUser.image,
-            });
+            authenticatedUser = existedUser;
         } else {
             const createdUser = await User.create({
                 vkId,
@@ -95,19 +86,19 @@ const vkAuthenticateUser = asyncHandler(
                 password: "null",
                 email: "null",
             });
-
-            res.status(201).json({
-                userId: createdUser._id,
-                username: createdUser.username,
-                email: createdUser.email,
-                isAdmin: createdUser.isAdmin,
-                token: createToken(createdUser._id),
-                years: [],
-
-                vkId: createdUser.vkId,
-                image: createdUser.image,
-            });
+            authenticatedUser = createdUser;
         }
+
+        res.status(201).json({
+            userId: authenticatedUser._id,
+            username: authenticatedUser.username,
+            email: authenticatedUser.email,
+            isAdmin: authenticatedUser.isAdmin,
+            token: createToken(authenticatedUser._id),
+            vkId: authenticatedUser.vkId,
+            image: authenticatedUser.image,
+            years,
+        });
     }
 );
 
